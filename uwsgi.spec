@@ -1,7 +1,7 @@
-%define wikiversion 41
+%define wikiversion 43
 
 Name:           uwsgi
-Version:        1.2.3
+Version:        1.2.4
 Release:        1%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
@@ -255,6 +255,9 @@ mkdir -p %{buildroot}%{_libdir}/%{name}
 
 
 %changelog
+* Sun Jul 08 2012 Jorge A Gallegos <kad@blegh.net> - 1.2.4-1
+- Updated to latest stable from upstream
+
 * Tue Jun 26 2012 Jorge A Gallegos <kad@blegh.net> - 1.2.3-1
 - Updated to latest stable upstream
 - Building the pytho3 plugin is a bit trickier now, but still possible
