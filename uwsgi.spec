@@ -1,7 +1,7 @@
 %define wikiversion 43
 
 Name:           uwsgi
-Version:        1.2.4
+Version:        1.2.6
 Release:        1%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
@@ -255,6 +255,9 @@ mkdir -p %{buildroot}%{_libdir}/%{name}
 
 
 %changelog
+* Sun Sep 09 2012 Jorge A Gallegos <kad@blegh.net> - 1.2.6-1
+- Updated to latest stable from upstream
+
 * Sun Jul 08 2012 Jorge A Gallegos <kad@blegh.net> - 1.2.4-1
 - Updated to latest stable from upstream
 
