@@ -2,7 +2,7 @@
 
 Name:           uwsgi
 Version:        1.2.6
-Release:        1%{?dist}
+Release:        1%{?dist}.1
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
@@ -134,7 +134,7 @@ This package contains the lua plugin for uWSGI
 %package -n %{name}-plugin-php
 Summary:  uWSGI - Plugin for PHP support
 Group:    System Environment/Daemons
-Requires: php, %{name}-plugin-common
+Requires: %{name}-plugin-common
 
 %description -n %{name}-plugin-php
 This package contains the PHP plugin for uWSGI
@@ -255,6 +255,10 @@ mkdir -p %{buildroot}%{_libdir}/%{name}
 
 
 %changelog
+* Thu Oct 18 2012 Remi Collet <remi@fedoraproject.org> - 1.2.6-1.1
+- rebuild for new PHP 5.4.8
+- Dropped requirement on PHP for the PHP plugin
+
 * Sun Sep 09 2012 Jorge A Gallegos <kad@blegh.net> - 1.2.6-1
 - Updated to latest stable from upstream
 
