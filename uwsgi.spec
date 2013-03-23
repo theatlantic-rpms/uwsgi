@@ -2,7 +2,7 @@
 
 Name:           uwsgi
 Version:        1.2.6
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
@@ -313,6 +313,9 @@ exit 0
 
 
 %changelog
+* Sat Mar 23 2013 Remi Collet <rcollet@redhat.com> - 1.2.6-9
+- rebuild for http://fedoraproject.org/wiki/Features/Php55
+
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2.6-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
