@@ -2,7 +2,7 @@
 
 Name:           uwsgi
 Version:        1.2.6
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
@@ -15,6 +15,7 @@ Source3:        uwsgi.service
 Source4:        emperor.ini
 Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
+Patch2:         uwsgi_ruby20_compatibility.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-devel
@@ -188,6 +189,7 @@ sed -i 's/\r//' uwsgi-wiki-doc-v%{wikiversion}.txt
 echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
@@ -313,6 +315,9 @@ exit 0
 
 
 %changelog
+* Tue Apr 02 2013 Vít Ondruch <vondruch@redhat.com> - 1.2.6-10
+- Rebuild for https://fedoraproject.org/wiki/Features/Ruby_2.0.0
+
 * Sat Mar 23 2013 Remi Collet <rcollet@redhat.com> - 1.2.6-9
 - rebuild for http://fedoraproject.org/wiki/Features/Php55
 
