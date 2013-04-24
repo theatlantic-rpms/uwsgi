@@ -1,26 +1,24 @@
-%define wikiversion 43
-
 Name:           uwsgi
-Version:        1.2.6
-Release:        10%{?dist}
+Version:        1.9.8
+Release:        0%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
 URL:            http://projects.unbit.it/uwsgi
 Source0:        http://projects.unbit.it/downloads/%{name}-%{version}.tar.gz
 Source1:        fedora.ini
-# curl -o uwsgi-wiki-doc-v${wikiversion}.txt "http://projects.unbit.it/uwsgi/wiki/Doc?version=${wikiversion}&format=txt"
-Source2:        uwsgi-wiki-doc-v%{wikiversion}.txt
-Source3:        uwsgi.service
-Source4:        emperor.ini
+Source2:        uwsgi.service
+Source3:        emperor.ini
 Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
+Patch3:         uwsgi_fix_lua.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-devel
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
-BuildRequires:  bzip2-devel, gmp-devel, systemd-units
+BuildRequires:  bzip2-devel, gmp-devel, systemd-units, erlang, pam-devel
+BuildRequires:  java-1.7.0-openjdk-devel, sqlite-devel
 
 Requires(pre):    shadow-utils
 Requires(post):   systemd-units
@@ -179,17 +177,81 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-syslog
 This package contains the syslog plugin for uWSGI
 
+%package -n %{name}-plugin-erlang
+Summary:  uWSGI - Plugin for erlang support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, erlang
+
+%description -n %{name}-plugin-erlang
+This package contains the erlang plugin for uWSGI
+
+%package -n %{name}-plugin-pam
+Summary:  uWSGI - Plugin for PAM support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, pam
+
+%description -n %{name}-plugin-pam
+This package contains the PAM plugin for uWSGI
+
+%package -n %{name}-plugin-jvm
+Summary:  uWSGI - Plugin for JVM support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, java-1.7.0-openjdk
+
+%description -n %{name}-plugin-jvm
+This package contains the JVM plugin for uWSGI
+
+%package -n %{name}-plugin-zergpool
+Summary:  uWSGI - Plugin for zergpool support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-zergpool
+This package contains the zergpool plugin for uWSGI
+
+%package -n %{name}-loggers
+Summary:  uWSGI - Logging plugins
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-loggers
+This package contains the logging plugins for uWSGI
+
+%package -n %{name}-routers
+Summary:  uWSGI - Router plugins
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-routers
+This package contains the router plugins for uWSGI
+
+%package -n %{name}-plugin-sslrouter
+Summary:  uWSGI - SSL Router plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-sslrouter
+This package contains the SSL router plugin for uWSGI
+
+%package -n %{name}-plugin-rawrouter
+Summary:  uWSGI - Raw Router plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-rawrouter
+This package contains the Raw router plugin for uWSGI
+
+
 %prep
 %setup -q
 cp -p %{SOURCE1} buildconf/
-cp -p %{SOURCE2} uwsgi-wiki-doc-v%{wikiversion}.txt
-cp -p %{SOURCE3} %{name}.service
-cp -p %{SOURCE4} %{name}.ini
-sed -i 's/\r//' uwsgi-wiki-doc-v%{wikiversion}.txt
+cp -p %{SOURCE2} %{name}.service
+cp -p %{SOURCE3} %{name}.ini
 echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
@@ -201,10 +263,12 @@ mkdir -p %{buildroot}%{_unitdir}
 mkdir -p %{buildroot}%{_sbindir}
 mkdir -p %{buildroot}%{_includedir}/%{name}
 mkdir -p %{buildroot}%{_libdir}/%{name}
+mkdir -p %{buildroot}%{_javadir}
 mkdir -p %{buildroot}/run/%{name}
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
+%{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
 %{__install} -p -m 0644 %{name}.ini %{buildroot}%{_sysconfdir}/%{name}.ini
 %{__install} -p -m 0644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
 
@@ -255,8 +319,7 @@ exit 0
 %{_unitdir}/%{name}.service
 %dir %{_sysconfdir}/%{name}.d
 %dir /run/%{name}
-%doc ChangeLog LICENSE README
-%doc uwsgi-wiki-doc-v%{wikiversion}.txt
+%doc LICENSE README
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
@@ -313,8 +376,46 @@ exit 0
 %files -n %{name}-plugin-syslog
 %{_libdir}/%{name}/syslog_plugin.so
 
+%files -n %{name}-plugin-erlang
+%{_libdir}/%{name}/erlang_plugin.so
+%{_libdir}/%{name}/pyerl_plugin.so
+
+%files -n %{name}-plugin-pam
+%{_libdir}/%{name}/pam_plugin.so
+
+%files -n %{name}-plugin-jvm
+%{_libdir}/%{name}/jvm_plugin.so
+%{_javadir}/uwsgi.jar
+
+%files -n %{name}-plugin-zergpool
+%{_libdir}/%{name}/zergpool_plugin.so
+
+%files -n %{name}-loggers
+%{_libdir}/%{name}/logfile_plugin.so
+%{_libdir}/%{name}/logsocket_plugin.so
+%{_libdir}/%{name}/mongodblog_plugin.so
+%{_libdir}/%{name}/redislog_plugin.so
+
+%files -n %{name}-routers
+%{_libdir}/%{name}/router_*_plugin.so
+
+%files -n %{name}-plugin-sslrouter
+%{_libdir}/%{name}/sslrouter_plugin.so
+
+%files -n %{name}-plugin-rawrouter
+%{_libdir}/%{name}/rawrouter_plugin.so
+
 
 %changelog
+* Thu Apr 23 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.8-0
+- Rebuilt with latest stable version from upstream
+
+* Thu Apr 11 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.5-0
+- Rebuilt with latest stable version from upstream
+- Added Erlang, PAM and JVM plugins
+- Added router-related plugins
+- Added logger plugins
+
 * Tue Apr 02 2013 Vít Ondruch <vondruch@redhat.com> - 1.2.6-10
 - Rebuild for https://fedoraproject.org/wiki/Features/Ruby_2.0.0
 

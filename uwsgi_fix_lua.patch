@@ -1,0 +1,25 @@
+diff --git a/plugins/lua/uwsgiplugin.py b/plugins/lua/uwsgiplugin.py
+index ea12926..9b13f4d 100644
+--- a/plugins/lua/uwsgiplugin.py
++++ b/plugins/lua/uwsgiplugin.py
+@@ -3,17 +3,17 @@ import os,sys
+ try:
+         LUALIB = os.environ['UWSGICONFIG_LUALIB']
+ except:
+-        LUALIB = 'lua5.1'
++        LUALIB = 'lua'
+ 
+ try:
+         LUAINC = os.environ['UWSGICONFIG_LUAINC']
+ except:
+-        LUAINC = '/usr/include/lua5.1'
++        LUAINC = '/usr/include'
+ 
+ try:
+         LUALIBPATH = os.environ['UWSGICONFIG_LUALIBPATH']
+ except:
+-        LUALIBPATH = '/usr/lib/lua5.1'
++        LUALIBPATH = '/usr/lib/lua/5.1'
+ 
+ NAME='lua'
+ CFLAGS = ['-I%s' % LUAINC]

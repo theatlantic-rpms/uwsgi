@@ -1,6 +1,9 @@
+*.src.rpm
 /uwsgi-1.0.4.tar.gz
 /uwsgi-1.2.3.tar.gz
 /uwsgi-wiki-doc-v41.txt
 /uwsgi-1.2.4.tar.gz
 /uwsgi-wiki-doc-v43.txt
 /uwsgi-1.2.6.tar.gz
+/uwsgi-1.4.5.tar.gz
+/uwsgi-1.9.8.tar.gz
