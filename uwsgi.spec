@@ -1,6 +1,6 @@
 Name:           uwsgi
 Version:        1.9.8
-Release:        0%{dist}
+Release:        1%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
@@ -407,6 +407,9 @@ exit 0
 
 
 %changelog
+* Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.9.8-1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
 * Thu Apr 23 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.8-0
 - Rebuilt with latest stable version from upstream
 
