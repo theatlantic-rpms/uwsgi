@@ -1,14 +1,17 @@
+#To download the documentation sources:
+#V=<version>; curl -L -o uwsgi-doc-${V}.tar.gz https://github.com/unbit/uwsgi-docs/archive/master.tar.gz
 Name:           uwsgi
-Version:        1.9.8
-Release:        1%{dist}
+Version:        1.9.17
+Release:        0%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
-URL:            http://projects.unbit.it/uwsgi
-Source0:        http://projects.unbit.it/downloads/%{name}-%{version}.tar.gz
+URL:            https://github.com/unbit/uwsgi
+Source0:        https://github.com/unbit/%{name}/archive/%{version}.tar.gz
 Source1:        fedora.ini
 Source2:        uwsgi.service
 Source3:        emperor.ini
+Source4:        uwsgi-doc-%{version}.tar.gz
 Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
@@ -247,6 +250,7 @@ This package contains the Raw router plugin for uWSGI
 cp -p %{SOURCE1} buildconf/
 cp -p %{SOURCE2} %{name}.service
 cp -p %{SOURCE3} %{name}.ini
+cp -p %{SOURCE4} uwsgi-docs.tar.gz
 echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch0 -p1
 %patch1 -p1
@@ -255,7 +259,7 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 
 %build
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
-CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/python fedora python32
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/python fedora python3
 
 %install
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}.d
@@ -265,6 +269,8 @@ mkdir -p %{buildroot}%{_includedir}/%{name}
 mkdir -p %{buildroot}%{_libdir}/%{name}
 mkdir -p %{buildroot}%{_javadir}
 mkdir -p %{buildroot}/run/%{name}
+mkdir docs
+tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
@@ -319,7 +325,7 @@ exit 0
 %{_unitdir}/%{name}.service
 %dir %{_sysconfdir}/%{name}.d
 %dir /run/%{name}
-%doc LICENSE README
+%doc LICENSE README docs
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
@@ -350,7 +356,7 @@ exit 0
 %{_libdir}/%{name}/admin_plugin.so
 
 %files -n %{name}-plugin-python3
-%{_libdir}/%{name}/python32_plugin.so
+%{_libdir}/%{name}/python3_plugin.so
 
 %files -n %{name}-plugin-ruby
 %{_libdir}/%{name}/ruby19_plugin.so
@@ -407,10 +413,14 @@ exit 0
 
 
 %changelog
+* Wed Oct 02 2013 Jorge A Gallegos <kad@fedoraproject.org> - 1.9.17-0
+- Rebuilt for version 1.9.17
+- Pulling in new documentation from https://github.com/unbit/uwsgi-docs
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.9.8-1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
-* Thu Apr 23 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.8-0
+* Tue Apr 23 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.8-0
 - Rebuilt with latest stable version from upstream
 
 * Thu Apr 11 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.5-0
