@@ -1,25 +1,31 @@
 diff --git a/plugins/lua/uwsgiplugin.py b/plugins/lua/uwsgiplugin.py
-index ea12926..9b13f4d 100644
+index 8aaa95b..d0e3cd0 100644
 --- a/plugins/lua/uwsgiplugin.py
 +++ b/plugins/lua/uwsgiplugin.py
-@@ -3,17 +3,17 @@ import os,sys
- try:
-         LUALIB = os.environ['UWSGICONFIG_LUALIB']
- except:
--        LUALIB = 'lua5.1'
-+        LUALIB = 'lua'
+@@ -3,7 +3,7 @@ import os,sys
+ LUAINC = os.environ.get('UWSGICONFIG_LUAINC')
+ LUALIB = os.environ.get('UWSGICONFIG_LUALIB')
+ LUALIBPATH = os.environ.get('UWSGICONFIG_LUALIBPATH')
+-LUAPC = os.environ.get('UWSGICONFIG_LUAPC', 'lua5.1')
++LUAPC = os.environ.get('UWSGICONFIG_LUAPC', 'lua')
  
- try:
-         LUAINC = os.environ['UWSGICONFIG_LUAINC']
- except:
--        LUAINC = '/usr/include/lua5.1'
-+        LUAINC = '/usr/include'
+ # we LUAINC/LUALIB/LUALIBPATH override the LUAPC for backwards compat
+ if LUAINC:
+@@ -12,7 +12,7 @@ else:
+ 	try:
+ 		CFLAGS = os.popen('pkg-config --cflags %s' % LUAPC).read().rstrip().split()
+ 	except:
+-		CFLAGS = ['-I/usr/include/lua5.1']
++		CFLAGS = ['-I/usr/include/lua']
  
- try:
-         LUALIBPATH = os.environ['UWSGICONFIG_LUALIBPATH']
- except:
--        LUALIBPATH = '/usr/lib/lua5.1'
-+        LUALIBPATH = '/usr/lib/lua/5.1'
+ if LUALIB:
+ 	LIBS = ['-l%s' % LUALIB]
+@@ -20,7 +20,7 @@ else:
+ 	try:
+ 		LIBS = os.popen('pkg-config --libs %s' % LUAPC).read().rstrip().split() 
+ 	except:
+-		LIBS = ['-llua5.1']
++		LIBS = ['-llua']
  
- NAME='lua'
- CFLAGS = ['-I%s' % LUAINC]
+ if LUALIBPATH:
+ 	LDFLAGS = ['-L%s' % LUALIBPATH]
