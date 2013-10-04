@@ -16,6 +16,7 @@ Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
 Patch3:         uwsgi_fix_lua.patch
+Patch4:         uwsgi_fix_jvm_in_arm.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-devel
@@ -236,6 +237,7 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
@@ -386,6 +388,7 @@ exit 0
 - Copying the version changelog to top-level doc
 - Compile with POSIX capabilities
 - Embed the loggers into the binary itself, no need for an extra package
+- Patching jvm plugin to support arm
 
 * Wed Oct 02 2013 Jorge A Gallegos <kad@fedoraproject.org> - 1.9.17-0
 - Rebuilt for version 1.9.17
