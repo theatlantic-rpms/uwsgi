@@ -2,7 +2,7 @@
 #V=<version>; curl -L -o uwsgi-doc-${V}.tar.gz https://github.com/unbit/uwsgi-docs/archive/master.tar.gz
 Name:           uwsgi
 Version:        1.9.17
-Release:        0%{dist}
+Release:        1%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
@@ -21,7 +21,9 @@ BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-devel
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, erlang, pam-devel
-BuildRequires:  java-1.7.0-openjdk-devel, sqlite-devel
+BuildRequires:  java-1.7.0-openjdk-devel, sqlite-devel, libcap-devel
+Obsoletes:      %{name}-loggers <= 1.9.8-1
+Provides:       %{name}-loggers = %{version}-%{release}
 
 Requires(pre):    shadow-utils
 Requires(post):   systemd-units
@@ -212,14 +214,6 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-zergpool
 This package contains the zergpool plugin for uWSGI
 
-%package -n %{name}-loggers
-Summary:  uWSGI - Logging plugins
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-loggers
-This package contains the logging plugins for uWSGI
-
 %package -n %{name}-routers
 Summary:  uWSGI - Router plugins
 Group:    System Environment/Daemons
@@ -271,6 +265,7 @@ mkdir -p %{buildroot}%{_javadir}
 mkdir -p %{buildroot}/run/%{name}
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
+cp docs/Changelog-%{version}.rst CHANGELOG
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
@@ -325,7 +320,7 @@ exit 0
 %{_unitdir}/%{name}.service
 %dir %{_sysconfdir}/%{name}.d
 %dir /run/%{name}
-%doc LICENSE README docs
+%doc LICENSE README CHANGELOG docs
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
@@ -396,12 +391,6 @@ exit 0
 %files -n %{name}-plugin-zergpool
 %{_libdir}/%{name}/zergpool_plugin.so
 
-%files -n %{name}-loggers
-%{_libdir}/%{name}/logfile_plugin.so
-%{_libdir}/%{name}/logsocket_plugin.so
-%{_libdir}/%{name}/mongodblog_plugin.so
-%{_libdir}/%{name}/redislog_plugin.so
-
 %files -n %{name}-routers
 %{_libdir}/%{name}/router_*_plugin.so
 
@@ -413,6 +402,11 @@ exit 0
 
 
 %changelog
+* Thu Oct 03 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.17-1
+- Copying the version changelog to top-level doc
+- Compile with POSIX capabilities
+- Embed the common loggers into the binary itself, no need for an extra package
+
 * Wed Oct 02 2013 Jorge A Gallegos <kad@fedoraproject.org> - 1.9.17-0
 - Rebuilt for version 1.9.17
 - Pulling in new documentation from https://github.com/unbit/uwsgi-docs
