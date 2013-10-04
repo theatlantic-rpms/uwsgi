@@ -23,6 +23,8 @@ BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, erlang, pam-devel
 BuildRequires:  java-1.7.0-openjdk-devel, sqlite-devel, libcap-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
+Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
+Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
 Provides:       %{name}-loggers = %{version}-%{release}
 
 Requires(pre):    shadow-utils
@@ -165,22 +167,6 @@ Requires: rrdtool, %{name}-plugin-common
 
 %description -n %{name}-plugin-rrdtool
 This package contains the RRD Tool plugin for uWSGI
-
-%package -n %{name}-plugin-rsyslog
-Summary:  uWSGI - Plugin for rsyslog support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-rsyslog
-This package contains the rsyslog plugin for uWSGI
-
-%package -n %{name}-plugin-syslog
-Summary:  uWSGI - Plugin for syslog support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-syslog
-This package contains the syslog plugin for uWSGI
 
 %package -n %{name}-plugin-erlang
 Summary:  uWSGI - Plugin for erlang support
@@ -371,12 +357,6 @@ exit 0
 %files -n %{name}-plugin-rrdtool
 %{_libdir}/%{name}/rrdtool_plugin.so
 
-%files -n %{name}-plugin-rsyslog
-%{_libdir}/%{name}/rsyslog_plugin.so
-
-%files -n %{name}-plugin-syslog
-%{_libdir}/%{name}/syslog_plugin.so
-
 %files -n %{name}-plugin-erlang
 %{_libdir}/%{name}/erlang_plugin.so
 %{_libdir}/%{name}/pyerl_plugin.so
@@ -405,7 +385,7 @@ exit 0
 * Thu Oct 03 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.17-1
 - Copying the version changelog to top-level doc
 - Compile with POSIX capabilities
-- Embed the common loggers into the binary itself, no need for an extra package
+- Embed the loggers into the binary itself, no need for an extra package
 
 * Wed Oct 02 2013 Jorge A Gallegos <kad@fedoraproject.org> - 1.9.17-0
 - Rebuilt for version 1.9.17
