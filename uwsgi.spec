@@ -1,5 +1,8 @@
-#To download the documentation sources:
-#V=<version>; curl -L -o uwsgi-doc-${V}.tar.gz https://github.com/unbit/uwsgi-docs/archive/master.tar.gz
+#Documentation sources:
+%global commit b86b3f7f183f90d874c8586d369c8cecc4347121
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
+%global docrepo uwsgi-docs
+
 Name:           uwsgi
 Version:        1.9.17
 Release:        1%{dist}
@@ -7,11 +10,11 @@ Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
 URL:            https://github.com/unbit/uwsgi
-Source0:        https://github.com/unbit/%{name}/archive/%{version}.tar.gz
+Source0:        http://projects.unbit.it/downloads/%{name}-%{version}.tar.gz
 Source1:        fedora.ini
 Source2:        uwsgi.service
 Source3:        emperor.ini
-Source4:        uwsgi-doc-%{version}.tar.gz
+Source4:        https://github.com/unbit/%{docrepo}/archive/%{commit}/%{docrepo}-%{shortcommit}.tar.gz
 Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
@@ -254,6 +257,9 @@ mkdir -p %{buildroot}/run/%{name}
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
 cp docs/Changelog-%{version}.rst CHANGELOG
+echo "A copy of the documentation is included under the docs/" > README.Fedora
+echo "directory at commit %{commit}, i.e. this:" >> README.Fedora
+echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
@@ -308,7 +314,7 @@ exit 0
 %{_unitdir}/%{name}.service
 %dir %{_sysconfdir}/%{name}.d
 %dir /run/%{name}
-%doc LICENSE README CHANGELOG docs
+%doc LICENSE README README.Fedora CHANGELOG docs
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
