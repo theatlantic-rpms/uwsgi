@@ -28,7 +28,7 @@ BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-deve
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, erlang, pam-devel
 BuildRequires:  java-1.7.0-openjdk-devel, sqlite-devel, libcap-devel
-BuildRequires:  httpd-devel
+BuildRequires:  httpd-devel, tcp_wrappers-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
