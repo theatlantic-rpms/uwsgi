@@ -2,6 +2,8 @@
 %global commit b86b3f7f183f90d874c8586d369c8cecc4347121
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
+%{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
+%{!?_httpd_moddir:    %{expand: %%global _httpd_moddir    %%{_libdir}/httpd/modules}}
 
 Name:           uwsgi
 Version:        1.9.17
@@ -26,6 +28,7 @@ BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-deve
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, erlang, pam-devel
 BuildRequires:  java-1.7.0-openjdk-devel, sqlite-devel, libcap-devel
+BuildRequires:  httpd-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
@@ -228,6 +231,14 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-rawrouter
 This package contains the Raw router plugin for uWSGI
 
+%package -n mod_proxy_%{name}
+Summary:  uWSGI - Apache2 proxy module
+Group:    System Environment/Daemons
+Requires: %{name}, httpd
+
+%description -n mod_proxy_%{name}
+Fully Apache API compliant proxy module
+
 
 %prep
 %setup -q
@@ -245,6 +256,7 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %build
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/python fedora python3
+%{_httpd_apxs} -Wc,-Wall -Wl -c apache2/mod_proxy_uwsgi.c
 
 %install
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}.d
@@ -254,6 +266,7 @@ mkdir -p %{buildroot}%{_includedir}/%{name}
 mkdir -p %{buildroot}%{_libdir}/%{name}
 mkdir -p %{buildroot}%{_javadir}
 mkdir -p %{buildroot}/run/%{name}
+mkdir -p %{buildroot}%{_httpd_moddir}
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
 cp docs/Changelog-%{version}.rst CHANGELOG
@@ -266,6 +279,7 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
 %{__install} -p -m 0644 %{name}.ini %{buildroot}%{_sysconfdir}/%{name}.ini
 %{__install} -p -m 0644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
+%{__install} -p -m 0755 apache2/.libs/mod_proxy_%{name}.so %{buildroot}%{_httpd_moddir}/mod_proxy_%{name}.so
 
 
 %pre
@@ -387,6 +401,9 @@ exit 0
 
 %files -n %{name}-plugin-rawrouter
 %{_libdir}/%{name}/rawrouter_plugin.so
+
+%files -n mod_proxy_%{name}
+%{_httpd_moddir}/mod_proxy_%{name}.so
 
 
 %changelog
