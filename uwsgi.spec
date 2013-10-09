@@ -7,7 +7,7 @@
 
 Name:           uwsgi
 Version:        1.9.17
-Release:        1%{dist}
+Release:        2%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
@@ -407,6 +407,14 @@ exit 0
 
 
 %changelog
+* Wed Oct 09 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.17-2
+- Uploaded new sources per spec rework (Jorge Gallegos)
+- Adding more router plugins (Jorge Gallegos)
+- Adding mod_proxy_uwsgi apache module (Jorge Gallegos)
+- Complying with the guidelines for source urls (Jorge Gallegos)
+- The settings in the service file were right before (Jorge Gallegos)
+- Enabling stats log socket, and capabilities (Jorge Gallegos)
+
 * Thu Oct 03 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.17-1
 - Copying the version changelog to top-level doc
 - Compile with POSIX capabilities
