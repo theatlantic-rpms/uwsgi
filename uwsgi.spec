@@ -411,6 +411,11 @@ exit 0
 
 
 %changelog
+* Sat Oct 19 2013 Jorge A Gallegos <kad@fedoraproject.org> - 1.9.18.2-1
+- Breaking up full version in 3 parts (Jorge Gallegos)
+- Update to latest stable 1.9.18.2 (Jorge Gallegos)
+- Forgot to disable debug mode (Jorge Gallegos)
+
 * Wed Oct 09 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.17-2
 - Uploaded new sources per spec rework (Jorge Gallegos)
 - Adding more router plugins (Jorge Gallegos)
