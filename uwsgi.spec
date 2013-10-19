@@ -2,8 +2,9 @@
 %global majornumber 1.9
 %global minornumber 18
 %global patchnumber .2
+
 # Documentation sources:
-%global commit b86b3f7f183f90d874c8586d369c8cecc4347121
+%global commit 71f2d78edf421f6d367c58a1fe4db31f64bc39b7
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
