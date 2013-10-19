@@ -6,8 +6,8 @@
 %{!?_httpd_moddir:    %{expand: %%global _httpd_moddir    %%{_libdir}/httpd/modules}}
 
 Name:           uwsgi
-Version:        1.9.17
-Release:        2%{dist}
+Version:        1.9.18.2
+Release:        0%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2
