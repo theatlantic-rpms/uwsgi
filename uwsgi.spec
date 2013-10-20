@@ -15,7 +15,7 @@ Version:        %{majornumber}.%{minornumber}%{?patchnumber}
 Release:        0%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
-License:        GPLv2
+License:        GPLv2 with exceptions
 URL:            https://github.com/unbit/uwsgi
 Source0:        http://projects.unbit.it/downloads/%{name}-%{version}.tar.gz
 Source1:        fedora.ini
@@ -412,7 +412,7 @@ exit 0
 
 
 %changelog
-* Sat Oct 19 2013 Jorge A Gallegos <kad@fedoraproject.org> - 1.9.18.2-1
+* Sat Oct 19 2013 Jorge A Gallegos <kad@fedoraproject.org> - 1.9.18.2-0
 - Breaking up full version in 3 parts (Jorge Gallegos)
 - Update to latest stable 1.9.18.2 (Jorge Gallegos)
 - Forgot to disable debug mode (Jorge Gallegos)
