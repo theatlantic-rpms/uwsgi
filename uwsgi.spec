@@ -12,7 +12,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}%{?patchnumber}
-Release:        0%{dist}
+Release:        1%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -410,6 +410,14 @@ exit 0
 
 
 %changelog
+* Sun Oct 20 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.18.2-1
+- The changelog entry must match major + minor (Jorge Gallegos)
+- Adding more ignore entries (Jorge Gallegos)
+- The jvm arm patch has been merged upstream (Jorge Gallegos)
+- Updated license to 'GPLv2 with exceptions' (Jorge Gallegos)
+- Ugh messed up the doc sha (Jorge Gallegos)
+- Adding new sources, bumping up spec to 1.9.18.2 (Jorge Gallegos)
+
 * Sat Oct 19 2013 Jorge A Gallegos <kad@fedoraproject.org> - 1.9.18.2-0
 - Breaking up full version in 3 parts (Jorge Gallegos)
 - Update to latest stable 1.9.18.2 (Jorge Gallegos)
