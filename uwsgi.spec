@@ -272,7 +272,7 @@ mkdir -p %{buildroot}/run/%{name}
 mkdir -p %{buildroot}%{_httpd_moddir}
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
-cp docs/Changelog-%{version}.rst CHANGELOG
+cp docs/Changelog-%{majornumber}.%{minornumber}.rst CHANGELOG
 echo "A copy of the documentation is included under the docs/" > README.Fedora
 echo "directory at commit %{commit}, i.e. this:" >> README.Fedora
 echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
