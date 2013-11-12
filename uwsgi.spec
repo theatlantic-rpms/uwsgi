@@ -409,6 +409,10 @@ exit 0
 
 
 %changelog
+* Tue Nov 12 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.19-1
+- Updating to latest stable, uploading new sources (Jorge Gallegos)
+- Forgot to delete the jvm arm patch file (Jorge Gallegos)
+
 * Sun Oct 20 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.18.2-1
 - The changelog entry must match major + minor (Jorge Gallegos)
 - Adding more ignore entries (Jorge Gallegos)
