@@ -1,10 +1,9 @@
 # Version
 %global majornumber 1.9
-%global minornumber 18
-%global patchnumber .2
+%global minornumber 19
 
 # Documentation sources:
-%global commit 71f2d78edf421f6d367c58a1fe4db31f64bc39b7
+%global commit 119b2154b6a90285b3f7fa9768d5268f72e87fd1
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
