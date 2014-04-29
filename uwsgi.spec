@@ -11,7 +11,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}%{?patchnumber}
-Release:        1%{dist}
+Release:        2%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -409,6 +409,9 @@ exit 0
 
 
 %changelog
+* Tue Apr 29 2014 Vít Ondruch <vondruch@redhat.com> - 1.9.19-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.1
+
 * Tue Nov 12 2013 Jorge A Gallegos <kad@blegh.net> - 1.9.19-1
 - Updating to latest stable, uploading new sources (Jorge Gallegos)
 - Forgot to delete the jvm arm patch file (Jorge Gallegos)
