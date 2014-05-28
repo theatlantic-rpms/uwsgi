@@ -11,7 +11,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}%{?patchnumber}
-Release:        2%{dist}
+Release:        3%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -409,6 +409,9 @@ exit 0
 
 
 %changelog
+* Wed May 28 2014 Kalev Lember <kalevlember@gmail.com> - 1.9.19-3
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
+
 * Tue Apr 29 2014 Vít Ondruch <vondruch@redhat.com> - 1.9.19-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.1
 
