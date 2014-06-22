@@ -11,7 +11,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}%{?patchnumber}
-Release:        4%{dist}
+Release:        5%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -409,6 +409,9 @@ exit 0
 
 
 %changelog
+* Thu Jun 19 2014 Remi Collet <rcollet@redhat.com> - 1.9.19-5
+- rebuild for https://fedoraproject.org/wiki/Changes/Php56
+
 * Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.9.19-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
