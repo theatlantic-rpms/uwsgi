@@ -29,12 +29,14 @@ BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-deve
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-devel
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
-BuildRequires:  bzip2-devel, gmp-devel, systemd-units, erlang, pam-devel
-BuildRequires:  java-1.7.0-openjdk-devel, sqlite-devel, libcap-devel
+BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
+BuildRequires:  java-devel, sqlite-devel, libcap-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
+Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
+Obsoletes:      %{name}-plugin-admin <= 2.0
 Provides:       %{name}-loggers = %{version}-%{release}
 
 Requires(pre):    shadow-utils
@@ -114,14 +116,6 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-fastrouter
 This package contains the fastrouter (proxy) plugin for uWSGI
 
-%package -n %{name}-plugin-admin
-Summary:  uWSGI - Plugin for Admin support
-Group:    System Environment/Daemons   
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-admin
-This package contains the admin plugin for uWSGI
-
 %package -n %{name}-plugin-python3
 Summary:  uWSGI - Plugin for Python 3.2 support
 Group:    System Environment/Daemons   
@@ -178,14 +172,6 @@ Requires: rrdtool, %{name}-plugin-common
 %description -n %{name}-plugin-rrdtool
 This package contains the RRD Tool plugin for uWSGI
 
-%package -n %{name}-plugin-erlang
-Summary:  uWSGI - Plugin for erlang support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, erlang
-
-%description -n %{name}-plugin-erlang
-This package contains the erlang plugin for uWSGI
-
 %package -n %{name}-plugin-pam
 Summary:  uWSGI - Plugin for PAM support
 Group:    System Environment/Daemons
@@ -197,7 +183,7 @@ This package contains the PAM plugin for uWSGI
 %package -n %{name}-plugin-jvm
 Summary:  uWSGI - Plugin for JVM support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, java-1.7.0-openjdk
+Requires: %{name}-plugin-common, java-headless, jpackage-utils
 
 %description -n %{name}-plugin-jvm
 This package contains the JVM plugin for uWSGI
@@ -357,9 +343,6 @@ exit 0
 %files -n %{name}-plugin-fastrouter
 %{_libdir}/%{name}/fastrouter_plugin.so
 
-%files -n %{name}-plugin-admin
-%{_libdir}/%{name}/admin_plugin.so
-
 %files -n %{name}-plugin-python3
 %{_libdir}/%{name}/python3_plugin.so
 
@@ -380,10 +363,6 @@ exit 0
 
 %files -n %{name}-plugin-rrdtool
 %{_libdir}/%{name}/rrdtool_plugin.so
-
-%files -n %{name}-plugin-erlang
-%{_libdir}/%{name}/erlang_plugin.so
-%{_libdir}/%{name}/pyerl_plugin.so
 
 %files -n %{name}-plugin-pam
 %{_libdir}/%{name}/pam_plugin.so
