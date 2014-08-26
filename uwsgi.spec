@@ -31,7 +31,7 @@ BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-deve
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel
-BuildRequires:  httpd-devel, tcp_wrappers-devel
+BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
@@ -220,6 +220,14 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-rawrouter
 This package contains the Raw router plugin for uWSGI
 
+%package -n %{name}-logger-zeromq
+Summary:  uWSGI - ZeroMQ logger plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, zeromq
+
+%description -n %{name}-logger-zeromq
+This package contains the ZeroMQ logger plugin for uWSGI
+
 %package -n mod_proxy_%{name}
 Summary:  uWSGI - Apache2 proxy module
 Group:    System Environment/Daemons
@@ -382,6 +390,9 @@ exit 0
 
 %files -n %{name}-plugin-rawrouter
 %{_libdir}/%{name}/rawrouter_plugin.so
+
+%files -n %{name}-logger-zeromq
+%{_libdir}/%{name}/logzmq_plugin.so
 
 %files -n mod_proxy_%{name}
 %{_httpd_moddir}/mod_proxy_%{name}.so
