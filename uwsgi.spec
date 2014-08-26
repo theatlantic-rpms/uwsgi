@@ -30,7 +30,7 @@ BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-devel
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
-BuildRequires:  java-devel, sqlite-devel, libcap-devel
+BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
@@ -228,6 +228,14 @@ Requires: %{name}-plugin-common, zeromq
 %description -n %{name}-logger-zeromq
 This package contains the ZeroMQ logger plugin for uWSGI
 
+%package -n %{name}-logger-systemd
+Summary:  uWSGI - SystemD Journal logger plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-logger-systemd
+This package contains the SystemD Journal logger plugin for uWSGI
+
 %package -n mod_proxy_%{name}
 Summary:  uWSGI - Apache2 proxy module
 Group:    System Environment/Daemons
@@ -393,6 +401,9 @@ exit 0
 
 %files -n %{name}-logger-zeromq
 %{_libdir}/%{name}/logzmq_plugin.so
+
+%files -n %{name}-logger-systemd
+%{_libdir}/%{name}/systemd_logger_plugin.so
 
 %files -n mod_proxy_%{name}
 %{_httpd_moddir}/mod_proxy_%{name}.so
