@@ -34,7 +34,7 @@ BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
-Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
+Obsoletes:      %{name}-plugin-syslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
 Obsoletes:      %{name}-plugin-admin <= 2.0
 Provides:       %{name}-loggers = %{version}-%{release}
