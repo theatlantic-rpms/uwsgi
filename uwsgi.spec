@@ -21,6 +21,7 @@ Source1:        fedora.ini
 Source2:        uwsgi.service
 Source3:        emperor.ini
 Source4:        https://github.com/unbit/%{docrepo}/archive/%{commit}/%{docrepo}-%{shortcommit}.tar.gz
+Source5:        README.Fedora
 Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
@@ -251,6 +252,7 @@ cp -p %{SOURCE1} buildconf/
 cp -p %{SOURCE2} %{name}.service
 cp -p %{SOURCE3} %{name}.ini
 cp -p %{SOURCE4} uwsgi-docs.tar.gz
+cp -p %{SOURCE5} README.Fedora
 echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch0 -p1
 %patch1 -p1
@@ -274,7 +276,6 @@ mkdir -p %{buildroot}%{_httpd_moddir}
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
 cp docs/Changelog-%{majornumber}.%{minornumber}.rst CHANGELOG
-echo "A copy of the documentation is included under the docs/" > README.Fedora
 echo "directory at commit %{commit}, i.e. this:" >> README.Fedora
 echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
