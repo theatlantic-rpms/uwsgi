@@ -39,7 +39,6 @@ Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-syslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
 Obsoletes:      %{name}-plugin-admin <= 2.0.6
-Provides:       %{name}-loggers = %{version}-%{release}
 
 Requires(pre):    shadow-utils
 Requires(post):   systemd-units
@@ -80,20 +79,30 @@ plugins included in this package are: cache, CGI, RPC, uGreen
 
 # Loggers
 
-%package -n %{name}-logger-crypto
+%package -n %{name}-logger-logcrypto
 Summary:  uWSGI - logcrypto logger plugin
 Group:    System Environment/Daemons
 Requires: %{name}-plugin-common
 
-%description -n %{name}-logger-crypto
+%description -n %{name}-logger-logcrypto
 This package contains the logcrypto logger plugin for uWSGI
 
-%package -n %{name}-logger-pipe
+%package -n %{name}-logger-logfile
+Summary:   uWSGI - logfile logger plugin
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Obsoletes: %{name}-loggers <= 1.9.8-1
+Provides:  %{name}-loggers = %{version}-%{release}
+
+%description -n %{name}-logger-logfile
+This package contains the logfile logger plugin for uWSGI
+
+%package -n %{name}-logger-logpipe
 Summary:  uWSGI - logpipe logger plugin
 Group:    System Environment/Daemons
 Requires: %{name}-plugin-common
 
-%description -n %{name}-logger-pipe
+%description -n %{name}-logger-logpipe
 This package contains the logcrypto logger plugin for uWSGI
 
 %package -n %{name}-logger-systemd
@@ -374,10 +383,13 @@ exit 0
 
 # Loggers
 
-%files -n %{name}-logger-crypto
+%files -n %{name}-logger-logcrypto
 %{_libdir}/%{name}/logcrypto_plugin.so
 
-%files -n %{name}-logger-pipe
+%files -n %{name}-logger-logfile
+%{_libdir}/%{name}/logfile_plugin.so
+
+%files -n %{name}-logger-logpipe
 %{_libdir}/%{name}/logpipe_plugin.so
 
 %files -n %{name}-logger-systemd
