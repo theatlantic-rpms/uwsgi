@@ -1,6 +1,7 @@
 # Version
-%global majornumber 2.0
-%global minornumber 6
+%global majornumber 2
+%global minornumber 0
+%global releasenumber 6
 
 # Documentation sources:
 %global commit d2c4969e82c12b316889bcdce348d200b45c4a3e
@@ -10,7 +11,7 @@
 %{!?_httpd_moddir:    %{expand: %%global _httpd_moddir    %%{_libdir}/httpd/modules}}
 
 Name:           uwsgi
-Version:        %{majornumber}.%{minornumber}%{?patchnumber}
+Version:        %{majornumber}.%{minornumber}.%{releasenumber}%{?patchnumber}
 Release:        0%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
@@ -285,7 +286,7 @@ mkdir -p %{buildroot}/run/%{name}
 mkdir -p %{buildroot}%{_httpd_moddir}
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
-cp docs/Changelog-%{majornumber}.%{minornumber}.rst CHANGELOG
+cp docs/Changelog-%{majornumber}.%{minornumber}.%{releasenumber}.rst CHANGELOG
 echo "directory at commit %{commit}, i.e. this:" >> README.Fedora
 echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
