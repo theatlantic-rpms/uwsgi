@@ -115,6 +115,16 @@ Provides:  %{name}-loggers = %{version}-%{release}
 %description -n %{name}-logger-logsocket
 This package contains the logsocket logger plugin for uWSGI
 
+%package -n %{name}-logger-mongodb
+Summary:   uWSGI - mongodblog logger plugin
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Obsoletes: %{name}-loggers <= 1.9.8-1
+Provides:  %{name}-loggers = %{version}-%{release}
+
+%description -n %{name}-logger-mongodb
+This package contains the mongodblog logger plugin for uWSGI
+
 %package -n %{name}-logger-systemd
 Summary:  uWSGI - SystemD Journal logger plugin
 Group:    System Environment/Daemons
@@ -403,6 +413,9 @@ exit 0
 %{_libdir}/%{name}/logpipe_plugin.so
 
 %files -n %{name}-logger-logsocket
+%{_libdir}/%{name}/logsocket_plugin.so
+
+%files -n %{name}-logger-mongodb
 %{_libdir}/%{name}/logsocket_plugin.so
 
 %files -n %{name}-logger-systemd
