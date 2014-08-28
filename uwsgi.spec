@@ -420,13 +420,13 @@ exit 0
 %{_libdir}/%{name}/logfile_plugin.so
 
 %files -n %{name}-logger-mongodb
-%{_libdir}/%{name}/logsocket_plugin.so
+%{_libdir}/%{name}/mongodblog_plugin.so
 
 %files -n %{name}-logger-pipe
 %{_libdir}/%{name}/logpipe_plugin.so
 
 %files -n %{name}-logger-redis
-%{_libdir}/%{name}/logsocket_plugin.so
+%{_libdir}/%{name}/redislog_plugin.so
 
 %files -n %{name}-logger-socket
 %{_libdir}/%{name}/logsocket_plugin.so
