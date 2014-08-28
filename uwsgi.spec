@@ -81,12 +81,20 @@ plugins included in this package are: cache, CGI, RPC, uGreen
 # Loggers
 
 %package -n %{name}-logger-crypto
-Summary:  uWSGI - LogCrypto logger plugin
+Summary:  uWSGI - logcrypto logger plugin
 Group:    System Environment/Daemons
 Requires: %{name}-plugin-common
 
 %description -n %{name}-logger-crypto
-This package contains the LogCrypto logger plugin for uWSGI
+This package contains the logcrypto logger plugin for uWSGI
+
+%package -n %{name}-logger-pipe
+Summary:  uWSGI - logpipe logger plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-logger-pipe
+This package contains the logcrypto logger plugin for uWSGI
 
 %package -n %{name}-logger-systemd
 Summary:  uWSGI - SystemD Journal logger plugin
@@ -368,6 +376,9 @@ exit 0
 
 %files -n %{name}-logger-crypto
 %{_libdir}/%{name}/logcrypto_plugin.so
+
+%files -n %{name}-logger-pipe
+%{_libdir}/%{name}/logpipe_plugin.so
 
 %files -n %{name}-logger-systemd
 %{_libdir}/%{name}/systemd_logger_plugin.so
