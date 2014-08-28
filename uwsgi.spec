@@ -79,14 +79,6 @@ plugins included in this package are: cache, CGI, RPC, uGreen
 
 # Loggers
 
-%package -n %{name}-logger-zeromq
-Summary:  uWSGI - ZeroMQ logger plugin
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, zeromq
-
-%description -n %{name}-logger-zeromq
-This package contains the ZeroMQ logger plugin for uWSGI
-
 %package -n %{name}-logger-systemd
 Summary:  uWSGI - SystemD Journal logger plugin
 Group:    System Environment/Daemons
@@ -95,15 +87,71 @@ Requires: %{name}-plugin-common
 %description -n %{name}-logger-systemd
 This package contains the SystemD Journal logger plugin for uWSGI
 
-%package -n %{name}-plugin-rack
-Summary:  uWSGI - Ruby rack plugin
+%package -n %{name}-logger-zeromq
+Summary:  uWSGI - ZeroMQ logger plugin
 Group:    System Environment/Daemons
-Requires: rubygem-rack, %{name}-plugin-common
+Requires: %{name}-plugin-common, zeromq
+
+%description -n %{name}-logger-zeromq
+This package contains the ZeroMQ logger plugin for uWSGI
 
 # Plugins
 
-%description -n %{name}-plugin-rack
-This package contains the rack plugin for uWSGI
+%package -n %{name}-plugin-carbon
+Summary:  uWSGI - Plugin for Carbon/Graphite support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-carbon
+This package contains the Carbon plugin for uWSGI (to use in graphite)
+
+%package -n %{name}-plugin-greenlet
+Summary:  uWSGI - Plugin for Python Greenlet support
+Group:    System Environment/Daemons   
+Requires: python-greenlet, %{name}-plugin-common
+
+%description -n %{name}-plugin-greenlet
+This package contains the python greenlet plugin for uWSGI
+
+%package -n %{name}-plugin-jvm
+Summary:  uWSGI - Plugin for JVM support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, java-headless, jpackage-utils
+
+%description -n %{name}-plugin-jvm
+This package contains the JVM plugin for uWSGI
+
+%package -n %{name}-plugin-lua
+Summary:  uWSGI - Plugin for LUA support
+Group:    System Environment/Daemons   
+Requires: lua, %{name}-plugin-common
+
+%description -n %{name}-plugin-lua
+This package contains the lua plugin for uWSGI
+
+%package -n %{name}-plugin-nagios
+Summary:  uWSGI - Plugin for Nagios support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-nagios
+This package contains the nagios plugin for uWSGI
+
+%package -n %{name}-plugin-pam
+Summary:  uWSGI - Plugin for PAM support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, pam
+
+%description -n %{name}-plugin-pam
+This package contains the PAM plugin for uWSGI
+
+%package -n %{name}-plugin-php
+Summary:  uWSGI - Plugin for PHP support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-php
+This package contains the PHP plugin for uWSGI
 
 %package -n %{name}-plugin-psgi
 Summary:  uWSGI - Plugin for PSGI support
@@ -121,14 +169,6 @@ Requires: python, %{name}-plugin-common
 %description -n %{name}-plugin-python
 This package contains the python plugin for uWSGI
 
-%package -n %{name}-plugin-nagios
-Summary:  uWSGI - Plugin for Nagios support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-nagios
-This package contains the nagios plugin for uWSGI
-
 %package -n %{name}-plugin-python3
 Summary:  uWSGI - Plugin for Python 3.2 support
 Group:    System Environment/Daemons   
@@ -137,45 +177,13 @@ Requires: python3, %{name}-plugin-common
 %description -n %{name}-plugin-python3
 This package contains the Python 3.2 plugin for uWSGI
 
-%package -n %{name}-plugin-ruby
-Summary:  uWSGI - Plugin for Ruby support
-Group:    System Environment/Daemons   
-Requires: ruby, %{name}-plugin-common
-
-%description -n %{name}-plugin-ruby
-This package contains the Ruby 1.9 plugin for uWSGI
-
-%package -n %{name}-plugin-greenlet
-Summary:  uWSGI - Plugin for Python Greenlet support
-Group:    System Environment/Daemons   
-Requires: python-greenlet, %{name}-plugin-common
-
-%description -n %{name}-plugin-greenlet
-This package contains the python greenlet plugin for uWSGI
-
-%package -n %{name}-plugin-lua
-Summary:  uWSGI - Plugin for LUA support
-Group:    System Environment/Daemons   
-Requires: lua, %{name}-plugin-common
-
-%description -n %{name}-plugin-lua
-This package contains the lua plugin for uWSGI
-
-%package -n %{name}-plugin-php
-Summary:  uWSGI - Plugin for PHP support
+%package -n %{name}-plugin-rack
+Summary:  uWSGI - Ruby rack plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
+Requires: rubygem-rack, %{name}-plugin-common
 
-%description -n %{name}-plugin-php
-This package contains the PHP plugin for uWSGI
-
-%package -n %{name}-plugin-carbon
-Summary:  uWSGI - Plugin for Carbon/Graphite support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-carbon
-This package contains the Carbon plugin for uWSGI (to use in graphite)
+%description -n %{name}-plugin-rack
+This package contains the rack plugin for uWSGI
 
 %package -n %{name}-plugin-rrdtool
 Summary:  uWSGI - Plugin for RRDTool support
@@ -185,21 +193,13 @@ Requires: rrdtool, %{name}-plugin-common
 %description -n %{name}-plugin-rrdtool
 This package contains the RRD Tool plugin for uWSGI
 
-%package -n %{name}-plugin-pam
-Summary:  uWSGI - Plugin for PAM support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, pam
+%package -n %{name}-plugin-ruby
+Summary:  uWSGI - Plugin for Ruby support
+Group:    System Environment/Daemons   
+Requires: ruby, %{name}-plugin-common
 
-%description -n %{name}-plugin-pam
-This package contains the PAM plugin for uWSGI
-
-%package -n %{name}-plugin-jvm
-Summary:  uWSGI - Plugin for JVM support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, java-headless, jpackage-utils
-
-%description -n %{name}-plugin-jvm
-This package contains the JVM plugin for uWSGI
+%description -n %{name}-plugin-ruby
+This package contains the Ruby 1.9 plugin for uWSGI
 
 %package -n %{name}-plugin-zergpool
 Summary:  uWSGI - Plugin for zergpool support
@@ -208,6 +208,8 @@ Requires: %{name}-plugin-common
 
 %description -n %{name}-plugin-zergpool
 This package contains the zergpool plugin for uWSGI
+
+# Routers
 
 %package -n %{name}-routers
 Summary:  uWSGI - Router plugins
@@ -232,8 +234,6 @@ Requires: %{name}-plugin-common
 
 %description -n %{name}-plugin-rawrouter
 This package contains the Raw router plugin for uWSGI
-
-# Routers
 
 %package -n %{name}-router-fastrouter
 Summary:   uWSGI - Plugin for FastRouter support
@@ -355,8 +355,37 @@ exit 0
 %{_libdir}/%{name}/rpc_plugin.so
 %{_libdir}/%{name}/ugreen_plugin.so
 
-%files -n %{name}-plugin-rack
-%{_libdir}/%{name}/rack_plugin.so
+# Loggers
+
+%files -n %{name}-logger-systemd
+%{_libdir}/%{name}/systemd_logger_plugin.so
+
+%files -n %{name}-logger-zeromq
+%{_libdir}/%{name}/logzmq_plugin.so
+
+# Plugins
+
+%files -n %{name}-plugin-carbon
+%{_libdir}/%{name}/carbon_plugin.so
+
+%files -n %{name}-plugin-greenlet
+%{_libdir}/%{name}/greenlet_plugin.so
+
+%files -n %{name}-plugin-jvm
+%{_libdir}/%{name}/jvm_plugin.so
+%{_javadir}/uwsgi.jar
+
+%files -n %{name}-plugin-lua
+%{_libdir}/%{name}/lua_plugin.so
+
+%files -n %{name}-plugin-nagios
+%{_libdir}/%{name}/nagios_plugin.so
+
+%files -n %{name}-plugin-pam
+%{_libdir}/%{name}/pam_plugin.so
+
+%files -n %{name}-plugin-php
+%{_libdir}/%{name}/php_plugin.so
 
 %files -n %{name}-plugin-psgi
 %{_libdir}/%{name}/psgi_plugin.so
@@ -364,45 +393,28 @@ exit 0
 %files -n %{name}-plugin-python
 %{_libdir}/%{name}/python_plugin.so
 
-%files -n %{name}-plugin-nagios
-%{_libdir}/%{name}/nagios_plugin.so
-
-%files -n %{name}-router-fastrouter
-%{_libdir}/%{name}/fastrouter_plugin.so
-
 %files -n %{name}-plugin-python3
 %{_libdir}/%{name}/python3_plugin.so
 
-%files -n %{name}-plugin-ruby
-%{_libdir}/%{name}/ruby19_plugin.so
-
-%files -n %{name}-plugin-greenlet
-%{_libdir}/%{name}/greenlet_plugin.so
-
-%files -n %{name}-plugin-lua
-%{_libdir}/%{name}/lua_plugin.so
-
-%files -n %{name}-plugin-php
-%{_libdir}/%{name}/php_plugin.so
-
-%files -n %{name}-plugin-carbon
-%{_libdir}/%{name}/carbon_plugin.so
+%files -n %{name}-plugin-rack
+%{_libdir}/%{name}/rack_plugin.so
 
 %files -n %{name}-plugin-rrdtool
 %{_libdir}/%{name}/rrdtool_plugin.so
 
-%files -n %{name}-plugin-pam
-%{_libdir}/%{name}/pam_plugin.so
-
-%files -n %{name}-plugin-jvm
-%{_libdir}/%{name}/jvm_plugin.so
-%{_javadir}/uwsgi.jar
+%files -n %{name}-plugin-ruby
+%{_libdir}/%{name}/ruby19_plugin.so
 
 %files -n %{name}-plugin-zergpool
 %{_libdir}/%{name}/zergpool_plugin.so
 
+# Routers
+
 %files -n %{name}-routers
 %{_libdir}/%{name}/router_*_plugin.so
+
+%files -n %{name}-router-fastrouter
+%{_libdir}/%{name}/fastrouter_plugin.so
 
 %files -n %{name}-plugin-sslrouter
 %{_libdir}/%{name}/sslrouter_plugin.so
@@ -410,11 +422,7 @@ exit 0
 %files -n %{name}-plugin-rawrouter
 %{_libdir}/%{name}/rawrouter_plugin.so
 
-%files -n %{name}-logger-zeromq
-%{_libdir}/%{name}/logzmq_plugin.so
-
-%files -n %{name}-logger-systemd
-%{_libdir}/%{name}/systemd_logger_plugin.so
+# The rest
 
 %files -n mod_proxy_%{name}
 %{_httpd_moddir}/mod_proxy_%{name}.so
