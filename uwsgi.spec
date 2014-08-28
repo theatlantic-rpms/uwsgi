@@ -35,7 +35,6 @@ BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
-Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-syslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
 Obsoletes:      %{name}-plugin-admin <= 2.0.6
@@ -124,6 +123,16 @@ Provides:  %{name}-loggers = %{version}-%{release}
 
 %description -n %{name}-logger-redis
 This package contains the redislog logger plugin for uWSGI
+
+%package -n %{name}-logger-rsyslog
+Summary:   uWSGI - rsyslog logger plugin
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Obsoletes: %{name}-plugin-rsyslog <= 1.9.8-1
+Provides:  %{name}-plugin-rsyslog = %{version}-%{release}
+
+%description -n %{name}-logger-rsyslog
+This package contains the rsyslog logger plugin for uWSGI
 
 %package -n %{name}-logger-socket
 Summary:   uWSGI - logsocket logger plugin
@@ -427,6 +436,9 @@ exit 0
 
 %files -n %{name}-logger-redis
 %{_libdir}/%{name}/redislog_plugin.so
+
+%files -n %{name}-logger-rsyslog
+%{_libdir}/%{name}/rsyslog_plugin.so
 
 %files -n %{name}-logger-socket
 %{_libdir}/%{name}/logsocket_plugin.so
