@@ -37,7 +37,7 @@ Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-plugin-rsyslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-syslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
-Obsoletes:      %{name}-plugin-admin <= 2.0
+Obsoletes:      %{name}-plugin-admin <= 2.0.6
 Provides:       %{name}-loggers = %{version}-%{release}
 
 Requires(pre):    shadow-utils
@@ -77,10 +77,30 @@ Requires: %{name}
 This package contains the most common plugins used with uWSGI. The
 plugins included in this package are: cache, CGI, RPC, uGreen
 
+# Loggers
+
+%package -n %{name}-logger-zeromq
+Summary:  uWSGI - ZeroMQ logger plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, zeromq
+
+%description -n %{name}-logger-zeromq
+This package contains the ZeroMQ logger plugin for uWSGI
+
+%package -n %{name}-logger-systemd
+Summary:  uWSGI - SystemD Journal logger plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-logger-systemd
+This package contains the SystemD Journal logger plugin for uWSGI
+
 %package -n %{name}-plugin-rack
 Summary:  uWSGI - Ruby rack plugin
 Group:    System Environment/Daemons
 Requires: rubygem-rack, %{name}-plugin-common
+
+# Plugins
 
 %description -n %{name}-plugin-rack
 This package contains the rack plugin for uWSGI
@@ -108,14 +128,6 @@ Requires: %{name}-plugin-common
 
 %description -n %{name}-plugin-nagios
 This package contains the nagios plugin for uWSGI
-
-%package -n %{name}-plugin-fastrouter
-Summary:  uWSGI - Plugin for FastRouter support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-fastrouter
-This package contains the fastrouter (proxy) plugin for uWSGI
 
 %package -n %{name}-plugin-python3
 Summary:  uWSGI - Plugin for Python 3.2 support
@@ -221,21 +233,19 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-rawrouter
 This package contains the Raw router plugin for uWSGI
 
-%package -n %{name}-logger-zeromq
-Summary:  uWSGI - ZeroMQ logger plugin
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, zeromq
+# Routers
 
-%description -n %{name}-logger-zeromq
-This package contains the ZeroMQ logger plugin for uWSGI
+%package -n %{name}-router-fastrouter
+Summary:   uWSGI - Plugin for FastRouter support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Obsoletes: %{name}-plugin-fastrouter <= 2.0.6
+Provides:  %{name}-plugin-fastrouter = %{version}-%{release}
 
-%package -n %{name}-logger-systemd
-Summary:  uWSGI - SystemD Journal logger plugin
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
+%description -n %{name}-router-fastrouter
+This package contains the fastrouter (proxy) plugin for uWSGI
 
-%description -n %{name}-logger-systemd
-This package contains the SystemD Journal logger plugin for uWSGI
+# The rest
 
 %package -n mod_proxy_%{name}
 Summary:  uWSGI - Apache2 proxy module
@@ -357,7 +367,7 @@ exit 0
 %files -n %{name}-plugin-nagios
 %{_libdir}/%{name}/nagios_plugin.so
 
-%files -n %{name}-plugin-fastrouter
+%files -n %{name}-router-fastrouter
 %{_libdir}/%{name}/fastrouter_plugin.so
 
 %files -n %{name}-plugin-python3
