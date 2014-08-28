@@ -115,6 +115,16 @@ Requires: %{name}-plugin-common
 %description -n %{name}-logger-pipe
 This package contains the logcrypto logger plugin for uWSGI
 
+%package -n %{name}-logger-redis
+Summary:   uWSGI - redislog logger plugin
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Obsoletes: %{name}-loggers <= 1.9.8-1
+Provides:  %{name}-loggers = %{version}-%{release}
+
+%description -n %{name}-logger-redis
+This package contains the redislog logger plugin for uWSGI
+
 %package -n %{name}-logger-socket
 Summary:   uWSGI - logsocket logger plugin
 Group:     System Environment/Daemons
@@ -414,6 +424,9 @@ exit 0
 
 %files -n %{name}-logger-pipe
 %{_libdir}/%{name}/logpipe_plugin.so
+
+%files -n %{name}-logger-redis
+%{_libdir}/%{name}/logsocket_plugin.so
 
 %files -n %{name}-logger-socket
 %{_libdir}/%{name}/logsocket_plugin.so
