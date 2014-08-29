@@ -34,7 +34,7 @@ BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
-BuildRequires:  gloox-devel, perl-Coro
+BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -230,7 +230,15 @@ Group:    System Environment/Daemons
 Requires: %{name}-plugin-common, %{name}-plugin-psgi, perl-Coro
 
 %description -n %{name}-plugin-coroae
-This package contains the coroae plugin for uWSGI (to use in graphite)
+This package contains the coroae plugin for uWSGI
+
+%package -n %{name}-plugin-cplusplus
+Summary:  uWSGI - Plugin for C++ support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libstdc++
+
+%description -n %{name}-plugin-cplusplus
+This package contains the cplusplus plugin for uWSGI
 
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
@@ -700,6 +708,9 @@ exit 0
 
 %files -n %{name}-plugin-coroae
 %{_libdir}/%{name}/coroae_plugin.so
+
+%files -n %{name}-plugin-cplusplus
+%{_libdir}/%{name}/cplusplus_plugin.so
 
 %files -n %{name}-plugin-greenlet
 %{_libdir}/%{name}/greenlet_plugin.so
