@@ -34,7 +34,7 @@ BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
-BuildRequires:  gloox-devel
+BuildRequires:  gloox-devel, perl-Coro
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -227,7 +227,7 @@ This package contains the Carbon plugin for uWSGI (to use in graphite)
 %package -n %{name}-plugin-coroae
 Summary:  uWSGI - Plugin for PERL Coro support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, perl-Coro
+Requires: %{name}-plugin-common, %{name}-plugin-psgi, perl-Coro
 
 %description -n %{name}-plugin-coroae
 This package contains the coroae plugin for uWSGI (to use in graphite)
