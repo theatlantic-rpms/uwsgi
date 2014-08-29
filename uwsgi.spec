@@ -66,6 +66,14 @@ Requires: %{name}
 This package contains the development header files and libraries
 for uWSGI extensions
 
+%description -n %{name}-docs
+This package contains the documentation files for uWSGI
+
+%package -n %{name}-docs
+Summary:  uWSGI - Documentation
+Group:    Documentation
+Requires: %{name}
+
 %package -n %{name}-plugin-common
 Summary:  uWSGI - Common plugins for uWSGI
 Group:    System Environment/Daemons
@@ -441,10 +449,13 @@ exit 0
 %{_unitdir}/%{name}.service
 %dir %{_sysconfdir}/%{name}.d
 %dir /run/%{name}
-%doc LICENSE README README.Fedora CHANGELOG docs
+%doc LICENSE README README.Fedora CHANGELOG
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
+
+%files -n %{name}-docs
+%doc docs
 
 %files -n %{name}-plugin-common
 %dir %{_libdir}/%{name}
