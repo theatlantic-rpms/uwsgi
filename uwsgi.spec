@@ -35,7 +35,6 @@ BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
-Obsoletes:      %{name}-plugin-syslog <= 1.9.8-1
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
 Obsoletes:      %{name}-plugin-admin <= 2.0.6
 
@@ -143,6 +142,16 @@ Provides:  %{name}-loggers = %{version}-%{release}
 
 %description -n %{name}-logger-socket
 This package contains the logsocket logger plugin for uWSGI
+
+%package -n %{name}-logger-syslog
+Summary:   uWSGI - syslog logger plugin
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Obsoletes: %{name}-plugin-syslog <= 1.9.8-1
+Provides:  %{name}-plugin-syslog = %{version}-%{release}
+
+%description -n %{name}-logger-syslog
+This package contains the syslog logger plugin for uWSGI
 
 %package -n %{name}-logger-systemd
 Summary:  uWSGI - SystemD Journal logger plugin
@@ -442,6 +451,9 @@ exit 0
 
 %files -n %{name}-logger-socket
 %{_libdir}/%{name}/logsocket_plugin.so
+
+%files -n %{name}-logger-syslog
+%{_libdir}/%{name}/syslog_plugin.so
 
 %files -n %{name}-logger-systemd
 %{_libdir}/%{name}/systemd_logger_plugin.so
