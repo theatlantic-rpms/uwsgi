@@ -333,22 +333,24 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-sslrouter
 This package contains the SSL router plugin for uWSGI
 
-%package -n %{name}-plugin-rawrouter
-Summary:  uWSGI - Raw Router plugin
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
+%package -n %{name}-router-raw
+Summary:   uWSGI - Raw Router plugin
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Obsoletes: %{name}-plugin-rawrouter <= 2.0.6
+Provides:  %{name}-plugin-rawrouter = %{version}-%{release}
 
-%description -n %{name}-plugin-rawrouter
+%description -n %{name}-router-raw
 This package contains the Raw router plugin for uWSGI
 
-%package -n %{name}-router-fastrouter
+%package -n %{name}-router-fast
 Summary:   uWSGI - Plugin for FastRouter support
 Group:     System Environment/Daemons
 Requires:  %{name}-plugin-common
 Obsoletes: %{name}-plugin-fastrouter <= 2.0.6
 Provides:  %{name}-plugin-fastrouter = %{version}-%{release}
 
-%description -n %{name}-router-fastrouter
+%description -n %{name}-router-fast
 This package contains the fastrouter (proxy) plugin for uWSGI
 
 # The rest
@@ -553,8 +555,11 @@ exit 0
 %files -n %{name}-routers
 %{_libdir}/%{name}/router_*_plugin.so
 
-%files -n %{name}-router-fastrouter
+%files -n %{name}-router-fast
 %{_libdir}/%{name}/fastrouter_plugin.so
+
+%files -n %{name}-router-raw
+%{_libdir}/%{name}/rawrouter_plugin.so
 
 %files -n %{name}-plugin-sslrouter
 %{_libdir}/%{name}/sslrouter_plugin.so
