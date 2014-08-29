@@ -171,6 +171,14 @@ This package contains the ZeroMQ logger plugin for uWSGI
 
 # Plugins
 
+%package -n %{name}-plugin-cache
+Summary:  uWSGI - Plugin for cache support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-cache
+This package contains the cache plugin for uWSGI
+
 %package -n %{name}-plugin-carbon
 Summary:  uWSGI - Plugin for Carbon/Graphite support
 Group:    System Environment/Daemons
@@ -259,6 +267,14 @@ Requires: rubygem-rack, %{name}-plugin-common
 %description -n %{name}-plugin-rack
 This package contains the rack plugin for uWSGI
 
+%package -n %{name}-plugin-rpc
+Summary:  uWSGI - Plugin for RPC support
+Group:    System Environment/Daemons
+Requires: rrdtool, %{name}-plugin-common
+
+%description -n %{name}-plugin-rpc
+This package contains the RPC plugin for uWSGI
+
 %package -n %{name}-plugin-rrdtool
 Summary:  uWSGI - Plugin for RRDTool support
 Group:    System Environment/Daemons
@@ -274,6 +290,14 @@ Requires: ruby, %{name}-plugin-common
 
 %description -n %{name}-plugin-ruby
 This package contains the Ruby 1.9 plugin for uWSGI
+
+%package -n %{name}-plugin-ugreen
+Summary:  uWSGI - Plugin for uGreen support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-ugreen
+This package contains the uGreen plugin for uWSGI
 
 %package -n %{name}-plugin-zergpool
 Summary:  uWSGI - Plugin for zergpool support
@@ -424,10 +448,8 @@ exit 0
 
 %files -n %{name}-plugin-common
 %dir %{_libdir}/%{name}
-%{_libdir}/%{name}/cache_plugin.so
+%{_libdir}/%{name}/http_plugin.so
 %{_libdir}/%{name}/cgi_plugin.so
-%{_libdir}/%{name}/rpc_plugin.so
-%{_libdir}/%{name}/ugreen_plugin.so
 
 # Loggers
 
@@ -462,6 +484,9 @@ exit 0
 %{_libdir}/%{name}/logzmq_plugin.so
 
 # Plugins
+
+%files -n %{name}-plugin-cache
+%{_libdir}/%{name}/cache_plugin.so
 
 %files -n %{name}-plugin-carbon
 %{_libdir}/%{name}/carbon_plugin.so
@@ -500,8 +525,14 @@ exit 0
 %files -n %{name}-plugin-rrdtool
 %{_libdir}/%{name}/rrdtool_plugin.so
 
+%files -n %{name}-plugin-rpc
+%{_libdir}/%{name}/rpc_plugin.so
+
 %files -n %{name}-plugin-ruby
 %{_libdir}/%{name}/ruby19_plugin.so
+
+%files -n %{name}-plugin-ugreen
+%{_libdir}/%{name}/ugreen_plugin.so
 
 %files -n %{name}-plugin-zergpool
 %{_libdir}/%{name}/zergpool_plugin.so
