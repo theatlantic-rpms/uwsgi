@@ -33,7 +33,7 @@ BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-deve
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
-BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel
+BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -179,6 +179,14 @@ Requires: %{name}-plugin-common, zeromq
 This package contains the ZeroMQ logger plugin for uWSGI
 
 # Plugins
+
+%package -n %{name}-plugin-airbrake
+Summary:  uWSGI - Plugin for AirBrake support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libcurl
+
+%description -n %{name}-plugin-airbrake
+This package contains the airbrake plugin for uWSGI
 
 %package -n %{name}-plugin-cache
 Summary:  uWSGI - Plugin for cache support
@@ -644,6 +652,9 @@ exit 0
 %{_libdir}/%{name}/logzmq_plugin.so
 
 # Plugins
+
+%files -n %{name}-plugin-airbrake
+%{_libdir}/%{name}/airbrake_plugin.so
 
 %files -n %{name}-plugin-cache
 %{_libdir}/%{name}/cache_plugin.so
