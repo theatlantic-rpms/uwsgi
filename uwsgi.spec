@@ -318,6 +318,42 @@ This package contains the zergpool plugin for uWSGI
 
 # Routers
 
+%package -n %{name}-router-access
+Summary:   uWSGI - Plugin for router_access router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-access
+This package contains the router_access plugin for uWSGI
+
+%package -n %{name}-router-basicauth
+Summary:   uWSGI - Plugin for Basic Auth router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-basicauth
+This package contains the basicauth plugin for uWSGI
+
+%package -n %{name}-router-cache
+Summary:   uWSGI - Plugin for Cache router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-cache
+This package contains the cache router plugin for uWSGI
+
+%package -n %{name}-router-expires
+Summary:   uWSGI - Plugin for Expires router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-expires
+This package contains the expires router plugin for uWSGI
+
 %package -n %{name}-router-fast
 Summary:   uWSGI - Plugin for FastRouter support
 Group:     System Environment/Daemons
@@ -329,8 +365,59 @@ Provides:  %{name}-routers = %{version}-%{release}
 %description -n %{name}-router-fast
 This package contains the fastrouter (proxy) plugin for uWSGI
 
+%package -n %{name}-router-forkpty
+Summary:   uWSGI - Plugin for ForkPTY router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+
+%description -n %{name}-router-forkpty
+This package contains the ForkPTY router plugin for uWSGI
+
+%package -n %{name}-router-hash
+Summary:   uWSGI - Plugin for Hash router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-hash
+This package contains the hash router plugin for uWSGI
+
+%package -n %{name}-router-http
+Summary:   uWSGI - Plugin for HTTP router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-http
+This package contains the http router plugin for uWSGI
+
+%package -n %{name}-router-memcached
+Summary:   uWSGI - Plugin for Memcached router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-memcached
+This package contains the memcached router plugin for uWSGI
+
+%package -n %{name}-router-metrics
+Summary:   uWSGI - Plugin for Metrics router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+
+%description -n %{name}-router-metrics
+This package contains the metrics router plugin for uWSGI
+
+%package -n %{name}-router-radius
+Summary:   uWSGI - Plugin for Radius router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+
+%description -n %{name}-router-radius
+This package contains the metrics router plugin for uWSGI
+
 %package -n %{name}-router-raw
-Summary:   uWSGI - Raw Router plugin
+Summary:   uWSGI - Plugin for Raw Router support
 Group:     System Environment/Daemons
 Requires:  %{name}-plugin-common
 Obsoletes: %{name}-plugin-rawrouter <= 2.0.6
@@ -340,8 +427,43 @@ Provides:  %{name}-routers = %{version}-%{release}
 %description -n %{name}-router-raw
 This package contains the Raw router plugin for uWSGI
 
+%package -n %{name}-router-redirect
+Summary:   uWSGI - Plugin for Redirect router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-redirect
+This package contains the redirect router plugin for uWSGI
+
+%package -n %{name}-router-redis
+Summary:   uWSGI - Plugin for Redis router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-redis
+This package contains the redis router plugin for uWSGI
+
+%package -n %{name}-router-rewrite
+Summary:   uWSGI - Plugin for Rewrite router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-rewrite
+This package contains the rewrite router plugin for uWSGI
+
+%package -n %{name}-router-spnego
+Summary:   uWSGI - Plugin for SPNEgo router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+
+%description -n %{name}-router-spnego
+This package contains the spnego router plugin for uWSGI
+
 %package -n %{name}-router-ssl
-Summary:   uWSGI - SSL Router plugin
+Summary:   uWSGI - Plugin for SSL router support
 Group:     System Environment/Daemons
 Requires:  %{name}-plugin-common
 Obsoletes: %{name}-plugin-sslrouter <= 2.0.6
@@ -350,6 +472,33 @@ Provides:  %{name}-routers = %{version}-%{release}
 
 %description -n %{name}-router-ssl
 This package contains the SSL router plugin for uWSGI
+
+%package -n %{name}-router-static
+Summary:   uWSGI - Plugin for Static router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-static
+This package contains the Static router plugin for uWSGI
+
+%package -n %{name}-router-uwsgi
+Summary:   uWSGI - Plugin for uWSGI router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-uwsgi
+This package contains the uwsgi router plugin for uWSGI
+
+%package -n %{name}-router-xmldir
+Summary:   uWSGI - Plugin for XMLDir router rupport
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Provides:  %{name}-routers = %{version}-%{release}
+
+%description -n %{name}-router-xmldir
+This package contains the xmldir router plugin for uWSGI
 
 # The rest
 
@@ -550,14 +699,65 @@ exit 0
 
 # Routers
 
+%files -n %{name}-router-access
+%{_libdir}/%{name}/router_access_plugin.so
+
+%files -n %{name}-router-basicauth
+%{_libdir}/%{name}/router_basicauth_plugin.so
+
+%files -n %{name}-router-cache
+%{_libdir}/%{name}/router_cache_plugin.so
+
+%files -n %{name}-router-expires
+%{_libdir}/%{name}/router_expires_plugin.so
+
 %files -n %{name}-router-fast
 %{_libdir}/%{name}/fastrouter_plugin.so
+
+%files -n %{name}-router-forkpty
+%{_libdir}/%{name}/forkptyrouter_plugin.so
+
+%files -n %{name}-router-hash
+%{_libdir}/%{name}/router_hash_plugin.so
+
+%files -n %{name}-router-http
+%{_libdir}/%{name}/router_http_plugin.so
+
+%files -n %{name}-router-memcached
+%{_libdir}/%{name}/router_memcached_plugin.so
+
+%files -n %{name}-router-metrics
+%{_libdir}/%{name}/router_metrics_plugin.so
+
+%files -n %{name}-router-radius
+%{_libdir}/%{name}/router_radius_plugin.so
 
 %files -n %{name}-router-raw
 %{_libdir}/%{name}/rawrouter_plugin.so
 
+%files -n %{name}-router-redirect
+%{_libdir}/%{name}/router_redirect_plugin.so
+
+%files -n %{name}-router-redis
+%{_libdir}/%{name}/router_redis_plugin.so
+
+%files -n %{name}-router-rewrite
+%{_libdir}/%{name}/router_rewrite_plugin.so
+
+%files -n %{name}-router-spnego
+%{_libdir}/%{name}/router_spnego_plugin.so
+
 %files -n %{name}-router-ssl
 %{_libdir}/%{name}/sslrouter_plugin.so
+
+%files -n %{name}-router-static
+%{_libdir}/%{name}/router_static_plugin.so
+
+%files -n %{name}-router-uwsgi
+%{_libdir}/%{name}/router_uwsgi_plugin.so
+
+%files -n %{name}-router-xmldir
+%{_libdir}/%{name}/router_xmldir_plugin.so
 
 # The rest
 
