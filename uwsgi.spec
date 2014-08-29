@@ -229,7 +229,7 @@ Summary:  uWSGI - Plugin for PERL Coro support
 Group:    System Environment/Daemons
 Requires: %{name}-plugin-common, perl-Coro
 
-%description -n %{name}-plugin-carbon
+%description -n %{name}-plugin-coroae
 This package contains the coroae plugin for uWSGI (to use in graphite)
 
 %package -n %{name}-plugin-greenlet
