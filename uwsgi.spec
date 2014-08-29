@@ -66,13 +66,13 @@ Requires: %{name}
 This package contains the development header files and libraries
 for uWSGI extensions
 
-%description -n %{name}-docs
-This package contains the documentation files for uWSGI
-
 %package -n %{name}-docs
 Summary:  uWSGI - Documentation
 Group:    Documentation
 Requires: %{name}
+
+%description -n %{name}-docs
+This package contains the documentation files for uWSGI
 
 %package -n %{name}-plugin-common
 Summary:  uWSGI - Common plugins for uWSGI
