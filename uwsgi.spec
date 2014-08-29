@@ -35,6 +35,7 @@ BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
+Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
 Obsoletes:      %{name}-plugin-admin <= 2.0.6
 
@@ -317,21 +318,16 @@ This package contains the zergpool plugin for uWSGI
 
 # Routers
 
-%package -n %{name}-routers
-Summary:  uWSGI - Router plugins
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
+%package -n %{name}-router-fast
+Summary:   uWSGI - Plugin for FastRouter support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+Obsoletes: %{name}-plugin-fastrouter <= 2.0.6
+Provides:  %{name}-plugin-fastrouter = %{version}-%{release}
+Provides:  %{name}-routers = %{version}-%{release}
 
-%description -n %{name}-routers
-This package contains the router plugins for uWSGI
-
-%package -n %{name}-plugin-sslrouter
-Summary:  uWSGI - SSL Router plugin
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-sslrouter
-This package contains the SSL router plugin for uWSGI
+%description -n %{name}-router-fast
+This package contains the fastrouter (proxy) plugin for uWSGI
 
 %package -n %{name}-router-raw
 Summary:   uWSGI - Raw Router plugin
@@ -339,19 +335,21 @@ Group:     System Environment/Daemons
 Requires:  %{name}-plugin-common
 Obsoletes: %{name}-plugin-rawrouter <= 2.0.6
 Provides:  %{name}-plugin-rawrouter = %{version}-%{release}
+Provides:  %{name}-routers = %{version}-%{release}
 
 %description -n %{name}-router-raw
 This package contains the Raw router plugin for uWSGI
 
-%package -n %{name}-router-fast
-Summary:   uWSGI - Plugin for FastRouter support
+%package -n %{name}-router-ssl
+Summary:   uWSGI - SSL Router plugin
 Group:     System Environment/Daemons
 Requires:  %{name}-plugin-common
-Obsoletes: %{name}-plugin-fastrouter <= 2.0.6
-Provides:  %{name}-plugin-fastrouter = %{version}-%{release}
+Obsoletes: %{name}-plugin-sslrouter <= 2.0.6
+Provides:  %{name}-plugin-sslrouter = %{version}-%{release}
+Provides:  %{name}-routers = %{version}-%{release}
 
-%description -n %{name}-router-fast
-This package contains the fastrouter (proxy) plugin for uWSGI
+%description -n %{name}-router-ssl
+This package contains the SSL router plugin for uWSGI
 
 # The rest
 
@@ -552,20 +550,14 @@ exit 0
 
 # Routers
 
-%files -n %{name}-routers
-%{_libdir}/%{name}/router_*_plugin.so
-
 %files -n %{name}-router-fast
 %{_libdir}/%{name}/fastrouter_plugin.so
 
 %files -n %{name}-router-raw
 %{_libdir}/%{name}/rawrouter_plugin.so
 
-%files -n %{name}-plugin-sslrouter
+%files -n %{name}-router-ssl
 %{_libdir}/%{name}/sslrouter_plugin.so
-
-%files -n %{name}-plugin-rawrouter
-%{_libdir}/%{name}/rawrouter_plugin.so
 
 # The rest
 
