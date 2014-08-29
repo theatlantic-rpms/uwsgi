@@ -84,6 +84,15 @@ Requires: %{name}
 This package contains the most common plugins used with uWSGI. The
 plugins included in this package are: cache, CGI, RPC, uGreen
 
+# Alarms
+%package -n %{name}-alarm-curl
+Summary:  uWSGI - Curl alarm plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libcurl
+
+%description -n %{name}-alarm-curl
+This package contains the alarm_curl alarm plugin for uWSGI
+
 # Loggers
 
 %package -n %{name}-logger-crypto
@@ -618,6 +627,11 @@ exit 0
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/http_plugin.so
 %{_libdir}/%{name}/cgi_plugin.so
+
+# Alarms
+
+%files -n %{name}-alarm-curl
+%{_libdir}/%{name}/alarm_curl_plugin.so
 
 # Loggers
 
