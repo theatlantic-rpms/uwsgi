@@ -224,6 +224,14 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-carbon
 This package contains the Carbon plugin for uWSGI (to use in graphite)
 
+%package -n %{name}-plugin-coroae
+Summary:  uWSGI - Plugin for PERL Coro support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, perl-Coro
+
+%description -n %{name}-plugin-carbon
+This package contains the coroae plugin for uWSGI (to use in graphite)
+
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
 Group:    System Environment/Daemons   
@@ -689,6 +697,9 @@ exit 0
 
 %files -n %{name}-plugin-carbon
 %{_libdir}/%{name}/carbon_plugin.so
+
+%files -n %{name}-plugin-coroae
+%{_libdir}/%{name}/coroae_plugin.so
 
 %files -n %{name}-plugin-greenlet
 %{_libdir}/%{name}/greenlet_plugin.so
