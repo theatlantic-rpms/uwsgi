@@ -36,7 +36,7 @@ BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
-BuildRequires:  libmongo-client-devel
+BuildRequires:  libmongo-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -317,7 +317,7 @@ This package contains the python greenlet plugin for uWSGI
 %package -n %{name}-plugin-gridfs
 Summary:  uWSGI - Plugin for GridFS support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, libmongo-client
+Requires: %{name}-plugin-common, libmongodb
 
 %description -n %{name}-plugin-gridfs
 This package contains the gridfs plugin for uWSGI
