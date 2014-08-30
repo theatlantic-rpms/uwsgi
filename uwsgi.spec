@@ -34,7 +34,7 @@ BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
-BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel
+BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -263,6 +263,14 @@ Requires: %{name}-plugin-common, %{name}-plugin-rack
 
 %description -n %{name}-plugin-fiber
 This package contains the fiber plugin for uWSGI
+
+%package -n %{name}-plugin-gccgo
+Summary:  uWSGI - Plugin for GoLang support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libgo
+
+%description -n %{name}-plugin-gccgo
+This package contains the gccgo plugin for uWSGI
 
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
@@ -744,6 +752,9 @@ exit 0
 
 %files -n %{name}-plugin-fiber
 %{_libdir}/%{name}/fiber_plugin.so
+
+%files -n %{name}-plugin-gccgo
+%{_libdir}/%{name}/gccgo_plugin.so
 
 %files -n %{name}-plugin-greenlet
 %{_libdir}/%{name}/greenlet_plugin.so
