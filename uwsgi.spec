@@ -338,6 +338,14 @@ Requires: lua, %{name}-plugin-common
 %description -n %{name}-plugin-lua
 This package contains the lua plugin for uWSGI
 
+%package -n %{name}-plugin-mongrel2
+Summary:  uWSGI - Plugin for Mongrel2 support
+Group:    System Environment/Daemons   
+Requires: %{name}-plugin-common, zeromq
+
+%description -n %{name}-plugin-mongrel2
+This package contains the mongrel2 plugin for uWSGI
+
 %package -n %{name}-plugin-nagios
 Summary:  uWSGI - Plugin for Nagios support
 Group:    System Environment/Daemons
@@ -822,6 +830,9 @@ exit 0
 
 %files -n %{name}-plugin-lua
 %{_libdir}/%{name}/lua_plugin.so
+
+%files -n %{name}-plugin-mongrel2
+%{_libdir}/%{name}/mongrel2_plugin.so
 
 %files -n %{name}-plugin-nagios
 %{_libdir}/%{name}/nagios_plugin.so
