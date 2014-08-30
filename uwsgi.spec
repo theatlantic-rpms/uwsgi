@@ -240,6 +240,14 @@ Requires: %{name}-plugin-common, libstdc++
 %description -n %{name}-plugin-cplusplus
 This package contains the cplusplus plugin for uWSGI
 
+%package -n %{name}-plugin-curl-cron
+Summary:  uWSGI - Plugin for CURL Cron support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libcurl
+
+%description -n %{name}-plugin-curl-cron
+This package contains the curl_cron plugin for uWSGI
+
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
 Group:    System Environment/Daemons   
@@ -711,6 +719,9 @@ exit 0
 
 %files -n %{name}-plugin-cplusplus
 %{_libdir}/%{name}/cplusplus_plugin.so
+
+%files -n %{name}-plugin-curl-cron
+%{_libdir}/%{name}/curl_cron_plugin.so
 
 %files -n %{name}-plugin-greenlet
 %{_libdir}/%{name}/greenlet_plugin.so
