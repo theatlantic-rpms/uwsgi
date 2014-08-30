@@ -256,6 +256,14 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-dumbloop
 This package contains the dumbloop plugin for uWSGI
 
+%package -n %{name}-plugin-fiber
+Summary:  uWSGI - Plugin for Ruby Fiber support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-rack
+
+%description -n %{name}-plugin-fiber
+This package contains the fiber plugin for uWSGI
+
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
 Group:    System Environment/Daemons   
@@ -733,6 +741,9 @@ exit 0
 
 %files -n %{name}-plugin-dumbloop
 %{_libdir}/%{name}/dumbloop_plugin.so
+
+%files -n %{name}-plugin-fiber
+%{_libdir}/%{name}/fiber_plugin.so
 
 %files -n %{name}-plugin-greenlet
 %{_libdir}/%{name}/greenlet_plugin.so
