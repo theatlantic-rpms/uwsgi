@@ -35,7 +35,7 @@ BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
-BuildRequires:  GeoIP-devel
+BuildRequires:  GeoIP-devel, libevent-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -280,6 +280,14 @@ Requires: %{name}-plugin-common, GeoIP
 
 %description -n %{name}-plugin-geoip
 This package contains the geoip plugin for uWSGI
+
+%package -n %{name}-plugin-gevent
+Summary:  uWSGI - Plugin for GEvent support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libevent
+
+%description -n %{name}-plugin-gevent
+This package contains the gevent plugin for uWSGI
 
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
@@ -767,6 +775,9 @@ exit 0
 
 %files -n %{name}-plugin-geoip
 %{_libdir}/%{name}/geoip_plugin.so
+
+%files -n %{name}-plugin-gevent
+%{_libdir}/%{name}/gevent_plugin.so
 
 %files -n %{name}-plugin-greenlet
 %{_libdir}/%{name}/greenlet_plugin.so
