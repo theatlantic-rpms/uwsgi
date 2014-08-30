@@ -36,7 +36,7 @@ BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
-BuildRequires:  libmongo-devel
+BuildRequires:  libmongodb-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
