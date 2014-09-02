@@ -108,6 +108,14 @@ This package contains the alarm_xmpp alarm plugin for uWSGI
 
 # Loggers
 
+%package -n %{name}-log-encoder-msgpack
+Summary:  uWSGI - msgpack log encoder plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-log-encoder-msgpack
+This package contains the msgpack log encoder plugin for uWSGI
+
 %package -n %{name}-logger-crypto
 Summary:  uWSGI - logcrypto logger plugin
 Group:    System Environment/Daemons
@@ -756,6 +764,9 @@ exit 0
 %{_libdir}/%{name}/alarm_xmpp_plugin.so
 
 # Loggers
+
+%files -n %{name}-log-encoder-msgpack
+%{_libdir}/%{name}/msgpack_plugin.so
 
 %files -n %{name}-logger-crypto
 %{_libdir}/%{name}/logcrypto_plugin.so
