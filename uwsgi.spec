@@ -434,6 +434,14 @@ Requires: %{name}-plugin-common, ruby
 %description -n %{name}-plugin-rbthreads
 This package contains the rbthreads plugin for uWSGI
 
+%package -n %{name}-plugin-ring
+Summary:  uWSGI - Clojure/Ring request handler support plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-jvm, clojure
+
+%description -n %{name}-plugin-ring
+This package contains the ring plugin for uWSGI
+
 %package -n %{name}-plugin-rpc
 Summary:  uWSGI - Plugin for RPC support
 Group:    System Environment/Daemons
@@ -904,6 +912,9 @@ exit 0
 
 %files -n %{name}-plugin-rbthreads
 %{_libdir}/%{name}/rbthreads_plugin.so
+
+%files -n %{name}-plugin-ring
+%{_libdir}/%{name}/ring_plugin.so
 
 %files -n %{name}-plugin-rrdtool
 %{_libdir}/%{name}/rrdtool_plugin.so
