@@ -394,6 +394,14 @@ Requires: perl-PSGI, %{name}-plugin-common
 %description -n %{name}-plugin-psgi
 This package contains the PSGI plugin for uWSGI
 
+%package -n %{name}-plugin-pty
+Summary:  uWSGI - Plugin for PTY support
+Group:    System Environment/Daemons
+Requires: python, %{name}-plugin-common
+
+%description -n %{name}-plugin-pty
+This package contains the pty plugin for uWSGI
+
 %package -n %{name}-plugin-python
 Summary:  uWSGI - Plugin for Python support
 Group:    System Environment/Daemons
@@ -873,6 +881,9 @@ exit 0
 
 %files -n %{name}-plugin-psgi
 %{_libdir}/%{name}/psgi_plugin.so
+
+%files -n %{name}-plugin-pty
+%{_libdir}/%{name}/pty_plugin.so
 
 %files -n %{name}-plugin-python
 %{_libdir}/%{name}/python_plugin.so
