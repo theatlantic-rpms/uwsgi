@@ -36,7 +36,7 @@ BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
-BuildRequires:  libmongodb-devel
+BuildRequires:  libmongodb-devel, mono-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -345,6 +345,14 @@ Requires: %{name}-plugin-common, zeromq
 
 %description -n %{name}-plugin-mongrel2
 This package contains the mongrel2 plugin for uWSGI
+
+%package -n %{name}-plugin-mono
+Summary:  uWSGI - Plugin for Mono / .NET support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, mono-web
+
+%description -n %{name}-plugin-mono
+This package contains the mono plugin for uWSGI
 
 %package -n %{name}-plugin-nagios
 Summary:  uWSGI - Plugin for Nagios support
@@ -664,6 +672,7 @@ mkdir -p %{buildroot}%{_libdir}/%{name}
 mkdir -p %{buildroot}%{_javadir}
 mkdir -p %{buildroot}/run/%{name}
 mkdir -p %{buildroot}%{_httpd_moddir}
+mkdir -p %{buildroot}/usr/lib/mono/gac/
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
 cp docs/Changelog-%{majornumber}.%{minornumber}.%{releasenumber}.rst CHANGELOG
@@ -673,6 +682,7 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
+gacutil -i plugins/mono/uwsgi.dll -f -package %{name} -root %{buildroot}/usr/lib
 %{__install} -p -m 0644 %{name}.ini %{buildroot}%{_sysconfdir}/%{name}.ini
 %{__install} -p -m 0644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
 %{__install} -p -m 0755 apache2/.libs/mod_proxy_%{name}.so %{buildroot}%{_httpd_moddir}/mod_proxy_%{name}.so
@@ -833,6 +843,13 @@ exit 0
 
 %files -n %{name}-plugin-mongrel2
 %{_libdir}/%{name}/mongrel2_plugin.so
+
+%files -n %{name}-plugin-mono
+%dir /usr/lib/mono/%{name}/
+%dir /usr/lib/mono/gac/%{name}/
+%{_libdir}/%{name}/mono_plugin.so
+/usr/lib/mono/%{name}/*.dll
+/usr/lib/mono/gac/%{name}/*/*.dll
 
 %files -n %{name}-plugin-nagios
 %{_libdir}/%{name}/nagios_plugin.so
