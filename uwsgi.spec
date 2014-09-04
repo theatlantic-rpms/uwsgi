@@ -338,6 +338,14 @@ Requires: %{name}-plugin-common, java-headless, jpackage-utils
 %description -n %{name}-plugin-jvm
 This package contains the JVM plugin for uWSGI
 
+%package -n %{name}-plugin-jwsgi
+Summary:  uWSGI - Plugin for JWSGI support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-jvm
+
+%description -n %{name}-plugin-jwsgi
+This package contains the jwsgi plugin for uWSGI
+
 %package -n %{name}-plugin-lua
 Summary:  uWSGI - Plugin for LUA support
 Group:    System Environment/Daemons   
@@ -872,6 +880,9 @@ exit 0
 %files -n %{name}-plugin-jvm
 %{_libdir}/%{name}/jvm_plugin.so
 %{_javadir}/uwsgi.jar
+
+%files -n %{name}-plugin-jwsgi
+%{_libdir}/%{name}/jwsgi_plugin.so
 
 %files -n %{name}-plugin-lua
 %{_libdir}/%{name}/lua_plugin.so
