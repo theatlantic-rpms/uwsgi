@@ -497,6 +497,14 @@ Requires: %{name}-plugin-common, sqlite
 %description -n %{name}-plugin-sqlite3
 This package contains the sqlite3 plugin for uWSGI
 
+%package -n %{name}-plugin-ssi
+Summary:  uWSGI - Server Side Includes plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-ssi
+This package contains the ssi plugin for uWSGI
+
 %package -n %{name}-plugin-ugreen
 Summary:  uWSGI - Plugin for uGreen support
 Group:    System Environment/Daemons
@@ -967,6 +975,9 @@ exit 0
 
 %files -n %{name}-plugin-sqlite3
 %{_libdir}/%{name}/sqlite3_plugin.so
+
+%files -n %{name}-plugin-ssi
+%{_libdir}/%{name}/ssi_plugin.so
 
 %files -n %{name}-plugin-ugreen
 %{_libdir}/%{name}/ugreen_plugin.so
