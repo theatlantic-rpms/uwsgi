@@ -36,7 +36,7 @@ BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
-BuildRequires:  libmongodb-devel, mono-devel
+BuildRequires:  libmongodb-devel, mono-devel, openldap-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -344,6 +344,14 @@ Requires: %{name}-plugin-common, %{name}-plugin-jvm
 
 %description -n %{name}-plugin-jwsgi
 This package contains the jwsgi plugin for uWSGI
+
+%package -n %{name}-plugin-ldap
+Summary:  uWSGI - Plugin for LDAP support
+Group:    System Environment/Daemons   
+Requires: %{name}-plugin-common, openldap
+
+%description -n %{name}-plugin-ldap
+This package contains the ldap plugin for uWSGI
 
 %package -n %{name}-plugin-lua
 Summary:  uWSGI - Plugin for LUA support
@@ -898,6 +906,9 @@ exit 0
 
 %files -n %{name}-plugin-jwsgi
 %{_libdir}/%{name}/jwsgi_plugin.so
+
+%files -n %{name}-plugin-ldap
+%{_libdir}/%{name}/ldap_plugin.so
 
 %files -n %{name}-plugin-lua
 %{_libdir}/%{name}/lua_plugin.so
