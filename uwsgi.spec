@@ -472,7 +472,15 @@ Group:    System Environment/Daemons
 Requires: ruby, %{name}-plugin-common
 
 %description -n %{name}-plugin-ruby
-This package contains the Ruby 1.9 plugin for uWSGI
+This package contains the ruby19 plugin for uWSGI
+
+%package -n %{name}-plugin-spooler
+Summary:  uWSGI - Plugin for Remote Spooling support
+Group:    System Environment/Daemons   
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-spooler
+This package contains the spooler plugin for uWSGI
 
 %package -n %{name}-plugin-ugreen
 Summary:  uWSGI - Plugin for uGreen support
@@ -935,6 +943,9 @@ exit 0
 
 %files -n %{name}-plugin-ruby
 %{_libdir}/%{name}/ruby19_plugin.so
+
+%files -n %{name}-plugin-spooler
+%{_libdir}/%{name}/spooler_plugin.so
 
 %files -n %{name}-plugin-ugreen
 %{_libdir}/%{name}/ugreen_plugin.so
