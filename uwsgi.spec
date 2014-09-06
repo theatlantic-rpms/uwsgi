@@ -87,6 +87,36 @@ Requires: %{name}
 This package contains the most common plugins used with uWSGI. The
 plugins included in this package are: cache, CGI, RPC, uGreen
 
+# Stats pushers
+
+%package -n %{name}-stats-pusher-file
+Summary:    uWSGI - File Stats Pusher for uWSGI
+Requires:   %{name}-plugins-common
+
+%description -n %{name}-stats-pusher-file
+This package contains the stats_pusher_file plugin for uWSGI
+
+%package -n %{name}-stats-pusher-mongodb
+Summary:    uWSGI - MongoDB Stats Pusher for uWSGI
+Requires:   %{name}-plugins-common
+
+%description -n %{name}-stats-pusher-mongodb
+This package contains the stats_pusher_mongodb plugin for uWSGI
+
+%package -n %{name}-stats-pusher-socket
+Summary:    uWSGI - Socket Stats Pusher for uWSGI
+Requires:   %{name}-plugins-common
+
+%description -n %{name}-stats-pusher-socket
+This package contains the stats_pusher_socket plugin for uWSGI
+
+%package -n %{name}-stats-pusher-statsd
+Summary:    uWSGI - StatsD Stats Pusher for uWSGI
+Requires:   %{name}-plugins-common
+
+%description -n %{name}-stats-pusher-statsd
+This package contains the stats_pusher_statsd plugin for uWSGI
+
 # Alarms
 
 %package -n %{name}-alarm-curl
@@ -817,6 +847,20 @@ exit 0
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/http_plugin.so
 %{_libdir}/%{name}/cgi_plugin.so
+
+# Stats pushers
+
+%files -n %{name}-stats-pusher-file
+%{_libdir}/%{name}/stats_pusher_file_plugin.so
+
+%files -n %{name}-stats-pusher-mongodb
+%{_libdir}/%{name}/stats_pusher_mongodb_plugin.so
+
+%files -n %{name}-stats-pusher-socket
+%{_libdir}/%{name}/stats_pusher_socket_plugin.so
+
+%files -n %{name}-stats-pusher-statsd
+%{_libdir}/%{name}/stats_pusher_statsd_plugin.so
 
 # Alarms
 
