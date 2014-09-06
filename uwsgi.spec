@@ -543,6 +543,22 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-ugreen
 This package contains the uGreen plugin for uWSGI
 
+%package -n %{name}-plugin-tornado
+Summary:  uWSGI - Plugin for Tornado support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, python-tornado
+
+%description -n %{name}-plugin-tornado
+This package contains the tornado plugin for uWSGI
+
+%package -n %{name}-plugin-tornado3
+Summary:  uWSGI - Plugin for Tornado/Python3 support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, python3-tornado
+
+%description -n %{name}-plugin-tornado3
+This package contains the tornado (python v3) plugin for uWSGI
+
 %package -n %{name}-plugin-zergpool
 Summary:  uWSGI - Plugin for zergpool support
 Group:    System Environment/Daemons
@@ -762,6 +778,7 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %build
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/python fedora python3
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/tornado fedora tornado3
 %{_httpd_apxs} -Wc,-Wall -Wl -c apache2/mod_proxy_uwsgi.c
 
 %install
@@ -1025,6 +1042,12 @@ exit 0
 
 %files -n %{name}-plugin-ugreen
 %{_libdir}/%{name}/ugreen_plugin.so
+
+%files -n %{name}-plugin-tornado
+%{_libdir}/%{name}/tornado_plugin.so
+
+%files -n %{name}-plugin-tornado3
+%{_libdir}/%{name}/tornado3_plugin.so
 
 %files -n %{name}-plugin-zergpool
 %{_libdir}/%{name}/zergpool_plugin.so
