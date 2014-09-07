@@ -135,6 +135,56 @@ Requires: %{name}-plugin-common, gloox
 %description -n %{name}-alarm-xmpp
 This package contains the alarm_xmpp alarm plugin for uWSGI
 
+# Transformations
+
+%package -n %{name}-transformation-chunked
+Summary:  uWSGI - Chunked Transformation plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+
+%description -n %{name}-transformation-chunked
+This package contains the transformation_chunked plugin for uWSGI
+
+%package -n %{name}-transformation-gzip
+Summary:  uWSGI - GZip Transformation plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+
+%description -n %{name}-transformation-gzip
+This package contains the transformation_gzip plugin for uWSGI
+
+%package -n %{name}-transformation-offload
+Summary:  uWSGI - Off-Load Transformation plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+
+%description -n %{name}-transformation-offload
+This package contains the transformation_offload plugin for uWSGI
+
+%package -n %{name}-transformation-template
+Summary:  uWSGI - Template Transformation plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+
+%description -n %{name}-transformation-template
+This package contains the transformation_template plugin for uWSGI
+
+%package -n %{name}-transformation-tofile
+Summary:  uWSGI - ToFile Transformation plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+
+%description -n %{name}-transformation-tofile
+This package contains the transformation_tofile plugin for uWSGI
+
+%package -n %{name}-transformation-toupper
+Summary:  uWSGI - ToUpper Transformation plugin
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, %{name}-plugin-http
+
+%description -n %{name}-transformation-toupper
+This package contains the transformation_toupper plugin for uWSGI
+
 # Loggers
 
 %package -n %{name}-log-encoder-msgpack
@@ -886,6 +936,26 @@ exit 0
 
 %files -n %{name}-alarm-xmpp
 %{_libdir}/%{name}/alarm_xmpp_plugin.so
+
+# Transformations
+
+%files -n %{name}-transformation-chunked
+%{_libdir}/%{name}/transformation_chunked_plugin.so
+
+%files -n %{name}-transformation-gzip
+%{_libdir}/%{name}/transformation_gzip_plugin.so
+
+%files -n %{name}-transformation-offload
+%{_libdir}/%{name}/transformation_offload_plugin.so
+
+%files -n %{name}-transformation-template
+%{_libdir}/%{name}/transformation_template_plugin.so
+
+%files -n %{name}-transformation-tofile
+%{_libdir}/%{name}/transformation_tofile_plugin.so
+
+%files -n %{name}-transformation-toupper
+%{_libdir}/%{name}/transformation_toupper_plugin.so
 
 # Loggers
 
