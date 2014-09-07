@@ -783,6 +783,14 @@ Provides:  %{name}-routers = %{version}-%{release}
 %description -n %{name}-router-static
 This package contains the Static router plugin for uWSGI
 
+%package -n %{name}-router-tuntap
+Summary:   uWSGI - Plugin for TUN/TAP router support
+Group:     System Environment/Daemons
+Requires:  %{name}-plugin-common
+
+%description -n %{name}-router-tuntap
+This package contains the tuntap router plugin for uWSGI
+
 %package -n %{name}-router-uwsgi
 Summary:   uWSGI - Plugin for uWSGI router support
 Group:     System Environment/Daemons
@@ -1177,6 +1185,9 @@ exit 0
 
 %files -n %{name}-router-static
 %{_libdir}/%{name}/router_static_plugin.so
+
+%files -n %{name}-router-tuntap
+%{_libdir}/%{name}/tuntap_plugin.so
 
 %files -n %{name}-router-uwsgi
 %{_libdir}/%{name}/router_uwsgi_plugin.so
