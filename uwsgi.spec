@@ -118,6 +118,13 @@ Requires:   %{name}-plugins-common
 %description -n %{name}-stats-pusher-statsd
 This package contains the stats_pusher_statsd plugin for uWSGI
 
+%package -n %{name}-stats-pusher-zabbix
+Summary:    uWSGI - Zabbix Stats Pusher for uWSGI
+Requires:   %{name}-plugins-common
+
+%description -n %{name}-stats-pusher-zabbix
+This package contains the zabbix plugin for uWSGI
+
 # Alarms
 
 %package -n %{name}-alarm-curl
@@ -969,6 +976,9 @@ exit 0
 
 %files -n %{name}-stats-pusher-statsd
 %{_libdir}/%{name}/stats_pusher_statsd_plugin.so
+
+%files -n %{name}-stats-pusher-zabbix
+%{_libdir}/%{name}/zabbix_plugin.so
 
 # Alarms
 
