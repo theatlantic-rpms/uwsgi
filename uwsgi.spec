@@ -36,7 +36,7 @@ BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
-BuildRequires:  libmongodb-devel, mono-devel, openldap-devel
+BuildRequires:  libmongodb-devel, mono-devel, openldap-devel, v8-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -585,14 +585,6 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-ssi
 This package contains the ssi plugin for uWSGI
 
-%package -n %{name}-plugin-ugreen
-Summary:  uWSGI - Plugin for uGreen support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-ugreen
-This package contains the uGreen plugin for uWSGI
-
 %package -n %{name}-plugin-tornado
 Summary:  uWSGI - Plugin for Tornado support
 Group:    System Environment/Daemons
@@ -608,6 +600,22 @@ Requires: %{name}-plugin-common, python3-tornado
 
 %description -n %{name}-plugin-tornado3
 This package contains the tornado (python v3) plugin for uWSGI
+
+%package -n %{name}-plugin-ugreen
+Summary:  uWSGI - Plugin for uGreen support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-ugreen
+This package contains the uGreen plugin for uWSGI
+
+%package -n %{name}-plugin-v8
+Summary:  uWSGI - Plugin for v8 support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, v8
+
+%description -n %{name}-plugin-v8
+This package contains the v8 plugin for uWSGI
 
 %package -n %{name}-plugin-zergpool
 Summary:  uWSGI - Plugin for zergpool support
@@ -1118,14 +1126,17 @@ exit 0
 %files -n %{name}-plugin-ssi
 %{_libdir}/%{name}/ssi_plugin.so
 
-%files -n %{name}-plugin-ugreen
-%{_libdir}/%{name}/ugreen_plugin.so
-
 %files -n %{name}-plugin-tornado
 %{_libdir}/%{name}/tornado_plugin.so
 
 %files -n %{name}-plugin-tornado3
 %{_libdir}/%{name}/tornado3_plugin.so
+
+%files -n %{name}-plugin-ugreen
+%{_libdir}/%{name}/ugreen_plugin.so
+
+%files -n %{name}-plugin-v8
+%{_libdir}/%{name}/v8_plugin.so
 
 %files -n %{name}-plugin-zergpool
 %{_libdir}/%{name}/zergpool_plugin.so
