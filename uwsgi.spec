@@ -12,7 +12,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}%{?patchnumber}
-Release:        0%{dist}
+Release:        1%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -1257,6 +1257,61 @@ exit 0
 
 
 %changelog
+* Sun Sep 07 2014 Jorge A Gallegos <kad@blegh.net> - 2.0.6-1
+- Adding -stats-pusher-zabbix (Jorge Gallegos)
+- Adding -plugin-xslt (Jorge Gallegos)
+- Adding -plugin-webdav (Jorge Gallegos)
+- Adding -plugin-v8 (Jorge Gallegos)
+- Adding -router-tuntap (Jorge Gallegos)
+- Adding http transformation plugins (Jorge Gallegos)
+- Adding -plugin-tornado and -plugin-tornado3 (Jorge Gallegos)
+- Adding all -stats-pusher-* plugins (Jorge Gallegos)
+- Adding -plugin-ssi (Jorge Gallegos)
+- Adding -plugin-ldap (Jorge Gallegos)
+- Adding -plugin-sqlite3 (Jorge Gallegos)
+- Adding -plugin-spooler (Jorge Gallegos)
+- Adding -plugin-jwsgi (Jorge Gallegos)
+- Adding -plugin-ring (Jorge Gallegos)
+- Adding -plugin-rbthreads (Jorge Gallegos)
+- Adding -plugin-pty (Jorge Gallegos)
+- Adding -log-encoder-msgpack (Jorge Gallegos)
+- Adding -plugin-mono (Jorge Gallegos)
+- Adding -plugin-mongrel2 (Jorge Gallegos)
+- Adding -plugin-gridfs (Jorge Gallegos)
+- Adding -logger-graylog2 (Jorge Gallegos)
+- Adding -plugin-glusterfs (Jorge Gallegos)
+- Adding -plugin-gevent (Jorge Gallegos)
+- Adding -plugin-geoip (Jorge Gallegos)
+- Adding -plugin-gccgo (Jorge Gallegos)
+- Adding -plugin-fiber (Jorge Gallegos)
+- Adding -plugin-dumbloop (Jorge Gallegos)
+- Adding -plugin-curl-cron (Jorge Gallegos)
+- Adding -plugin-cplusplus (Jorge Gallegos)
+- Adding -plugin-coroae (Jorge Gallegos)
+- Adding -alarm-xmpp (Jorge Gallegos)
+- Adding -alarm-curl (Jorge Gallegos)
+- Packaging -plugin-airbrake (Jorge Gallegos)
+- Broke up -routers into its individual -router-* (Jorge Gallegos)
+- Renaming -plugin-sslrouter to -router-ssl (Jorge Gallegos)
+- Renaming -plugin-rawrouter to -router-raw (Jorge Gallegos)
+- Splitting off the documentation to its subpackage (Jorge Gallegos)
+- Splitting off some non-essential embedded plugins: (Jorge Gallegos)
+- Splitting off -logger-syslog (Jorge Gallegos)
+- Splitting off -logger-rsyslog (Jorge Gallegos)
+- Splitting off -logger-redis (Jorge Gallegos)
+- Splitting off -logger-mongodb (Jorge Gallegos)
+- Splitting off -logger-socket (Jorge Gallegos)
+- Splitting off -logger-file (Jorge Gallegos)
+- Splitting off -logger-pipe (Jorge Gallegos)
+- Splitting off -logger-crypto instead (Jorge Gallegos)
+- Break out the major/minor/release numbers properly (Jorge Gallegos)
+- Reorganized spec, alphabetical and type (Jorge Gallegos)
+- Splitting -router-fastrouter out of -common (Jorge Gallegos)
+- Splitting out the README, I will be putting more stuff in here (Jorge Gallegos)
+- Adding -logger-systemd plugin (Jorge Gallegos)
+- Adding -logger-zeromq plugin (Jorge Gallegos)
+- Adding new sources for newest stable (Jorge Gallegos)
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.9.19-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
