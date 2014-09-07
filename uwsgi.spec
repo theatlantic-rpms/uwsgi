@@ -37,7 +37,7 @@ BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
 BuildRequires:  libmongodb-devel, mono-devel, openldap-devel, v8-devel
-BuildRequires:  libattr-devel
+BuildRequires:  libattr-devel, libxslt-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -626,6 +626,22 @@ Requires: %{name}-plugin-common, libattr
 %description -n %{name}-plugin-webdav
 This package contains the webdav plugin for uWSGI
 
+%package -n %{name}-plugin-xattr
+Summary:  uWSGI - Plugin for Extra Attributes support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libattr
+
+%description -n %{name}-plugin-xattr
+This package contains the xattr plugin for uWSGI
+
+%package -n %{name}-plugin-xslt
+Summary:  uWSGI - Plugin for XSLT transformation support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libxslt
+
+%description -n %{name}-plugin-xslt
+This package contains the xslt plugin for uWSGI
+
 %package -n %{name}-plugin-zergpool
 Summary:  uWSGI - Plugin for zergpool support
 Group:    System Environment/Daemons
@@ -1149,6 +1165,12 @@ exit 0
 
 %files -n %{name}-plugin-webdav
 %{_libdir}/%{name}/webdav_plugin.so
+
+%files -n %{name}-plugin-xattr
+%{_libdir}/%{name}/xattr_plugin.so
+
+%files -n %{name}-plugin-xslt
+%{_libdir}/%{name}/xslt_plugin.so
 
 %files -n %{name}-plugin-zergpool
 %{_libdir}/%{name}/zergpool_plugin.so
