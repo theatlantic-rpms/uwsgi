@@ -37,6 +37,7 @@ BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
 BuildRequires:  libmongodb-devel, mono-devel, openldap-devel, v8-devel
+BuildRequires:  libattr-devel
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -617,6 +618,14 @@ Requires: %{name}-plugin-common, v8
 %description -n %{name}-plugin-v8
 This package contains the v8 plugin for uWSGI
 
+%package -n %{name}-plugin-webdav
+Summary:  uWSGI - Plugin for WebDAV support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common, libattr
+
+%description -n %{name}-plugin-webdav
+This package contains the webdav plugin for uWSGI
+
 %package -n %{name}-plugin-zergpool
 Summary:  uWSGI - Plugin for zergpool support
 Group:    System Environment/Daemons
@@ -1137,6 +1146,9 @@ exit 0
 
 %files -n %{name}-plugin-v8
 %{_libdir}/%{name}/v8_plugin.so
+
+%files -n %{name}-plugin-webdav
+%{_libdir}/%{name}/webdav_plugin.so
 
 %files -n %{name}-plugin-zergpool
 %{_libdir}/%{name}/zergpool_plugin.so
