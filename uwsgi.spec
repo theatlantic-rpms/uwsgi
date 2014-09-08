@@ -1,10 +1,10 @@
 # Version
 %global majornumber 2
 %global minornumber 0
-%global releasenumber 6
+%global releasenumber 7
 
 # Documentation sources:
-%global commit d2c4969e82c12b316889bcdce348d200b45c4a3e
+%global commit f5517089e9c0a6082eb7ecb691c79e16e870a0cb
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
@@ -1257,6 +1257,9 @@ exit 0
 
 
 %changelog
+* Mon Sep 08 2014 Jorge A Gallegos <kad@blegh.net> - 2.0.7-1
+- I am just done now, and there's a new version out already. Go figure.
+
 * Sun Sep 07 2014 Jorge A Gallegos <kad@blegh.net> - 2.0.6-1
 - Adding -stats-pusher-zabbix (Jorge Gallegos)
 - Adding -plugin-xslt (Jorge Gallegos)
