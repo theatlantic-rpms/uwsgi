@@ -10,6 +10,13 @@
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
 %{!?_httpd_moddir:    %{expand: %%global _httpd_moddir    %%{_libdir}/httpd/modules}}
 
+# Enable systemd except on EL6
+%if 0%{?fedora} || 0%{?rhel} >= 7
+%bcond_without systemd
+%else
+%bcond_with systemd
+%endif
+
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}%{?patchnumber}
 Release:        2%{dist}
@@ -31,22 +38,27 @@ BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-deve
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-devel
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
-BuildRequires:  bzip2-devel, gmp-devel, systemd-units, pam-devel
-BuildRequires:  java-devel, sqlite-devel, libcap-devel, systemd-devel
+BuildRequires:  bzip2-devel, gmp-devel, pam-devel
+BuildRequires:  java-devel, sqlite-devel, libcap-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
 BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
 BuildRequires:  libmongodb-devel, mono-devel, openldap-devel, v8-devel
 BuildRequires:  libattr-devel, libxslt-devel
+%if %{with systemd}
+BuildRequires:  systemd-devel, systemd-units
+%endif
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
 Obsoletes:      %{name}-plugin-admin <= 2.0.6
 
 Requires(pre):    shadow-utils
+%if %{with systemd}
 Requires(post):   systemd-units
 Requires(preun):  systemd-units
 Requires(postun): systemd-units
+%endif
 
 %description
 uWSGI is a fast (pure C), self-healing, developer/sysadmin-friendly
@@ -287,6 +299,7 @@ Provides:  %{name}-plugin-syslog = %{version}-%{release}
 %description -n %{name}-logger-syslog
 This package contains the syslog logger plugin for uWSGI
 
+%if %{with systemd}
 %package -n %{name}-logger-systemd
 Summary:  uWSGI - SystemD Journal logger plugin
 Group:    System Environment/Daemons
@@ -294,6 +307,7 @@ Requires: %{name}-plugin-common
 
 %description -n %{name}-logger-systemd
 This package contains the SystemD Journal logger plugin for uWSGI
+%endif
 
 %package -n %{name}-logger-zeromq
 Summary:  uWSGI - ZeroMQ logger plugin
@@ -863,7 +877,9 @@ Fully Apache API compliant proxy module
 %prep
 %setup -q
 cp -p %{SOURCE1} buildconf/
+%if %{with systemd}
 cp -p %{SOURCE2} %{name}.service
+%endif
 cp -p %{SOURCE3} %{name}.ini
 cp -p %{SOURCE4} uwsgi-docs.tar.gz
 cp -p %{SOURCE5} README.Fedora
@@ -900,7 +916,9 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
 gacutil -i plugins/mono/uwsgi.dll -f -package %{name} -root %{buildroot}/usr/lib
 %{__install} -p -m 0644 %{name}.ini %{buildroot}%{_sysconfdir}/%{name}.ini
+%if %{with systemd}
 %{__install} -p -m 0644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
+%endif
 %{__install} -p -m 0755 apache2/.libs/mod_proxy_%{name}.so %{buildroot}%{_httpd_moddir}/mod_proxy_%{name}.so
 
 
@@ -912,6 +930,7 @@ getent passwd uwsgi >/dev/null || \
 exit 0
 
 %post
+%if %{with systemd}
 %if 0%{?systemd_post:1}
     %systemd_post uwsgi.service
 %else
@@ -920,8 +939,12 @@ exit 0
         /bin/systemctl daemon-reload >/dev/null 2>&1 || :
     fi
 %endif
+%else
+echo "No SystemD post-install step necessary"
+%endif
 
 %preun
+%if %{with systemd}
 %if 0%{?systemd_preun:1}
     %systemd_preun uwsgi.service
 %else
@@ -931,8 +954,12 @@ exit 0
         /bin/systemctl stop uwsgi.service > /dev/null 2>&1 || :
     fi
 %endif
+%else
+echo "No SystemD pre-uninstall step necessary"
+%endif
 
 %postun
+%if %{with systemd}
 %if 0%{?systemd_postun:1}
     %systemd_postun uwsgi.service
 %else
@@ -941,6 +968,9 @@ exit 0
         # Package upgrade, not uninstall
         /bin/systemctl try-restart uwsgi.service >/dev/null 2>&1 || :
     fi
+%endif
+%else
+echo "No SystemD post-uninstall step necessary"
 %endif
 
 
@@ -1040,8 +1070,10 @@ exit 0
 %files -n %{name}-logger-syslog
 %{_libdir}/%{name}/syslog_plugin.so
 
+%if %{with systemd}
 %files -n %{name}-logger-systemd
 %{_libdir}/%{name}/systemd_logger_plugin.so
+%endif
 
 %files -n %{name}-logger-zeromq
 %{_libdir}/%{name}/logzmq_plugin.so
