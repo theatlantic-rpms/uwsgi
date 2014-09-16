@@ -3,6 +3,7 @@ Description=uWSGI Emperor Service
 After=syslog.target
 
 [Service]
+EnvironmentFile=-/etc/sysconfig/uwsgi
 ExecStartPre=/bin/mkdir -p /run/uwsgi
 ExecStartPre=/bin/chown uwsgi:uwsgi /run/uwsgi
 ExecStart=/usr/sbin/uwsgi --ini /etc/uwsgi.ini
