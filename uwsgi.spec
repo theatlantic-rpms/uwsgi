@@ -12,7 +12,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}%{?patchnumber}
-Release:        1%{dist}
+Release:        2%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -1257,6 +1257,9 @@ exit 0
 
 
 %changelog
+* Thu Sep 18 2014 Jorge A Gallegos <kad@blegh.net> - 2.0.7-2
+- -plugin-http doesn't exist, is in -plugin-common (Jorge Gallegos)
+
 * Mon Sep 08 2014 Jorge A Gallegos <kad@blegh.net> - 2.0.7-1
 - I am just done now, and there's a new version out already. Go figure.
 
