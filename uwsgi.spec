@@ -92,35 +92,35 @@ plugins included in this package are: cache, CGI, RPC, uGreen
 
 %package -n %{name}-stats-pusher-file
 Summary:    uWSGI - File Stats Pusher for uWSGI
-Requires:   %{name}-plugins-common
+Requires:   %{name}-plugin-common
 
 %description -n %{name}-stats-pusher-file
 This package contains the stats_pusher_file plugin for uWSGI
 
 %package -n %{name}-stats-pusher-mongodb
 Summary:    uWSGI - MongoDB Stats Pusher for uWSGI
-Requires:   %{name}-plugins-common
+Requires:   %{name}-plugin-common
 
 %description -n %{name}-stats-pusher-mongodb
 This package contains the stats_pusher_mongodb plugin for uWSGI
 
 %package -n %{name}-stats-pusher-socket
 Summary:    uWSGI - Socket Stats Pusher for uWSGI
-Requires:   %{name}-plugins-common
+Requires:   %{name}-plugin-common
 
 %description -n %{name}-stats-pusher-socket
 This package contains the stats_pusher_socket plugin for uWSGI
 
 %package -n %{name}-stats-pusher-statsd
 Summary:    uWSGI - StatsD Stats Pusher for uWSGI
-Requires:   %{name}-plugins-common
+Requires:   %{name}-plugin-common
 
 %description -n %{name}-stats-pusher-statsd
 This package contains the stats_pusher_statsd plugin for uWSGI
 
 %package -n %{name}-stats-pusher-zabbix
 Summary:    uWSGI - Zabbix Stats Pusher for uWSGI
-Requires:   %{name}-plugins-common
+Requires:   %{name}-plugin-common
 
 %description -n %{name}-stats-pusher-zabbix
 This package contains the zabbix plugin for uWSGI
@@ -148,7 +148,7 @@ This package contains the alarm_xmpp alarm plugin for uWSGI
 %package -n %{name}-transformation-chunked
 Summary:  uWSGI - Chunked Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+Requires: %{name}-plugin-common, %{name}-router-uwsgi
 
 %description -n %{name}-transformation-chunked
 This package contains the transformation_chunked plugin for uWSGI
@@ -156,7 +156,7 @@ This package contains the transformation_chunked plugin for uWSGI
 %package -n %{name}-transformation-gzip
 Summary:  uWSGI - GZip Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+Requires: %{name}-plugin-common, %{name}-router-uwsgi
 
 %description -n %{name}-transformation-gzip
 This package contains the transformation_gzip plugin for uWSGI
@@ -164,7 +164,7 @@ This package contains the transformation_gzip plugin for uWSGI
 %package -n %{name}-transformation-offload
 Summary:  uWSGI - Off-Load Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+Requires: %{name}-plugin-common, %{name}-router-uwsgi
 
 %description -n %{name}-transformation-offload
 This package contains the transformation_offload plugin for uWSGI
@@ -172,7 +172,7 @@ This package contains the transformation_offload plugin for uWSGI
 %package -n %{name}-transformation-template
 Summary:  uWSGI - Template Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+Requires: %{name}-plugin-common, %{name}-router-uwsgi
 
 %description -n %{name}-transformation-template
 This package contains the transformation_template plugin for uWSGI
@@ -180,7 +180,7 @@ This package contains the transformation_template plugin for uWSGI
 %package -n %{name}-transformation-tofile
 Summary:  uWSGI - ToFile Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, %{name}-plugin-http, %{name}-router-uwsgi
+Requires: %{name}-plugin-common, %{name}-router-uwsgi
 
 %description -n %{name}-transformation-tofile
 This package contains the transformation_tofile plugin for uWSGI
@@ -188,7 +188,7 @@ This package contains the transformation_tofile plugin for uWSGI
 %package -n %{name}-transformation-toupper
 Summary:  uWSGI - ToUpper Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, %{name}-plugin-http
+Requires: %{name}-plugin-common
 
 %description -n %{name}-transformation-toupper
 This package contains the transformation_toupper plugin for uWSGI
