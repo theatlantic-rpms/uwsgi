@@ -19,7 +19,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}%{?patchnumber}
-Release:        2%{dist}
+Release:        3%{dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -1289,6 +1289,9 @@ echo "No SystemD post-uninstall step necessary"
 
 
 %changelog
+* Fri Jan 16 2015 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.0.7-3
+- Rebuild for https://fedoraproject.org/wiki/Changes/Ruby_2.2
+
 * Thu Sep 18 2014 Jorge A Gallegos <kad@blegh.net> - 2.0.7-2
 - -plugin-http doesn't exist, is in -plugin-common (Jorge Gallegos)
 
