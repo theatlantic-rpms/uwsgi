@@ -30,6 +30,7 @@ Source2:        uwsgi.service
 Source3:        emperor.ini
 Source4:        https://github.com/unbit/%{docrepo}/archive/%{commit}/%{docrepo}-%{shortcommit}.tar.gz
 Source5:        README.Fedora
+Source6:        uwsgi.init
 Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
@@ -58,6 +59,10 @@ Requires(pre):    shadow-utils
 Requires(post):   systemd-units
 Requires(preun):  systemd-units
 Requires(postun): systemd-units
+%else
+Requires(post): chkconfig
+Requires(preun): chkconfig
+Requires(preun): initscripts
 %endif
 
 %description
@@ -879,6 +884,8 @@ Fully Apache API compliant proxy module
 cp -p %{SOURCE1} buildconf/
 %if %{with systemd}
 cp -p %{SOURCE2} %{name}.service
+%else
+cp -p %{SOURCE6} %{name}.init
 %endif
 cp -p %{SOURCE3} %{name}.ini
 cp -p %{SOURCE4} uwsgi-docs.tar.gz
@@ -918,6 +925,8 @@ gacutil -i plugins/mono/uwsgi.dll -f -package %{name} -root %{buildroot}/usr/lib
 %{__install} -p -m 0644 %{name}.ini %{buildroot}%{_sysconfdir}/%{name}.ini
 %if %{with systemd}
 %{__install} -p -m 0644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
+%else
+%{__install} -p -m 0755 %{name}.init %{buildroot}%{_initddir}/%{name}
 %endif
 %{__install} -p -m 0755 apache2/.libs/mod_proxy_%{name}.so %{buildroot}%{_httpd_moddir}/mod_proxy_%{name}.so
 
@@ -931,6 +940,7 @@ exit 0
 
 %post
 %if %{with systemd}
+echo "Executing systemd post-install tasks"
 %if 0%{?systemd_post:1}
     %systemd_post uwsgi.service
 %else
@@ -940,11 +950,13 @@ exit 0
     fi
 %endif
 %else
-echo "No SystemD post-install step necessary"
+echo "Executing System V post-install tasks"
+/sbin/chkconfig --add %{name}
 %endif
 
 %preun
 %if %{with systemd}
+echo "Executing systemd pre-uninstall tasks"
 %if 0%{?systemd_preun:1}
     %systemd_preun uwsgi.service
 %else
@@ -955,11 +967,16 @@ echo "No SystemD post-install step necessary"
     fi
 %endif
 %else
-echo "No SystemD pre-uninstall step necessary"
+echo "Executing System V pre-uninstall tasks"
+if [ $1 -eq 0 ] ; then
+    /sbin/service %{name} stop >/dev/null 2>&1
+    /sbin/chkconfig --del %{name}
+fi
 %endif
 
 %postun
 %if %{with systemd}
+echo "Executing systemd post-uninstall tasks"
 %if 0%{?systemd_postun:1}
     %systemd_postun uwsgi.service
 %else
@@ -970,7 +987,10 @@ echo "No SystemD pre-uninstall step necessary"
     fi
 %endif
 %else
-echo "No SystemD post-uninstall step necessary"
+echo "Executing System V post-uninstall tasks"
+if [ "$1" -ge "1" ] ; then
+    /sbin/service %{name} condrestart >/dev/null 2>&1 || :
+fi
 %endif
 
 
