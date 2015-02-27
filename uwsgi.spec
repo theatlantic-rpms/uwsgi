@@ -1,10 +1,10 @@
 # Version
 %global majornumber 2
 %global minornumber 0
-%global releasenumber 7
+%global releasenumber 9
 
 # Documentation sources:
-%global commit f5517089e9c0a6082eb7ecb691c79e16e870a0cb
+%global commit bc49905603e3f188e4e47692942a7bbeaee990c6
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
@@ -18,8 +18,8 @@
 %endif
 
 Name:           uwsgi
-Version:        %{majornumber}.%{minornumber}.%{releasenumber}%{?patchnumber}
-Release:        3%{dist}
+Version:        2.0.9
+Release:        0
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -1289,6 +1289,9 @@ echo "No SystemD post-uninstall step necessary"
 
 
 %changelog
+* Fri Feb 27 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-0
+- New version
+
 * Fri Jan 16 2015 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.0.7-3
 - Rebuild for https://fedoraproject.org/wiki/Changes/Ruby_2.2
 
