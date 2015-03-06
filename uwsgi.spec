@@ -10,11 +10,26 @@
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
 %{!?_httpd_moddir:    %{expand: %%global _httpd_moddir    %%{_libdir}/httpd/modules}}
 
-# Enable systemd except on EL6
+# Conditionally enable some plugins in newer epel
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %bcond_without systemd
+%bcond_without go
+%bcond_without python3
+%bcond_without ruby19
+%bcond_without mongodblibs
+%bcond_without tuntap
 %else
+# el6 doesn't use systemd
 %bcond_with systemd
+# el6 doesn't have go
+%bcond_with go
+# el6 doesn't have python3
+%bcond_with python3
+# el6 ships with ruby 1.8 but fiberloop/rbthreads needs 1.9
+%bcond_with ruby19
+# this fails in el6 not sure why
+%bcond_with mongodblibs
+%bcond_with tuntap
 %endif
 
 Name:           uwsgi
@@ -37,14 +52,21 @@ Patch2:         uwsgi_ruby20_compatibility.patch
 Patch3:         uwsgi_fix_lua.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
-BuildRequires:  python3-devel, python-greenlet-devel, lua-devel, ruby, pcre-devel
+%if %{with python3}
+BuildRequires:  python3-devel
+%endif
+BuildRequires:  python-greenlet-devel, lua-devel, ruby, pcre-devel
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
-BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel, libgo-devel, gcc-go
+BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel
+%if %{with go}
+BuildRequires:  libgo-devel, gcc-go
+%endif
 BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
-BuildRequires:  libmongodb-devel, mono-devel, openldap-devel, v8-devel
+BuildRequires:  mono-devel, mono-web, openldap-devel, v8-devel
+BuildRequires:  libmongodb-devel, boost-devel
 BuildRequires:  libattr-devel, libxslt-devel
 %if %{with systemd}
 BuildRequires:  systemd-devel, systemd-units
@@ -897,14 +919,37 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch3 -p1
 
 %build
-CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
+%if %{with mongodblibs}
+CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
+%else
+UWSGI_MONGODB_NOLIB=1 CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
+%endif
+%if %{with python3}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/python fedora python3
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/tornado fedora tornado3
+%endif
+%if %{with go}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/gccgo fedora
+%endif
+%if %{with ruby19}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/fiber fedora
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/rbthreads fedora
+%endif
+%if %{with systemd}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/systemd_logger fedora
+%endif
+%if %{with tuntap}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/tuntap fedora
+%endif
 %{_httpd_apxs} -Wc,-Wall -Wl -c apache2/mod_proxy_uwsgi.c
 
 %install
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}.d
+%if %{with systemd}
 mkdir -p %{buildroot}%{_unitdir}
+%else
+mkdir -p %{buildroot}%{_initddir}
+%endif
 mkdir -p %{buildroot}%{_sbindir}
 mkdir -p %{buildroot}%{_includedir}/%{name}
 mkdir -p %{buildroot}%{_libdir}/%{name}
@@ -997,7 +1042,11 @@ fi
 %files 
 %{_sbindir}/%{name}
 %{_sysconfdir}/%{name}.ini
+%if %{with systemd}
 %{_unitdir}/%{name}.service
+%else
+%{_initddir}/%{name}
+%endif
 %dir %{_sysconfdir}/%{name}.d
 %dir /run/%{name}
 %doc LICENSE README README.Fedora CHANGELOG
@@ -1121,11 +1170,15 @@ fi
 %files -n %{name}-plugin-dumbloop
 %{_libdir}/%{name}/dumbloop_plugin.so
 
+%if %{with ruby19}
 %files -n %{name}-plugin-fiber
 %{_libdir}/%{name}/fiber_plugin.so
+%endif
 
+%if %{with go}
 %files -n %{name}-plugin-gccgo
 %{_libdir}/%{name}/gccgo_plugin.so
+%endif
 
 %files -n %{name}-plugin-geoip
 %{_libdir}/%{name}/geoip_plugin.so
@@ -1183,14 +1236,18 @@ fi
 %files -n %{name}-plugin-python
 %{_libdir}/%{name}/python_plugin.so
 
+%if %{with python3}
 %files -n %{name}-plugin-python3
 %{_libdir}/%{name}/python3_plugin.so
+%endif
 
 %files -n %{name}-plugin-rack
 %{_libdir}/%{name}/rack_plugin.so
 
+%if %{with ruby19}
 %files -n %{name}-plugin-rbthreads
 %{_libdir}/%{name}/rbthreads_plugin.so
+%endif
 
 %files -n %{name}-plugin-ring
 %{_libdir}/%{name}/ring_plugin.so
@@ -1216,8 +1273,10 @@ fi
 %files -n %{name}-plugin-tornado
 %{_libdir}/%{name}/tornado_plugin.so
 
+%if %{with python3}
 %files -n %{name}-plugin-tornado3
 %{_libdir}/%{name}/tornado3_plugin.so
+%endif
 
 %files -n %{name}-plugin-ugreen
 %{_libdir}/%{name}/ugreen_plugin.so
@@ -1293,8 +1352,10 @@ fi
 %files -n %{name}-router-static
 %{_libdir}/%{name}/router_static_plugin.so
 
+%if %{with tuntap}
 %files -n %{name}-router-tuntap
 %{_libdir}/%{name}/tuntap_plugin.so
+%endif
 
 %files -n %{name}-router-uwsgi
 %{_libdir}/%{name}/router_uwsgi_plugin.so
