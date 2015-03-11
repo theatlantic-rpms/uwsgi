@@ -10,16 +10,24 @@
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
 %{!?_httpd_moddir:    %{expand: %%global _httpd_moddir    %%{_libdir}/httpd/modules}}
 
-# Conditionally enable some plugins in newer epel
-%if 0%{?fedora} || 0%{?rhel} >= 7
+# This is primarily built for fedora, make it easy right now
+%if 0%{?fedora}
 %bcond_without systemd
 %bcond_without go
 %bcond_without python3
 %bcond_without ruby19
-%bcond_without mongodblibs
+%bcond_without gridfs
 %bcond_without tuntap
-%else
-# el6 doesn't use systemd
+%bcond_without zeromq
+%bcond_without greenlet
+%bcond_without perlcoro
+%bcond_without glusterfs
+%bcond_without mongodblibs
+%endif
+
+# Conditionally disable some things in epel6
+%if 0%{?rhel} == 6
+# el6 doesn't ship with systemd
 %bcond_with systemd
 # el6 doesn't have go
 %bcond_with go
@@ -27,14 +35,32 @@
 %bcond_with python3
 # el6 ships with ruby 1.8 but fiberloop/rbthreads needs 1.9
 %bcond_with ruby19
-# this fails in el6 not sure why
-%bcond_with mongodblibs
+# this fails in el not sure why
+%bcond_with gridfs
 %bcond_with tuntap
+%bcond_with mongodblibs
+%endif
+
+# Conditionally disable some things in epel7
+%if 0%{?rhel} == 7
+# el7 doesn't ship with systemd
+%bcond_with systemd
+# el7 doesn't have python3
+%bcond_with python3
+# el7 doesn't have zeromq
+%bcond_with zeromq
+# el7 doesn't have greenlet
+%bcond_with greenlet
+# el7 doesn't have perl-Coro
+%bcond_with perlcoro
+# this fails in el not sure why
+%bcond_with glusterfs
+%bcond_with gridfs
 %endif
 
 Name:           uwsgi
 Version:        2.0.9
-Release:        0
+Release:        1
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -55,16 +81,28 @@ BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 %if %{with python3}
 BuildRequires:  python3-devel
 %endif
-BuildRequires:  python-greenlet-devel, lua-devel, ruby, pcre-devel
+%if %{with greenlet}
+BuildRequires:  python-greenlet-devel
+%endif
+%if %{with glusterfs}
+BuildRequires:  glusterfs-devel, glusterfs-api-devel
+%endif
+BuildRequires:  lua-devel, ruby, pcre-devel
 BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
 BuildRequires:  bzip2-devel, gmp-devel, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel
-BuildRequires:  httpd-devel, tcp_wrappers-devel, zeromq-devel, libcurl-devel
-BuildRequires:  gloox-devel, perl-Coro, libstdc++-devel
+BuildRequires:  httpd-devel, tcp_wrappers-devel, libcurl-devel
+BuildRequires:  gloox-devel, libstdc++-devel
+%if %{with perlcoro}
+BuildRequires:  perl-Coro
+%endif
+%if %{with zeromq}
+BuildRequires:  zeromq-devel
+%endif
 %if %{with go}
 BuildRequires:  libgo-devel, gcc-go
 %endif
-BuildRequires:  GeoIP-devel, libevent-devel, glusterfs-api-devel, zlib-devel
+BuildRequires:  GeoIP-devel, libevent-devel, zlib-devel
 BuildRequires:  mono-devel, mono-web, openldap-devel, v8-devel
 BuildRequires:  libmongodb-devel, boost-devel
 BuildRequires:  libattr-devel, libxslt-devel
@@ -336,6 +374,7 @@ Requires: %{name}-plugin-common
 This package contains the SystemD Journal logger plugin for uWSGI
 %endif
 
+%if %{with zeromq}
 %package -n %{name}-logger-zeromq
 Summary:  uWSGI - ZeroMQ logger plugin
 Group:    System Environment/Daemons
@@ -343,6 +382,7 @@ Requires: %{name}-plugin-common, zeromq
 
 %description -n %{name}-logger-zeromq
 This package contains the ZeroMQ logger plugin for uWSGI
+%endif
 
 # Plugins
 
@@ -370,6 +410,7 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-carbon
 This package contains the Carbon plugin for uWSGI (to use in graphite)
 
+%if %{with perlcoro}
 %package -n %{name}-plugin-coroae
 Summary:  uWSGI - Plugin for PERL Coro support
 Group:    System Environment/Daemons
@@ -377,6 +418,7 @@ Requires: %{name}-plugin-common, %{name}-plugin-psgi, perl-Coro
 
 %description -n %{name}-plugin-coroae
 This package contains the coroae plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-cplusplus
 Summary:  uWSGI - Plugin for C++ support
@@ -434,6 +476,7 @@ Requires: %{name}-plugin-common, libevent
 %description -n %{name}-plugin-gevent
 This package contains the gevent plugin for uWSGI
 
+%if %{with glusterfs}
 %package -n %{name}-plugin-glusterfs
 Summary:  uWSGI - Plugin for GlusterFS support
 Group:    System Environment/Daemons
@@ -441,7 +484,9 @@ Requires: %{name}-plugin-common, glusterfs-api
 
 %description -n %{name}-plugin-glusterfs
 This package contains the glusterfs plugin for uWSGI
+%endif
 
+%if %{with greenlet}
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
 Group:    System Environment/Daemons   
@@ -449,6 +494,7 @@ Requires: python-greenlet, %{name}-plugin-common
 
 %description -n %{name}-plugin-greenlet
 This package contains the python greenlet plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-gridfs
 Summary:  uWSGI - Plugin for GridFS support
@@ -490,6 +536,7 @@ Requires: lua, %{name}-plugin-common
 %description -n %{name}-plugin-lua
 This package contains the lua plugin for uWSGI
 
+%if %{with zeromq}
 %package -n %{name}-plugin-mongrel2
 Summary:  uWSGI - Plugin for Mongrel2 support
 Group:    System Environment/Daemons   
@@ -497,6 +544,7 @@ Requires: %{name}-plugin-common, zeromq
 
 %description -n %{name}-plugin-mongrel2
 This package contains the mongrel2 plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-mono
 Summary:  uWSGI - Plugin for Mono / .NET support
@@ -941,6 +989,22 @@ CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin
 %if %{with tuntap}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/tuntap fedora
 %endif
+%if %{with perlcoro}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/coroae fedora
+%endif
+%if %{with zeromq}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/logzmq fedora
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mongrel2 fedora
+%endif
+%if %{with greenlet}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/greenlet fedora
+%endif
+%if %{with glusterfs}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/glusterfs fedora
+%endif
+%if %{with gridfs}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/gridfs fedora
+%endif
 %{_httpd_apxs} -Wc,-Wall -Wl -c apache2/mod_proxy_uwsgi.c
 
 %install
@@ -1144,8 +1208,10 @@ fi
 %{_libdir}/%{name}/systemd_logger_plugin.so
 %endif
 
+%if %{with zeromq}
 %files -n %{name}-logger-zeromq
 %{_libdir}/%{name}/logzmq_plugin.so
+%endif
 
 # Plugins
 
@@ -1158,8 +1224,10 @@ fi
 %files -n %{name}-plugin-carbon
 %{_libdir}/%{name}/carbon_plugin.so
 
+%if %{with perlcoro}
 %files -n %{name}-plugin-coroae
 %{_libdir}/%{name}/coroae_plugin.so
+%endif
 
 %files -n %{name}-plugin-cplusplus
 %{_libdir}/%{name}/cplusplus_plugin.so
@@ -1186,14 +1254,20 @@ fi
 %files -n %{name}-plugin-gevent
 %{_libdir}/%{name}/gevent_plugin.so
 
+%if %{with glusterfs}
 %files -n %{name}-plugin-glusterfs
 %{_libdir}/%{name}/glusterfs_plugin.so
+%endif
 
+%if %{with greenlet}
 %files -n %{name}-plugin-greenlet
 %{_libdir}/%{name}/greenlet_plugin.so
+%endif
 
+%if %{with gridfs}
 %files -n %{name}-plugin-gridfs
 %{_libdir}/%{name}/gridfs_plugin.so
+%endif
 
 %files -n %{name}-plugin-jvm
 %{_libdir}/%{name}/jvm_plugin.so
@@ -1208,8 +1282,10 @@ fi
 %files -n %{name}-plugin-lua
 %{_libdir}/%{name}/lua_plugin.so
 
+%if %{with zeromq}
 %files -n %{name}-plugin-mongrel2
 %{_libdir}/%{name}/mongrel2_plugin.so
+%endif
 
 %files -n %{name}-plugin-mono
 %dir /usr/lib/mono/%{name}/
@@ -1370,6 +1446,11 @@ fi
 
 
 %changelog
+* Wed Mar 11 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-1
+- EPEL 6 and EPEL 7 compatible
+- Plugins not compatible with epel 6 are systemd, go, python3 based, ruby19 based, gridfs and tuntap
+- Plugins not compatible with epel 7 are python3 based, zeromq, greenlet, coroae, glusterfs and gridfs
+
 * Fri Feb 27 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-0
 - New version
 
