@@ -60,11 +60,12 @@
 
 Name:           uwsgi
 Version:        2.0.9
-Release:        1
+Release:        2
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
 URL:            https://github.com/unbit/uwsgi
+ExclusiveArch:  %{ix86} x86_64 %{arm}
 Source0:        http://projects.unbit.it/downloads/%{name}-%{version}.tar.gz
 Source1:        fedora.ini
 Source2:        uwsgi.service
@@ -1446,6 +1447,10 @@ fi
 
 
 %changelog
+* Thu Mar 12 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-2
+- Making it arch specific due to missing dependencies in PPC (as per
+  https://fedoraproject.org/wiki/Packaging:Guidelines#BuildRequires)
+
 * Wed Mar 11 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-1
 - EPEL 6 and EPEL 7 compatible
 - Plugins not compatible with epel 6 are systemd, go, python3 based, ruby19 based, gridfs and tuntap
