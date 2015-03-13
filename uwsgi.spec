@@ -60,7 +60,7 @@
 
 Name:           uwsgi
 Version:        2.0.9
-Release:        2
+Release:        3%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -1447,6 +1447,9 @@ fi
 
 
 %changelog
+* Fri Mar 13 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-3
+- Adding missing dist tag, have no clue at what point this got dropped :(
+
 * Thu Mar 12 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-2
 - Making it arch specific due to missing dependencies in PPC (as per
   https://fedoraproject.org/wiki/Packaging:Guidelines#BuildRequires)
