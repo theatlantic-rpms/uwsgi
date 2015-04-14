@@ -60,7 +60,7 @@
 
 Name:           uwsgi
 Version:        2.0.9
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
@@ -77,6 +77,11 @@ Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
 Patch3:         uwsgi_fix_lua.patch
+# https://github.com/unbit/uwsgi/issues/883
+# https://sourceware.org/bugzilla/show_bug.cgi?id=17523
+Patch4:         uwsgi_fix_glibc_compatibility.patch
+# https://github.com/unbit/uwsgi/issues/882
+Patch5:         uwsgi_fix_mongodb.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 %if %{with python3}
@@ -966,6 +971,8 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 %if %{with mongodblibs}
@@ -1447,6 +1454,9 @@ fi
 
 
 %changelog
+* Tue Apr 14 2015 Vít Ondruch <vondruch@redhat.com> - 2.0.9-4
+- Fix glibc and MongoDB compatibility.
+
 * Fri Mar 13 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-3
 - Adding missing dist tag, have no clue at what point this got dropped :(
 
