@@ -19,8 +19,9 @@
 %bcond_without tuntap
 %bcond_without zeromq
 %bcond_without greenlet
-%bcond_without perlcoro
+%bcond_without perl
 %bcond_without glusterfs
+
 #mono
 %ifnarch %{mono_arches}
 %bcond_with mono
@@ -59,16 +60,18 @@
 %bcond_with python3
 # el6 ships with ruby 1.8 but fiberloop/rbthreads needs 1.9
 %bcond_with ruby19
+# el7 doesn't have perl-PSGI
+%bcond_with perl
 # this fails in el not sure why
 %bcond_with gridfs
 %bcond_with tuntap
 %bcond_with mongodblibs
 %endif
 
-# Conditionally disable some things in epel7
+# Conditionally enable/disable some things in epel7
 %if 0%{?rhel} == 7
-# el7 doesn't ship with systemd
-%bcond_with systemd
+# el7 does have systemd
+%bcond_without systemd
 # el7 doesn't have python3
 %bcond_with python3
 # el7 doesn't have zeromq
@@ -76,7 +79,7 @@
 # el7 doesn't have greenlet
 %bcond_with greenlet
 # el7 doesn't have perl-Coro
-%bcond_with perlcoro
+%bcond_with perl
 # this fails in el not sure why
 %bcond_with glusterfs
 %bcond_with gridfs
@@ -127,7 +130,7 @@ BuildRequires:  gloox-devel, libstdc++-devel
 BuildRequires:  GeoIP-devel, libevent-devel, zlib-devel
 BuildRequires:  openldap-devel, boost-devel
 BuildRequires:  libattr-devel, libxslt-devel
-%if %{with perlcoro}
+%if %{with perl}
 BuildRequires:  perl-Coro
 %endif
 %if %{with zeromq}
@@ -454,7 +457,7 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-carbon
 This package contains the Carbon plugin for uWSGI (to use in graphite)
 
-%if %{with perlcoro}
+%if %{with perl}
 %package -n %{name}-plugin-coroae
 Summary:  uWSGI - Plugin for PERL Coro support
 Group:    System Environment/Daemons
@@ -626,6 +629,7 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-php
 This package contains the PHP plugin for uWSGI
 
+%if %{with perl}
 %package -n %{name}-plugin-psgi
 Summary:  uWSGI - Plugin for PSGI support
 Group:    System Environment/Daemons
@@ -633,6 +637,7 @@ Requires: perl-PSGI, %{name}-plugin-common
 
 %description -n %{name}-plugin-psgi
 This package contains the PSGI plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-pty
 Summary:  uWSGI - Plugin for PTY support
@@ -1051,8 +1056,9 @@ CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin
 %if %{with tuntap}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/tuntap fedora
 %endif
-%if %{with perlcoro}
+%if %{with perl}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/coroae fedora
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/psgi fedora
 %endif
 %if %{with zeromq}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/logzmq fedora
@@ -1294,7 +1300,7 @@ fi
 %files -n %{name}-plugin-carbon
 %{_libdir}/%{name}/carbon_plugin.so
 
-%if %{with perlcoro}
+%if %{with perl}
 %files -n %{name}-plugin-coroae
 %{_libdir}/%{name}/coroae_plugin.so
 %endif
@@ -1375,8 +1381,10 @@ fi
 %files -n %{name}-plugin-php
 %{_libdir}/%{name}/php_plugin.so
 
+%if %{with perl}
 %files -n %{name}-plugin-psgi
 %{_libdir}/%{name}/psgi_plugin.so
+%endif
 
 %files -n %{name}-plugin-pty
 %{_libdir}/%{name}/pty_plugin.so
