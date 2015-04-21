@@ -1021,27 +1021,18 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %endif
 %patch6 -p1 -b .ppc64le
 
-#disable plug-ins
-%if %{without mongodblibs}
-sed -in "s/mongodblog, //" buildconf/fedora.ini
-sed -in "s/stats_pusher_mongodb, //" buildconf/fedora.ini
-%endif
-%if %{without v8}
-sed -in "s/v8, //" buildconf/fedora.ini
-%endif
-%if %{without gridfs}
-sed -in "s/gridfs, //" buildconf/fedora.ini
-%endif
-%if %{without mono}
-sed -in "s/mono, //" buildconf/fedora.ini
-%endif
-
 
 %build
-%if %{with mongodblibs}
 CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
-%else
-UWSGI_MONGODB_NOLIB=1 CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
+%if %{with mongodblibs}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/mongodblog fedora
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/stats_pusher_mongodb fedora
+%endif
+%if %{with mono}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/mono fedora
+%endif
+%if %{with v8}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/v8 fedora
 %endif
 %if %{with python3}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/python fedora python3
