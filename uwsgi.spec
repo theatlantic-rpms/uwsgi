@@ -86,7 +86,7 @@ Name:           uwsgi
 Version:        2.0.9
 Release:        5%{?dist}
 Summary:        Fast, self-healing, application container server
-Group:          System Environment/Daemons   
+Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
 URL:            https://github.com/unbit/uwsgi
 Source0:        http://projects.unbit.it/downloads/%{name}-%{version}.tar.gz
@@ -169,13 +169,13 @@ Requires(preun): initscripts
 uWSGI is a fast (pure C), self-healing, developer/sysadmin-friendly
 application container server.  Born as a WSGI-only server, over time it has
 evolved in a complete stack for networked/clustered web applications,
-implementing message/object passing, caching, RPC and process management. 
+implementing message/object passing, caching, RPC and process management.
 It uses the uwsgi (all lowercase, already included by default in the Nginx
 and Cherokee releases) protocol for all the networking/interprocess
 communications.  Can be run in preforking mode, threaded,
 asynchronous/evented and supports various form of green threads/co-routine
 (like uGreen and Fiber).  Sysadmin will love it as it can be configured via
-command line, environment variables, xml, .ini and yaml files and via LDAP. 
+command line, environment variables, xml, .ini and yaml files and via LDAP.
 Being fully modular can use tons of different technology on top of the same
 core.
 
@@ -533,7 +533,7 @@ This package contains the glusterfs plugin for uWSGI
 %if %{with greenlet}
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
-Group:    System Environment/Daemons   
+Group:    System Environment/Daemons
 Requires: python-greenlet, %{name}-plugin-common
 
 %description -n %{name}-plugin-greenlet
@@ -568,7 +568,7 @@ This package contains the jwsgi plugin for uWSGI
 
 %package -n %{name}-plugin-ldap
 Summary:  uWSGI - Plugin for LDAP support
-Group:    System Environment/Daemons   
+Group:    System Environment/Daemons
 Requires: %{name}-plugin-common, openldap
 
 %description -n %{name}-plugin-ldap
@@ -576,7 +576,7 @@ This package contains the ldap plugin for uWSGI
 
 %package -n %{name}-plugin-lua
 Summary:  uWSGI - Plugin for LUA support
-Group:    System Environment/Daemons   
+Group:    System Environment/Daemons
 Requires: lua, %{name}-plugin-common
 
 %description -n %{name}-plugin-lua
@@ -585,7 +585,7 @@ This package contains the lua plugin for uWSGI
 %if %{with zeromq}
 %package -n %{name}-plugin-mongrel2
 Summary:  uWSGI - Plugin for Mongrel2 support
-Group:    System Environment/Daemons   
+Group:    System Environment/Daemons
 Requires: %{name}-plugin-common, zeromq
 
 %description -n %{name}-plugin-mongrel2
@@ -652,7 +652,7 @@ This package contains the python plugin for uWSGI
 
 %package -n %{name}-plugin-python3
 Summary:  uWSGI - Plugin for Python 3.2 support
-Group:    System Environment/Daemons   
+Group:    System Environment/Daemons
 Requires: python3, %{name}-plugin-common
 
 %description -n %{name}-plugin-python3
@@ -700,7 +700,7 @@ This package contains the RRD Tool plugin for uWSGI
 
 %package -n %{name}-plugin-ruby
 Summary:  uWSGI - Plugin for Ruby support
-Group:    System Environment/Daemons   
+Group:    System Environment/Daemons
 Requires: ruby, %{name}-plugin-common
 
 %description -n %{name}-plugin-ruby
@@ -708,7 +708,7 @@ This package contains the ruby19 plugin for uWSGI
 
 %package -n %{name}-plugin-spooler
 Summary:  uWSGI - Plugin for Remote Spooling support
-Group:    System Environment/Daemons   
+Group:    System Environment/Daemons
 Requires: %{name}-plugin-common
 
 %description -n %{name}-plugin-spooler
@@ -1128,8 +1128,8 @@ echo "Executing systemd post-install tasks"
 %if 0%{?systemd_post:1}
     %systemd_post uwsgi.service
 %else
-    if [ $1 -eq 1 ] ; then 
-        # Initial installation 
+    if [ $1 -eq 1 ] ; then
+        # Initial installation
         /bin/systemctl daemon-reload >/dev/null 2>&1 || :
     fi
 %endif
@@ -1178,7 +1178,7 @@ fi
 %endif
 
 
-%files 
+%files
 %{_sbindir}/%{name}
 %{_sysconfdir}/%{name}.ini
 %if %{with systemd}
