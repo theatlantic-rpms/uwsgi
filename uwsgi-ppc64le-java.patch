@@ -1,0 +1,12 @@
+diff -up uwsgi-2.0.9/plugins/jvm/uwsgiplugin.py.ppc64le uwsgi-2.0.9/plugins/jvm/uwsgiplugin.py
+--- uwsgi-2.0.9/plugins/jvm/uwsgiplugin.py.ppc64le	2015-04-14 13:18:25.042451636 +0200
++++ uwsgi-2.0.9/plugins/jvm/uwsgiplugin.py	2015-04-14 13:18:57.590565389 +0200
+@@ -19,6 +19,8 @@ elif arch in ('x86_64',):
+     arch = 'amd64'
+ elif arch.startswith('arm'):
+     arch = 'arm'
++elif arch in ('ppc64le',):
++    arch = 'ppc64'
+ 
+ # try to detect the JVM
+ if operating_system == 'darwin':

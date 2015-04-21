@@ -16,13 +16,37 @@
 %bcond_without go
 %bcond_without python3
 %bcond_without ruby19
-%bcond_without gridfs
 %bcond_without tuntap
 %bcond_without zeromq
 %bcond_without greenlet
 %bcond_without perlcoro
 %bcond_without glusterfs
+#mono
+%ifnarch %{mono_arches}
+%bcond_with mono
+%else
+%bcond_without mono
+%endif
+# mongodblibs
+# mongodb in little endian only, but also requires v8
+%ifnarch  %{ix86} x86_64 %{arm}
+%bcond_with mongodblibs
+%else
 %bcond_without mongodblibs
+%endif
+# v8
+%ifnarch %{ix86} x86_64 %{arm}
+%bcond_with v8
+%else
+%bcond_without v8
+%endif
+#mongodblibs dependency
+%if %{without mongodblibs}
+%bcond_with gridfs
+%else
+%bcond_without gridfs
+%endif
+#Fedora endif
 %endif
 
 # Conditionally disable some things in epel6
@@ -60,12 +84,11 @@
 
 Name:           uwsgi
 Version:        2.0.9
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons   
 License:        GPLv2 with exceptions
 URL:            https://github.com/unbit/uwsgi
-ExclusiveArch:  %{ix86} x86_64 %{arm}
 Source0:        http://projects.unbit.it/downloads/%{name}-%{version}.tar.gz
 Source1:        fedora.ini
 Source2:        uwsgi.service
@@ -82,6 +105,8 @@ Patch3:         uwsgi_fix_lua.patch
 Patch4:         uwsgi_fix_glibc_compatibility.patch
 # https://github.com/unbit/uwsgi/issues/882
 Patch5:         uwsgi_fix_mongodb.patch
+# Fix java/jvm include path on ppc64le
+Patch6:         uwsgi-ppc64le-java.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 %if %{with python3}
@@ -99,6 +124,9 @@ BuildRequires:  bzip2-devel, gmp-devel, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, libcurl-devel
 BuildRequires:  gloox-devel, libstdc++-devel
+BuildRequires:  GeoIP-devel, libevent-devel, zlib-devel
+BuildRequires:  openldap-devel, boost-devel
+BuildRequires:  libattr-devel, libxslt-devel
 %if %{with perlcoro}
 BuildRequires:  perl-Coro
 %endif
@@ -108,13 +136,19 @@ BuildRequires:  zeromq-devel
 %if %{with go}
 BuildRequires:  libgo-devel, gcc-go
 %endif
-BuildRequires:  GeoIP-devel, libevent-devel, zlib-devel
-BuildRequires:  mono-devel, mono-web, openldap-devel, v8-devel
-BuildRequires:  libmongodb-devel, boost-devel
-BuildRequires:  libattr-devel, libxslt-devel
 %if %{with systemd}
 BuildRequires:  systemd-devel, systemd-units
 %endif
+%if %{with mono}
+BuildRequires:  mono-devel, mono-web
+%endif
+%if %{with v8}
+BuildRequires:  v8-devel
+%endif
+%if %{with mongodblibs}
+BuildRequires:  libmongodb-devel
+%endif
+
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
 Obsoletes:      %{name}-plugin-erlang <= 1.9.20-1
@@ -180,12 +214,14 @@ Requires:   %{name}-plugin-common
 %description -n %{name}-stats-pusher-file
 This package contains the stats_pusher_file plugin for uWSGI
 
+%if %{with mongodblibs}
 %package -n %{name}-stats-pusher-mongodb
 Summary:    uWSGI - MongoDB Stats Pusher for uWSGI
 Requires:   %{name}-plugin-common
 
 %description -n %{name}-stats-pusher-mongodb
 This package contains the stats_pusher_mongodb plugin for uWSGI
+%endif
 
 %package -n %{name}-stats-pusher-socket
 Summary:    uWSGI - Socket Stats Pusher for uWSGI
@@ -312,6 +348,7 @@ Requires:  %{name}-plugin-common, zlib
 %description -n %{name}-logger-graylog2
 This package contains the graylog2 logger plugin for uWSGI
 
+%if %{with mongodblibs}
 %package -n %{name}-logger-mongodb
 Summary:   uWSGI - mongodblog logger plugin
 Group:     System Environment/Daemons
@@ -321,6 +358,7 @@ Provides:  %{name}-loggers = %{version}-%{release}
 
 %description -n %{name}-logger-mongodb
 This package contains the mongodblog logger plugin for uWSGI
+%endif
 
 %package -n %{name}-logger-pipe
 Summary:  uWSGI - logpipe logger plugin
@@ -502,6 +540,7 @@ Requires: python-greenlet, %{name}-plugin-common
 This package contains the python greenlet plugin for uWSGI
 %endif
 
+%if %{with gridfs}
 %package -n %{name}-plugin-gridfs
 Summary:  uWSGI - Plugin for GridFS support
 Group:    System Environment/Daemons
@@ -509,6 +548,7 @@ Requires: %{name}-plugin-common, libmongodb
 
 %description -n %{name}-plugin-gridfs
 This package contains the gridfs plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-jvm
 Summary:  uWSGI - Plugin for JVM support
@@ -552,6 +592,7 @@ Requires: %{name}-plugin-common, zeromq
 This package contains the mongrel2 plugin for uWSGI
 %endif
 
+%if %{with mono}
 %package -n %{name}-plugin-mono
 Summary:  uWSGI - Plugin for Mono / .NET support
 Group:    System Environment/Daemons
@@ -559,6 +600,7 @@ Requires: %{name}-plugin-common, mono-web
 
 %description -n %{name}-plugin-mono
 This package contains the mono plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-nagios
 Summary:  uWSGI - Plugin for Nagios support
@@ -712,6 +754,7 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-ugreen
 This package contains the uGreen plugin for uWSGI
 
+%if %{with v8}
 %package -n %{name}-plugin-v8
 Summary:  uWSGI - Plugin for v8 support
 Group:    System Environment/Daemons
@@ -719,6 +762,7 @@ Requires: %{name}-plugin-common, v8
 
 %description -n %{name}-plugin-v8
 This package contains the v8 plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-webdav
 Summary:  uWSGI - Plugin for WebDAV support
@@ -972,7 +1016,26 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%if 0%{?fedora} >= 22
 %patch5 -p1
+%endif
+%patch6 -p1 -b .ppc64le
+
+#disable plug-ins
+%if %{without mongodblibs}
+sed -in "s/mongodblog, //" buildconf/fedora.ini
+sed -in "s/stats_pusher_mongodb, //" buildconf/fedora.ini
+%endif
+%if %{without v8}
+sed -in "s/v8, //" buildconf/fedora.ini
+%endif
+%if %{without gridfs}
+sed -in "s/gridfs, //" buildconf/fedora.ini
+%endif
+%if %{without mono}
+sed -in "s/mono, //" buildconf/fedora.ini
+%endif
+
 
 %build
 %if %{with mongodblibs}
@@ -1028,7 +1091,9 @@ mkdir -p %{buildroot}%{_libdir}/%{name}
 mkdir -p %{buildroot}%{_javadir}
 mkdir -p %{buildroot}/run/%{name}
 mkdir -p %{buildroot}%{_httpd_moddir}
+%if %{with mono}
 mkdir -p %{buildroot}/usr/lib/mono/gac/
+%endif
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
 cp docs/Changelog-%{majornumber}.%{minornumber}.%{releasenumber}.rst CHANGELOG
@@ -1038,7 +1103,9 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
+%if %{with mono}
 gacutil -i plugins/mono/uwsgi.dll -f -package %{name} -root %{buildroot}/usr/lib
+%endif
 %{__install} -p -m 0644 %{name}.ini %{buildroot}%{_sysconfdir}/%{name}.ini
 %if %{with systemd}
 %{__install} -p -m 0644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
@@ -1139,8 +1206,10 @@ fi
 %files -n %{name}-stats-pusher-file
 %{_libdir}/%{name}/stats_pusher_file_plugin.so
 
+%if %{with mongodblibs}
 %files -n %{name}-stats-pusher-mongodb
 %{_libdir}/%{name}/stats_pusher_mongodb_plugin.so
+%endif
 
 %files -n %{name}-stats-pusher-socket
 %{_libdir}/%{name}/stats_pusher_socket_plugin.so
@@ -1193,8 +1262,10 @@ fi
 %files -n %{name}-logger-graylog2
 %{_libdir}/%{name}/graylog2_plugin.so
 
+%if %{with mongodblibs}
 %files -n %{name}-logger-mongodb
 %{_libdir}/%{name}/mongodblog_plugin.so
+%endif
 
 %files -n %{name}-logger-pipe
 %{_libdir}/%{name}/logpipe_plugin.so
@@ -1295,12 +1366,14 @@ fi
 %{_libdir}/%{name}/mongrel2_plugin.so
 %endif
 
+%if %{with mono}
 %files -n %{name}-plugin-mono
 %dir /usr/lib/mono/%{name}/
 %dir /usr/lib/mono/gac/%{name}/
 %{_libdir}/%{name}/mono_plugin.so
 /usr/lib/mono/%{name}/*.dll
 /usr/lib/mono/gac/%{name}/*/*.dll
+%endif
 
 %files -n %{name}-plugin-nagios
 %{_libdir}/%{name}/nagios_plugin.so
@@ -1365,8 +1438,10 @@ fi
 %files -n %{name}-plugin-ugreen
 %{_libdir}/%{name}/ugreen_plugin.so
 
+%if %{with v8}
 %files -n %{name}-plugin-v8
 %{_libdir}/%{name}/v8_plugin.so
+%endif
 
 %files -n %{name}-plugin-webdav
 %{_libdir}/%{name}/webdav_plugin.so
@@ -1454,6 +1529,9 @@ fi
 
 
 %changelog
+* Fri Apr 17 2015 Dan Horák <dan[at]danny.cz> - 2.0.9-5
+- conditionalize various subpackages depending on architectures (patch by Jakub Cajka) - #1211616
+
 * Tue Apr 14 2015 Vít Ondruch <vondruch@redhat.com> - 2.0.9-4
 - Fix glibc and MongoDB compatibility.
 
