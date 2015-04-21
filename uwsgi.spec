@@ -4,7 +4,7 @@
 %global releasenumber 9
 
 # Documentation sources:
-%global commit bc49905603e3f188e4e47692942a7bbeaee990c6
+%global commit 4ac8256da66fc95059c32924d467f4c7f7b2b0e7
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
@@ -86,8 +86,8 @@
 %endif
 
 Name:           uwsgi
-Version:        2.0.9
-Release:        5%{?dist}
+Version:        %{majornumber}.%{minornumber}.%{releasenumber}
+Release:        6%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1528,6 +1528,12 @@ fi
 
 
 %changelog
+* Tue Apr 21 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-6
+- Reworked the conditionals in the spec file
+- Updated documentation
+- Disabled PSGI for epel, builds fine but requirement is missing
+- Reenabled systemd for epel7, dunno how I missed that one
+
 * Fri Apr 17 2015 Dan Horák <dan[at]danny.cz> - 2.0.9-5
 - conditionalize various subpackages depending on architectures (patch by Jakub Cajka) - #1211616
 
