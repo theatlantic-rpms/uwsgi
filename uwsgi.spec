@@ -1024,7 +1024,9 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %if 0%{?fedora} >= 22
 %patch5 -p1
 %endif
+%if 0%{?rhel} >= 7
 %patch6 -p1 -b .ppc64le
+%endif
 
 
 %build
