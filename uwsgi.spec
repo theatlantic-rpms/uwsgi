@@ -55,6 +55,8 @@
 # el6 ppc64 doesn't hava java
 %ifarch ppc64
 %bcond_with java
+%else
+%bcond_without java
 %endif
 # el6 doesn't ship with systemd
 %bcond_with systemd
