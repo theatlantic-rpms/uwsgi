@@ -1036,6 +1036,7 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %endif
 %if 0%{?rhel} >= 7
 %patch6 -p1 -b .ppc64le
+%endif
 
 #disable plug-ins
 %if %{without mongodblibs}
