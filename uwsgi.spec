@@ -21,6 +21,7 @@
 %bcond_without greenlet
 %bcond_without perl
 %bcond_without glusterfs
+%bcond_without java
 #mono
 %ifnarch %{mono_arches}
 %bcond_with mono
@@ -51,6 +52,10 @@
 
 # Conditionally disable some things in epel6
 %if 0%{?rhel} == 6
+# el6 ppc64 doesn't hava java
+%ifarch ppc64
+%bcond_with java
+%endif
 # el6 doesn't ship with systemd
 %bcond_with systemd
 # el6 doesn't have go
@@ -69,6 +74,8 @@
 
 # Conditionally enable/disable some things in epel7
 %if 0%{?rhel} == 7
+# el7 does have java
+%bcond_without java
 # el7 does have systemd
 %bcond_without systemd
 # el7 doesn't have python3
@@ -552,6 +559,7 @@ Requires: %{name}-plugin-common, libmongodb
 This package contains the gridfs plugin for uWSGI
 %endif
 
+%if %{with java}
 %package -n %{name}-plugin-jvm
 Summary:  uWSGI - Plugin for JVM support
 Group:    System Environment/Daemons
@@ -567,6 +575,7 @@ Requires: %{name}-plugin-common, %{name}-plugin-jvm
 
 %description -n %{name}-plugin-jwsgi
 This package contains the jwsgi plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-ldap
 Summary:  uWSGI - Plugin for LDAP support
@@ -678,6 +687,7 @@ Requires: %{name}-plugin-common, ruby
 %description -n %{name}-plugin-rbthreads
 This package contains the rbthreads plugin for uWSGI
 
+%if %{with java}
 %package -n %{name}-plugin-ring
 Summary:  uWSGI - Clojure/Ring request handler support plugin
 Group:    System Environment/Daemons
@@ -685,6 +695,7 @@ Requires: %{name}-plugin-common, %{name}-plugin-jvm, clojure
 
 %description -n %{name}-plugin-ring
 This package contains the ring plugin for uWSGI
+%endif
 
 %package -n %{name}-plugin-rpc
 Summary:  uWSGI - Plugin for RPC support
@@ -1044,19 +1055,19 @@ sed -in "s/mono, //" buildconf/fedora.ini
 
 %build
 CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
-%if %{with mongodblibs}
-CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/mongodblog fedora
-CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/stats_pusher_mongodb fedora
-%endif
-%if %{with mono}
-CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/mono fedora
-%endif
-%if %{with v8}
-CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/v8 fedora
-%endif
 %if %{with python3}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/python fedora python3
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/tornado fedora tornado3
+%endif
+%if %{with mongodblibs}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mongodblog fedora
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/stats_pusher_mongodb fedora
+%endif
+%if %{with mono}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mono fedora
+%endif
+%if %{with v8}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/v8 fedora
 %endif
 %if %{with go}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/gccgo fedora
@@ -1088,6 +1099,11 @@ CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin
 %if %{with gridfs}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/gridfs fedora
 %endif
+%if %{with java}
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/jvm fedora
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/jwsgi fedora
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/ring fedora
+%endif
 %{_httpd_apxs} -Wc,-Wall -Wl -c apache2/mod_proxy_uwsgi.c
 
 %install
@@ -1114,7 +1130,9 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
+%if %{with java}
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
+%endif
 %if %{with mono}
 gacutil -i plugins/mono/uwsgi.dll -f -package %{name} -root %{buildroot}/usr/lib
 %endif
@@ -1360,12 +1378,14 @@ fi
 %{_libdir}/%{name}/gridfs_plugin.so
 %endif
 
+%if %{with java}
 %files -n %{name}-plugin-jvm
 %{_libdir}/%{name}/jvm_plugin.so
 %{_javadir}/uwsgi.jar
 
 %files -n %{name}-plugin-jwsgi
 %{_libdir}/%{name}/jwsgi_plugin.so
+%endif
 
 %files -n %{name}-plugin-ldap
 %{_libdir}/%{name}/ldap_plugin.so
@@ -1420,8 +1440,10 @@ fi
 %{_libdir}/%{name}/rbthreads_plugin.so
 %endif
 
+%if %{with java}
 %files -n %{name}-plugin-ring
 %{_libdir}/%{name}/ring_plugin.so
+%endif
 
 %files -n %{name}-plugin-rrdtool
 %{_libdir}/%{name}/rrdtool_plugin.so
