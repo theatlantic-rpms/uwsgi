@@ -95,7 +95,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1568,6 +1568,9 @@ fi
 
 
 %changelog
+* Thu Apr 23 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-7
+- Disabled java related plugins (jvm, jwsgi, ring) in el6 ppc64
+
 * Tue Apr 21 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-6
 - Reworked the conditionals in the spec file
 - Updated documentation
