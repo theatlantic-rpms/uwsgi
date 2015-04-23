@@ -21,7 +21,6 @@
 %bcond_without greenlet
 %bcond_without perl
 %bcond_without glusterfs
-
 #mono
 %ifnarch %{mono_arches}
 %bcond_with mono
@@ -1026,6 +1025,20 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %endif
 %if 0%{?rhel} >= 7
 %patch6 -p1 -b .ppc64le
+
+#disable plug-ins
+%if %{without mongodblibs}
+sed -in "s/mongodblog, //" buildconf/fedora.ini
+sed -in "s/stats_pusher_mongodb, //" buildconf/fedora.ini
+%endif
+%if %{without v8}
+sed -in "s/v8, //" buildconf/fedora.ini
+%endif
+%if %{without gridfs}
+sed -in "s/gridfs, //" buildconf/fedora.ini
+%endif
+%if %{without mono}
+sed -in "s/mono, //" buildconf/fedora.ini
 %endif
 
 
