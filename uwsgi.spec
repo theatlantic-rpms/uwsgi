@@ -95,7 +95,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1568,6 +1568,9 @@ fi
 
 
 %changelog
+* Mon May 18 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.0.9-8
+- Rebuild (mono4)
+
 * Thu Apr 23 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.9-7
 - Disabled java related plugins (jvm, jwsgi, ring) in el6 ppc64
 
