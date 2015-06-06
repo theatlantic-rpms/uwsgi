@@ -95,7 +95,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1568,6 +1568,9 @@ fi
 
 
 %changelog
+* Sat Jun 06 2015 Jitka Plesnikova <jplesnik@redhat.com> - 2.0.9-9
+- Perl 5.22 rebuild
+
 * Mon May 18 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.0.9-8
 - Rebuild (mono4)
 
