@@ -1,10 +1,10 @@
 # Version
 %global majornumber 2
 %global minornumber 0
-%global releasenumber 9
+%global releasenumber 11
 
 # Documentation sources:
-%global commit 4ac8256da66fc95059c32924d467f4c7f7b2b0e7
+%global commit c96716de34fa6572c129468507c695d9adef9829
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
