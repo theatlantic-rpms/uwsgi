@@ -1594,6 +1594,7 @@ fi
 - License is license (Jorge Gallegos)
 - Mark config files as %config (Jorge Gallegos)
 - Adding sources for new version (Jorge Gallegos)
+- uwsgi_fix_glibc_compatibility merged upstream (Jorge Gallegos)
 
 * Tue Jun 23 2015 Thomas Spura <tomspur@fedoraproject.org> - 2.0.9-11
 - rebuilt for new zeromq 4.1.2
