@@ -111,9 +111,6 @@ Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
 Patch3:         uwsgi_fix_lua.patch
-# https://github.com/unbit/uwsgi/issues/883
-# https://sourceware.org/bugzilla/show_bug.cgi?id=17523
-Patch4:         uwsgi_fix_glibc_compatibility.patch
 # https://github.com/unbit/uwsgi/issues/882
 Patch5:         uwsgi_fix_mongodb.patch
 # Fix java/jvm include path on ppc64le
@@ -1048,7 +1045,6 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 %if 0%{?fedora} >= 22
 %patch5 -p1
 %endif
