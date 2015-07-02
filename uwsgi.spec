@@ -1128,6 +1128,7 @@ mkdir -p %{buildroot}/usr/lib/mono/gac/
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
 cp docs/Changelog-%{majornumber}.%{minornumber}.%{releasenumber}.rst CHANGELOG
+rm -f docs/.gitignore
 echo "%{commit}, i.e. this:" >> README.Fedora
 echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
@@ -1221,7 +1222,9 @@ fi
 %endif
 %dir %{_sysconfdir}/%{name}.d
 %dir /run/%{name}
-%doc LICENSE README README.Fedora CHANGELOG
+%doc README README.Fedora CHANGELOG
+%{!?_licensedir:%global license %%doc}
+%license LICENSE
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
