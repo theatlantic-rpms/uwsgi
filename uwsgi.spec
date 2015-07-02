@@ -499,6 +499,14 @@ Requires: %{name}-plugin-common
 %description -n %{name}-plugin-dumbloop
 This package contains the dumbloop plugin for uWSGI
 
+%package -n %{name}-plugin-dummy
+Summary:  uWSGI - Plugin for Dummy support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-dummy
+This package contains the dummy plugin for uWSGI
+
 %package -n %{name}-plugin-fiber
 Summary:  uWSGI - Plugin for Ruby Fiber support
 Group:    System Environment/Daemons
@@ -622,6 +630,14 @@ Requires: %{name}-plugin-common
 
 %description -n %{name}-plugin-nagios
 This package contains the nagios plugin for uWSGI
+
+%package -n %{name}-plugin-notfound
+Summary:  uWSGI - Plugin for notfound support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-notfound
+This package contains the notfound plugin for uWSGI
 
 %package -n %{name}-plugin-pam
 Summary:  uWSGI - Plugin for PAM support
@@ -1353,6 +1369,9 @@ fi
 %files -n %{name}-plugin-dumbloop
 %{_libdir}/%{name}/dumbloop_plugin.so
 
+%files -n %{name}-plugin-dummy
+%{_libdir}/%{name}/dummy_plugin.so
+
 %if %{with ruby19}
 %files -n %{name}-plugin-fiber
 %{_libdir}/%{name}/fiber_plugin.so
@@ -1415,6 +1434,9 @@ fi
 
 %files -n %{name}-plugin-nagios
 %{_libdir}/%{name}/nagios_plugin.so
+
+%files -n %{name}-plugin-notfound
+%{_libdir}/%{name}/notfound_plugin.so
 
 %files -n %{name}-plugin-pam
 %{_libdir}/%{name}/pam_plugin.so
