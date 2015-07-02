@@ -1213,9 +1213,9 @@ fi
 
 %files
 %{_sbindir}/%{name}
-%{_sysconfdir}/%{name}.ini
+%config %{_sysconfdir}/%{name}.ini
 %if %{with systemd}
-%{_unitdir}/%{name}.service
+%config %{_unitdir}/%{name}.service
 %else
 %{_initddir}/%{name}
 %endif
