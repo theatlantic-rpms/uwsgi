@@ -1,10 +1,10 @@
 # Version
 %global majornumber 2
 %global minornumber 0
-%global releasenumber 11
+%global releasenumber 11.1
 
 # Documentation sources:
-%global commit c96716de34fa6572c129468507c695d9adef9829
+%global commit 85d6b16c62f2d6239d5d5a69594e984e42fd4777
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
@@ -1589,6 +1589,9 @@ fi
 
 
 %changelog
+* Tue Jul 21 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.1-1
+- New emergency security release
+
 * Thu Jul 02 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11-1
 - Adding the dummy and notfound plugins (Jorge Gallegos)
 - License is license (Jorge Gallegos)
