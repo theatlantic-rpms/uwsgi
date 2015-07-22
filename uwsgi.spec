@@ -95,7 +95,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1589,6 +1589,9 @@ fi
 
 
 %changelog
+* Wed Jul 22 2015 David Tardon <dtardon@redhat.com> - 2.0.11.1-2
+- rebuild for Boost 1.58
+
 * Tue Jul 21 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.1-1
 - New emergency security release
 
