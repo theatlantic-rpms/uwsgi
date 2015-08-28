@@ -95,7 +95,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1589,6 +1589,9 @@ fi
 
 
 %changelog
+* Fri Aug 28 2015 Jonathan Wakely <jwakely@redhat.com> - 2.0.11.1-4
+- Rebuilt for Boost 1.59
+
 * Wed Jul 29 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Changes/F23Boost159
 
