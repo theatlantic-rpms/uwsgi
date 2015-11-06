@@ -1,10 +1,10 @@
 # Version
 %global majornumber 2
 %global minornumber 0
-%global releasenumber 11.1
+%global releasenumber 11.2
 
 # Documentation sources:
-%global commit 85d6b16c62f2d6239d5d5a69594e984e42fd4777
+%global commit 2d5b92a682ebdf056b1c8792f04539b1e7eff62c
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
@@ -95,7 +95,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        4%{?dist}
+Release:        1%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1589,6 +1589,9 @@ fi
 
 
 %changelog
+* Fri Nov 06 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-1
+- With latest stable
+
 * Fri Aug 28 2015 Jonathan Wakely <jwakely@redhat.com> - 2.0.11.1-4
 - Rebuilt for Boost 1.59
 
