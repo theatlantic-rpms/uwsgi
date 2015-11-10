@@ -95,7 +95,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1589,6 +1589,9 @@ fi
 
 
 %changelog
+* Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
+
 * Fri Nov 06 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-1
 - With latest stable
 
