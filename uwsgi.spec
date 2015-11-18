@@ -1634,11 +1634,11 @@ fi
 
 %changelog
 * Tue Nov 17 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-3
-- Attempting to deal with bz #1247395
-- Fixing bz #1261942
-- Fixing bz #1258388
-- Fixing bz #1242155
-- Fixing bz #1240236
+- Fixing bz #1247395 - python3 plugin for epel7
+- Fixing bz #1261942 - daemonize properly in SystemV
+- Fixing bz #1258388 - package uwsgidecorators
+- Fixing bz #1242155 - glusterfs plugin for epel7
+- Fixing bz #1240236 - add source to -devel subpackage
 
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
