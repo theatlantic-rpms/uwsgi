@@ -15,6 +15,7 @@
 %bcond_without systemd
 %bcond_without go
 %bcond_without python3
+%{!?python3_pkgversion: %global python3_pkgversion 3}
 %bcond_without ruby19
 %bcond_without tuntap
 %bcond_without zeromq
@@ -80,8 +81,9 @@
 %bcond_without java
 # el7 does have systemd
 %bcond_without systemd
-# el7 doesn't have python3
-%bcond_with python3
+# el7 does have python3
+%bcond_without python3
+%{!?python3_pkgversion: %global python3_pkgversion 34}
 # el7 doesn't have zeromq
 %bcond_with zeromq
 # el7 doesn't have greenlet
@@ -95,7 +97,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -118,7 +120,7 @@ Patch6:         uwsgi-ppc64le-java.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 %if %{with python3}
-BuildRequires:  python3-devel
+BuildRequires:  python%{python3_pkgversion}-devel
 %endif
 %if %{with greenlet}
 BuildRequires:  python-greenlet-devel
@@ -418,12 +420,12 @@ This package contains the syslog logger plugin for uWSGI
 
 %if %{with systemd}
 %package -n %{name}-logger-systemd
-Summary:  uWSGI - SystemD Journal logger plugin
+Summary:  uWSGI - systemd journal logger plugin
 Group:    System Environment/Daemons
 Requires: %{name}-plugin-common
 
 %description -n %{name}-logger-systemd
-This package contains the SystemD Journal logger plugin for uWSGI
+This package contains the systemd journal logger plugin for uWSGI
 %endif
 
 %if %{with zeromq}
@@ -679,12 +681,12 @@ Requires: python, %{name}-plugin-common
 This package contains the python plugin for uWSGI
 
 %package -n %{name}-plugin-python3
-Summary:  uWSGI - Plugin for Python 3.2 support
+Summary:  uWSGI - Plugin for Python 3 support
 Group:    System Environment/Daemons
-Requires: python3, %{name}-plugin-common
+Requires: python%{python3_pkgversion}, %{name}-plugin-common
 
 %description -n %{name}-plugin-python3
-This package contains the Python 3.2 plugin for uWSGI
+This package contains the Python 3 plugin for uWSGI
 
 %package -n %{name}-plugin-rack
 Summary:  uWSGI - Ruby rack plugin
@@ -1071,8 +1073,8 @@ sed -in "s/mono, //" buildconf/fedora.ini
 %build
 CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
 %if %{with python3}
-CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/python fedora python3
-CFLAGS="%{optflags} -Wno-unused-but-set-variable" python3 uwsgiconfig.py --plugin plugins/tornado fedora tornado3
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" %{__python3} uwsgiconfig.py --plugin plugins/python fedora python3
+CFLAGS="%{optflags} -Wno-unused-but-set-variable" %{__python3} uwsgiconfig.py --plugin plugins/tornado fedora tornado3
 %endif
 %if %{with mongodblibs}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mongodblog fedora
@@ -1589,6 +1591,9 @@ fi
 
 
 %changelog
+* Tue Nov 17 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-3
+- Attempting to deal with bz #1247395
+
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
 
