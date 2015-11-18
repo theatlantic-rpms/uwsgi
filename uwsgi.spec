@@ -90,8 +90,9 @@
 %bcond_with greenlet
 # el7 doesn't have perl-Coro
 %bcond_with perl
-# this fails in el not sure why
-%bcond_with glusterfs
+# el7 can now build glusterfs so that's neat
+%bcond_without glusterfs
+# this fails in el7 not sure why
 %bcond_with gridfs
 %endif
 
@@ -1627,6 +1628,7 @@ fi
 - Attempting to deal with bz #1247395
 - Fixing bz #1261942
 - Fixing bz #1258388
+- Fixing bz #1242155
 
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
