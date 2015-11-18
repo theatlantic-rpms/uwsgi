@@ -16,7 +16,7 @@ PROG=/usr/sbin/uwsgi
 OWNER=uwsgi
 NAME=uwsgi
 DESC="Fast, self-healing, application container server"
-DAEMON_OPTS="--ini /etc/uwsgi.ini"
+DAEMON_OPTS="--ini /etc/uwsgi.ini --daemonize /var/log/uwsgi.log"
 
 [ -f /etc/sysconfig/uwsgi ] && . /etc/sysconfig/uwsgi
 

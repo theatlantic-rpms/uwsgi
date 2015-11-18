@@ -1593,6 +1593,7 @@ fi
 %changelog
 * Tue Nov 17 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-3
 - Attempting to deal with bz #1247395
+- Fixing bz #1261942
 
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
