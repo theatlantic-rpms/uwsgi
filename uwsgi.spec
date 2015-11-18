@@ -10,6 +10,10 @@
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
 %{!?_httpd_moddir:    %{expand: %%global _httpd_moddir    %%{_libdir}/httpd/modules}}
 
+# Turn off byte compilation so it doesn't try
+# to auto-optimize the code in /usr/src/uwsgi
+%global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-python-bytecompile[[:space:]].*$!!g')
+
 # This is primarily built for fedora, make it easy right now
 %if 0%{?fedora}
 %bcond_without systemd
@@ -191,9 +195,9 @@ Being fully modular can use tons of different technology on top of the same
 core.
 
 %package -n %{name}-devel
-Summary:  uWSGI - Development header files and libraries
-Group:    Development/Libraries
-Requires: %{name}
+Summary:    uWSGI - Development header files and libraries
+Group:      Development/Libraries
+Requires:   %{name}
 
 %description -n %{name}-devel
 This package contains the development header files and libraries
@@ -1144,6 +1148,7 @@ CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin
 
 %install
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}.d
+mkdir -p %{buildroot}%{_usrsrc}/%{name}/%{version}
 %if %{with systemd}
 mkdir -p %{buildroot}%{_unitdir}
 %else
@@ -1160,6 +1165,7 @@ mkdir -p %{buildroot}/usr/lib/mono/gac/
 %endif
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
+tar -C %{buildroot}%{_usrsrc}/%{name}/%{version} --strip-components=1 -xvzf %{SOURCE0}
 cp docs/Changelog-%{majornumber}.%{minornumber}.%{releasenumber}.rst CHANGELOG
 rm -f docs/.gitignore
 echo "%{commit}, i.e. this:" >> README.Fedora
@@ -1168,8 +1174,10 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
 %{__install} -D -p -m 0644 uwsgidecorators.py %{buildroot}%{python_sitelib}/uwsgidecorators.py
+%py_byte_compile %{__python2} %{buildroot}%{python_sitelib}/
 %if %{with python3}
 %{__install} -D -p -m 0644 uwsgidecorators.py %{buildroot}%{python3_sitelib}/uwsgidecorators.py
+%py_byte_compile %{__python3} %{buildroot}%{python3_sitelib}/
 %endif
 %if %{with java}
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
@@ -1265,6 +1273,7 @@ fi
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
+%{_usrsrc}/%{name}/%{version}
 
 %files -n python-uwsgidecorators
 %defattr(-,root,root,-)
@@ -1629,6 +1638,7 @@ fi
 - Fixing bz #1261942
 - Fixing bz #1258388
 - Fixing bz #1242155
+- Fixing bz #1240236
 
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
