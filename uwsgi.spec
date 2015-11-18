@@ -1178,7 +1178,7 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
 %{__install} -D -p -m 0644 uwsgidecorators.py %{buildroot}%{python_sitelib}/uwsgidecorators.py
-%py_byte_compile %{__python2} %{buildroot}%{python_sitelib}/
+%py_byte_compile %{__python} %{buildroot}%{python_sitelib}/
 %if %{with python3}
 %{__install} -D -p -m 0644 uwsgidecorators.py %{buildroot}%{python3_sitelib}/uwsgidecorators.py
 %py_byte_compile %{__python3} %{buildroot}%{python3_sitelib}/
