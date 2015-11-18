@@ -94,15 +94,19 @@
 %bcond_with greenlet
 # el7 doesn't have perl-Coro
 %bcond_with perl
-# el7 can now build glusterfs so that's neat
+# el7 can now build glusterfs but not on PPC so that's neat
+%ifarch ppc64
+%bcond_with glusterfs
+%else
 %bcond_without glusterfs
+%endif
 # this fails in el7 not sure why
 %bcond_with gridfs
 %endif
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1633,6 +1637,9 @@ fi
 
 
 %changelog
+* Wed Nov 18 2015 Jorge A Gallegos <kad@blegh.net>
+- Fixing glusterfs for ppc64
+
 * Tue Nov 17 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-3
 - Fixing bz #1247395 - python3 plugin for epel7
 - Fixing bz #1261942 - daemonize properly in SystemV
