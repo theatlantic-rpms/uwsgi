@@ -1166,9 +1166,9 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
-%{__install} -p -m 0644 uwsgidecorators.py %{buildroot}%{python_sitelib}/uwsgidecorators.py
+%{__install} -D -p -m 0644 uwsgidecorators.py %{buildroot}%{python_sitelib}/uwsgidecorators.py
 %if %{with python3}
-%{__install} -p -m 0644 uwsgidecorators.py %{buildroot}%{python3_sitelib}/uwsgidecorators.py
+%{__install} -D -p -m 0644 uwsgidecorators.py %{buildroot}%{python3_sitelib}/uwsgidecorators.py
 %endif
 %if %{with java}
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
@@ -1267,11 +1267,12 @@ fi
 
 %files -n python-uwsgidecorators
 %defattr(-,root,root,-)
-%{python_sitelib}/uwsgidecorators.py*
+%{python_sitelib}/*
 
 %if %{with python3}
+%files -n python3-uwsgidecorators
 %defattr(-,root,root,-)
-%{python3_sitelib}/uwsgidecorators.py*
+%{python3_sitelib}/*
 %endif
 
 %files -n %{name}-docs
