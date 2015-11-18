@@ -198,6 +198,24 @@ Requires: %{name}
 This package contains the development header files and libraries
 for uWSGI extensions
 
+%package -n python-uwsgidecorators
+Summary:        Python decorators providing access to the uwsgi API
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}-plugin-python = %{version}-%{release}
+
+%description -n python-uwsgidecorators
+The uwsgidecorators Python module provides higher-level access to the uWSGI API.
+
+%package -n python3-uwsgidecorators
+Summary:        Python 3 decorators providing access to the uwsgi API
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}-plugin-python3 = %{version}-%{release}
+
+%description -n python3-uwsgidecorators
+The uwsgidecorators Python 3 module provides higher-level access to the uWSGI API.
+
 %package -n %{name}-docs
 Summary:  uWSGI - Documentation
 Group:    Documentation
@@ -1148,6 +1166,10 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0755 %{name} %{buildroot}%{_sbindir}
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
+%{__install} -p -m 0644 uwsgidecorators.py %{buildroot}%{python_sitelib}/uwsgidecorators.py
+%if %{with python3}
+%{__install} -p -m 0644 uwsgidecorators.py %{buildroot}%{python3_sitelib}/uwsgidecorators.py
+%endif
 %if %{with java}
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
 %endif
@@ -1242,6 +1264,15 @@ fi
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
+
+%files -n python-uwsgidecorators
+%defattr(-,root,root,-)
+%{python_sitelib}/uwsgidecorators.py*
+
+%if %{with python3}
+%defattr(-,root,root,-)
+%{python3_sitelib}/uwsgidecorators.py*
+%endif
 
 %files -n %{name}-docs
 %doc docs
@@ -1594,6 +1625,7 @@ fi
 * Tue Nov 17 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-3
 - Attempting to deal with bz #1247395
 - Fixing bz #1261942
+- Fixing bz #1258388
 
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.11.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
