@@ -1646,7 +1646,7 @@ fi
 
 
 %changelog
-* Wed Nov 18 2015 Jorge A Gallegos <kad@blegh.net>
+* Wed Nov 18 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-4
 - Fixing glusterfs for ppc64
 
 * Tue Nov 17 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-3
