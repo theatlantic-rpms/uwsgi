@@ -111,7 +111,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1646,6 +1646,9 @@ fi
 
 
 %changelog
+* Thu Nov 19 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-5
+- Fixing manual brp-compiling in el6
+
 * Wed Nov 18 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-4
 - Fixing glusterfs for ppc64
 
