@@ -10,10 +10,6 @@
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
 %{!?_httpd_moddir:    %{expand: %%global _httpd_moddir    %%{_libdir}/httpd/modules}}
 
-# Turn off byte compilation so it doesn't try
-# to auto-optimize the code in /usr/src/uwsgi
-%global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-python-bytecompile[[:space:]].*$!!g')
-
 # This is primarily built for fedora, make it easy right now
 %if 0%{?fedora}
 %bcond_without systemd
@@ -77,6 +73,9 @@
 %bcond_with gridfs
 %bcond_with tuntap
 %bcond_with mongodblibs
+%global manual_py_compile 0
+%else
+%global manual_py_compile 1
 %endif
 
 # Conditionally enable/disable some things in epel7
@@ -102,6 +101,12 @@
 %endif
 # this fails in el7 not sure why
 %bcond_with gridfs
+%endif
+
+# Turn off byte compilation so it doesn't try
+# to auto-optimize the code in /usr/src/uwsgi
+%if %{manual_py_compile} == 1
+%global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-python-bytecompile[[:space:]].*$!!g')
 %endif
 
 Name:           uwsgi
@@ -1178,10 +1183,14 @@ echo "https://github.com/unbit/%{docrepo}/tree/%{commit}" >> README.Fedora
 %{__install} -p -m 0644 *.h %{buildroot}%{_includedir}/%{name}
 %{__install} -p -m 0755 *_plugin.so %{buildroot}%{_libdir}/%{name}
 %{__install} -D -p -m 0644 uwsgidecorators.py %{buildroot}%{python_sitelib}/uwsgidecorators.py
+%if %{manual_py_compile} == 1
 %py_byte_compile %{__python} %{buildroot}%{python_sitelib}/
+%endif
 %if %{with python3}
 %{__install} -D -p -m 0644 uwsgidecorators.py %{buildroot}%{python3_sitelib}/uwsgidecorators.py
+%if %{manual_py_compile} == 1
 %py_byte_compile %{__python3} %{buildroot}%{python3_sitelib}/
+%endif
 %endif
 %if %{with java}
 %{__install} -p -m 0644 plugins/jvm/%{name}.jar %{buildroot}%{_javadir}
