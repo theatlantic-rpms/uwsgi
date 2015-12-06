@@ -93,8 +93,8 @@
 %bcond_with greenlet
 # el7 doesn't have perl-Coro
 %bcond_with perl
-# el7 can now build glusterfs but not on PPC so that's neat
-%ifarch ppc64
+# el7 can now build glusterfs but only on x86_64
+%ifnarch x86_64
 %bcond_with glusterfs
 %else
 %bcond_without glusterfs
@@ -111,7 +111,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1646,6 +1646,9 @@ fi
 
 
 %changelog
+* Sun Dec  6 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.0.11.2-6
+- Fixing glusterfs for non x86_64 on el7
+
 * Thu Nov 19 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11.2-5
 - Fixing manual brp-compiling in el6
 
