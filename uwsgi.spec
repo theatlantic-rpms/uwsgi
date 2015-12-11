@@ -15,6 +15,7 @@
 %bcond_without systemd
 %bcond_without go
 %bcond_without python3
+%bcond_without tornado3
 %{!?python3_pkgversion: %global python3_pkgversion 3}
 %bcond_without ruby19
 %bcond_without tuntap
@@ -65,6 +66,7 @@
 %bcond_with go
 # el6 doesn't have python3
 %bcond_with python3
+%bcond_with tornado3
 # el6 ships with ruby 1.8 but fiberloop/rbthreads needs 1.9
 %bcond_with ruby19
 # el7 doesn't have perl-PSGI
@@ -87,6 +89,8 @@
 # el7 does have python3
 %bcond_without python3
 %{!?python3_pkgversion: %global python3_pkgversion 34}
+# ...but no python3-tornado yet
+%bcond_with tornado3
 # el7 doesn't have zeromq
 %bcond_with zeromq
 # el7 doesn't have greenlet
@@ -111,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1106,7 +1110,9 @@ sed -in "s/mono, //" buildconf/fedora.ini
 CFLAGS="%{optflags} -Wno-error -Wno-unused-but-set-variable" python uwsgiconfig.py --build fedora.ini
 %if %{with python3}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" %{__python3} uwsgiconfig.py --plugin plugins/python fedora python3
+%if %{with tornado3}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" %{__python3} uwsgiconfig.py --plugin plugins/tornado fedora tornado3
+%endif
 %endif
 %if %{with mongodblibs}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mongodblog fedora
@@ -1547,7 +1553,7 @@ fi
 %files -n %{name}-plugin-tornado
 %{_libdir}/%{name}/tornado_plugin.so
 
-%if %{with python3}
+%if %{with tornado3}
 %files -n %{name}-plugin-tornado3
 %{_libdir}/%{name}/tornado3_plugin.so
 %endif
@@ -1646,6 +1652,9 @@ fi
 
 
 %changelog
+* Fri Dec 11 2015 Ville Skyttä <ville.skytta@iki.fi> - 2.0.11.2-7
+- Don't build tornado3 for EL7 (no python3-tornado available yet)
+
 * Sun Dec  6 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.0.11.2-6
 - Fixing glusterfs for non x86_64 on el7
 
