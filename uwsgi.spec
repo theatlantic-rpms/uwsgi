@@ -133,8 +133,6 @@ Patch2:         uwsgi_ruby20_compatibility.patch
 Patch3:         uwsgi_fix_lua.patch
 # https://github.com/unbit/uwsgi/issues/882
 Patch5:         uwsgi_fix_mongodb.patch
-# Fix java/jvm include path on ppc64le
-Patch6:         uwsgi-ppc64le-java.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 %if %{with python3}
@@ -1086,9 +1084,6 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %if 0%{?fedora} >= 22
 %patch5 -p1
 %endif
-%if 0%{?rhel} >= 7
-%patch6 -p1 -b .ppc64le
-%endif
 
 #disable plug-ins
 %if %{without mongodblibs}
@@ -1654,6 +1649,7 @@ fi
 %changelog
 * Fri Dec 11 2015 Ville Skyttä <ville.skytta@iki.fi> - 2.0.11.2-7
 - Don't build tornado3 for EL7 (no python3-tornado available yet)
+- Fix EL7 ppc64le build
 
 * Sun Dec  6 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.0.11.2-6
 - Fixing glusterfs for non x86_64 on el7
