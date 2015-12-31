@@ -1,8 +1,8 @@
 diff --git a/plugins/jvm/uwsgiplugin.py b/plugins/jvm/uwsgiplugin.py
-index ac7eb3e..0911288 100644
+index f39ad63..d9e95bb 100644
 --- a/plugins/jvm/uwsgiplugin.py
 +++ b/plugins/jvm/uwsgiplugin.py
-@@ -59,11 +59,6 @@ if "-framework JavaVM" in JVM_LIBPATH:
+@@ -65,11 +65,6 @@ if "-framework JavaVM" in JVM_LIBPATH:
  
  GCC_LIST = ['jvm_plugin']
  
@@ -15,37 +15,35 @@ index ac7eb3e..0911288 100644
      if os.system("javac %s/plugins/jvm/uwsgi.java" % os.getcwd()) != 0:
          os._exit(1)
 diff --git a/plugins/php/uwsgiplugin.py b/plugins/php/uwsgiplugin.py
-index 4142aea..774d6bb 100644
+index 45c58e5..8eb2b73 100644
 --- a/plugins/php/uwsgiplugin.py
 +++ b/plugins/php/uwsgiplugin.py
-@@ -17,7 +17,6 @@ LDFLAGS = os.popen(PHPPATH + ' --ldflags').read().rstrip().split()
+@@ -19,7 +19,6 @@ LDFLAGS = os.popen(PHPPATH + ' --ldflags').read().rstrip().split()
  
  if ld_run_path:
      LDFLAGS.append('-L%s' % ld_run_path)
 -    os.environ['LD_RUN_PATH'] = ld_run_path
  
- LIBS = [os.popen(PHPPATH + ' --libs').read().rstrip(), '-lphp5']
+ LIBS = [os.popen(PHPPATH + ' --libs').read().rstrip(), '-lphp' + php_version]
  
 diff --git a/plugins/python/uwsgiplugin.py b/plugins/python/uwsgiplugin.py
-index 13c29cd..8bc464c 100644
+index eb6755f..b75fa29 100644
 --- a/plugins/python/uwsgiplugin.py
 +++ b/plugins/python/uwsgiplugin.py
-@@ -44,10 +44,8 @@ if not 'UWSGI_PYTHON_NOLIB' in os.environ:
-     else:
-         try:
-             LDFLAGS.append("-L%s" % sysconfig.get_config_var('LIBDIR'))
--            os.environ['LD_RUN_PATH'] = "%s" % (sysconfig.get_config_var('LIBDIR'))
-         except:
-             LDFLAGS.append("-L%s/lib" % sysconfig.PREFIX)
--            os.environ['LD_RUN_PATH'] = "%s/lib" % sysconfig.PREFIX
+@@ -58,8 +58,6 @@ if not 'UWSGI_PYTHON_NOLIB' in os.environ:
+         LDFLAGS.append("-L%s" % libdir)
+         LDFLAGS.append("-Wl,-rpath=%s" % libdir)
  
+-        os.environ['LD_RUN_PATH'] = "%s" % libdir
+-
          LIBS.append('-lpython%s' % get_python_version())
  else:
+     LIBS = []
 diff --git a/plugins/rack/uwsgiplugin.py b/plugins/rack/uwsgiplugin.py
-index 3d8ee83..45dc5e3 100644
+index 210b28e..06f5edd 100644
 --- a/plugins/rack/uwsgiplugin.py
 +++ b/plugins/rack/uwsgiplugin.py
-@@ -44,7 +44,6 @@ LIBS = os.popen(RUBYPATH + " -e \"require 'rbconfig';print %s::CONFIG['LIBS']\""
+@@ -46,7 +46,6 @@ LIBS = os.popen(RUBYPATH + " -e \"require 'rbconfig';print %s::CONFIG['LIBS']\""
  
  if has_shared == 'yes':
      LDFLAGS.append('-L' + libpath )
