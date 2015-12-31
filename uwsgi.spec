@@ -1172,7 +1172,7 @@ mkdir -p %{buildroot}%{_javadir}
 mkdir -p %{buildroot}/run/%{name}
 mkdir -p %{buildroot}%{_httpd_moddir}
 %if %{with mono}
-mkdir -p %{buildroot}/usr/lib/mono/gac/
+mkdir -p %{buildroot}%{_monogacdir}
 %endif
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
@@ -1480,11 +1480,9 @@ fi
 
 %if %{with mono}
 %files -n %{name}-plugin-mono
-%dir /usr/lib/mono/%{name}/
-%dir /usr/lib/mono/gac/%{name}/
 %{_libdir}/%{name}/mono_plugin.so
-/usr/lib/mono/%{name}/*.dll
-/usr/lib/mono/gac/%{name}/*/*.dll
+%{_monodir}/%{name}/
+%{_monogacdir}/%{name}/
 %endif
 
 %files -n %{name}-plugin-nagios
