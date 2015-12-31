@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1650,6 +1650,15 @@ fi
 
 
 %changelog
+* Thu Dec 31 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.12-1
+- Adding the build profile to -devel subpackage (Jorge Gallegos)
+- Fixing stats-pusher-mongo for gnu++11 (Jorge Gallegos)
+- Using _mono macros instead of hardcoded paths (Jorge Gallegos)
+- Modifying an old changelog entry for rpmlint (Jorge Gallegos)
+- Making -devel not pull unnecessary deps (Jorge Gallegos)
+- Adjusting rpath patch for new release (Jorge Gallegos)
+- Updating to latest stable version 2.0.12 (Jorge Gallegos)
+
 * Fri Dec 11 2015 Ville Skyttä <ville.skytta@iki.fi> - 2.0.11.2-7
 - Don't build tornado3 for EL7 (no python3-tornado available yet)
 - Fix EL7 ppc64le build
