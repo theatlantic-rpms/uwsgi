@@ -1115,7 +1115,7 @@ CFLAGS="%{optflags} -Wno-unused-but-set-variable" %{__python3} uwsgiconfig.py --
 %endif
 %if %{with mongodblibs}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mongodblog fedora
-CXXFLAGS="%{optflags} -std=c++11" CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/stats_pusher_mongodb fedora
+CXXFLAGS="%{optflags} -std=c++11" CC="g++" python uwsgiconfig.py --plugin plugins/stats_pusher_mongodb fedora
 %endif
 %if %{with mono}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mono fedora
