@@ -1689,7 +1689,7 @@ fi
 * Thu Jul 02 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.11-1
 - Adding the dummy and notfound plugins (Jorge Gallegos)
 - License is license (Jorge Gallegos)
-- Mark config files as %config (Jorge Gallegos)
+- Mark config files as config (Jorge Gallegos)
 - Adding sources for new version (Jorge Gallegos)
 - uwsgi_fix_glibc_compatibility merged upstream (Jorge Gallegos)
 
