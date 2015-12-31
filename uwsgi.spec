@@ -210,6 +210,7 @@ Summary:    uWSGI - Development header files and libraries
 Group:      Development/Libraries
 Requires:   %{name}
 
+%filter_provides_in %{_usrsrc}/%{name}
 %description -n %{name}-devel
 This package contains the development header files and libraries
 for uWSGI extensions
