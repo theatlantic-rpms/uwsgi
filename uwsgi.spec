@@ -1180,6 +1180,7 @@ mkdir -p %{buildroot}%{_monogacdir}
 mkdir docs
 tar -C docs/ --strip-components=1 -xvzf uwsgi-docs.tar.gz
 tar -C %{buildroot}%{_usrsrc}/%{name}/%{version} --strip-components=1 -xvzf %{SOURCE0}
+cp %{SOURCE1} %{buildroot}%{_usrsrc}/%{name}/%{version}/buildconf/
 cp docs/Changelog-%{majornumber}.%{minornumber}.%{releasenumber}.rst CHANGELOG
 rm -f docs/.gitignore
 echo "%{commit}, i.e. this:" >> README.Fedora
