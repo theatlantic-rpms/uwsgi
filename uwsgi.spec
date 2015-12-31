@@ -191,6 +191,10 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 %endif
 
+%filter_requires_in %{_usrsrc}
+%filter_provides_in %{_usrsrc}
+%filter_setup
+
 %description
 uWSGI is a fast (pure C), self-healing, developer/sysadmin-friendly
 application container server.  Born as a WSGI-only server, over time it has
@@ -210,7 +214,6 @@ Summary:    uWSGI - Development header files and libraries
 Group:      Development/Libraries
 Requires:   %{name}
 
-%filter_provides_in %{_usrsrc}/%{name}
 %description -n %{name}-devel
 This package contains the development header files and libraries
 for uWSGI extensions
