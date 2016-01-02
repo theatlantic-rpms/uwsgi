@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1650,6 +1650,9 @@ fi
 
 
 %changelog
+* Sat Jan 02 2016 Jorge A Gallegos <kad@blegh.net> - 2.0.12-2
+- Trying again with GCC
+
 * Thu Dec 31 2015 Jorge A Gallegos <kad@blegh.net> - 2.0.12-1
 - Adding the build profile to -devel subpackage (Jorge Gallegos)
 - Fixing stats-pusher-mongo for gnu++11 (Jorge Gallegos)
