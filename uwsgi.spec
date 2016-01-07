@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1650,6 +1650,9 @@ fi
 
 
 %changelog
+* Thu Jan 07 2016 Jorge A Gallegos <kad@blegh.net> - 2.0.12-3
+- Really fixing stats_pusher_mongodb (Jorge Gallegos)
+
 * Sat Jan 02 2016 Jorge A Gallegos <kad@blegh.net> - 2.0.12-2
 - Trying again with GCC
 
