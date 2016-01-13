@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1650,6 +1650,9 @@ fi
 
 
 %changelog
+* Wed Jan 13 2016 Vít Ondruch <vondruch@redhat.com> - 2.0.12-4
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.3
+
 * Thu Jan 07 2016 Jorge A Gallegos <kad@blegh.net> - 2.0.12-3
 - Really fixing stats_pusher_mongodb (Jorge Gallegos)
 
