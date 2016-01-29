@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1650,6 +1650,9 @@ fi
 
 
 %changelog
+* Fri Jan 29 2016 Jonathan Wakely <jwakely@redhat.com> - 2.0.12-5
+- Rebuilt for Boost 1.60
+
 * Wed Jan 13 2016 Vít Ondruch <vondruch@redhat.com> - 2.0.12-4
 - Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.3
 
