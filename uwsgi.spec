@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1650,6 +1650,9 @@ fi
 
 
 %changelog
+* Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.12-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
 * Fri Jan 29 2016 Jonathan Wakely <jwakely@redhat.com> - 2.0.12-5
 - Rebuilt for Boost 1.60
 
