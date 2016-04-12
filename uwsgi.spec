@@ -31,11 +31,11 @@
 %bcond_without mono
 %endif
 # mongodblibs
-# mongodb in little endian only, but also requires v8
-%ifnarch  %{ix86} x86_64 %{arm}
-%bcond_with mongodblibs
-%else
+# mongodb is little endian only
+%ifnarch ppc ppc64 s390 s390x
 %bcond_without mongodblibs
+%else
+%bcond_with mongodblibs
 %endif
 # v8
 %ifnarch %{ix86} x86_64 %{arm}
@@ -1650,6 +1650,9 @@ fi
 
 
 %changelog
+* Tue Apr 12 2016 Peter Robinson <pbrobinson@fedoraproject.org> 2.0.12-7
+- Mongodb doesn't depend on v8 anymore so is now supported on all LE arches
+
 * Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.12-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
