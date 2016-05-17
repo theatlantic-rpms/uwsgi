@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1650,6 +1650,9 @@ fi
 
 
 %changelog
+* Tue May 17 2016 Jitka Plesnikova <jplesnik@redhat.com> - 2.0.12-8
+- Perl 5.24 rebuild
+
 * Tue Apr 12 2016 Peter Robinson <pbrobinson@fedoraproject.org> 2.0.12-7
 - Mongodb doesn't depend on v8 anymore so is now supported on all LE arches
 
