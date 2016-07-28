@@ -15,7 +15,7 @@ index f39ad63..d9e95bb 100644
      if os.system("javac %s/plugins/jvm/uwsgi.java" % os.getcwd()) != 0:
          os._exit(1)
 diff --git a/plugins/php/uwsgiplugin.py b/plugins/php/uwsgiplugin.py
-index 45c58e5..8eb2b73 100644
+index d930c44..273cdde 100644
 --- a/plugins/php/uwsgiplugin.py
 +++ b/plugins/php/uwsgiplugin.py
 @@ -19,7 +19,6 @@ LDFLAGS = os.popen(PHPPATH + ' --ldflags').read().rstrip().split()
@@ -27,12 +27,12 @@ index 45c58e5..8eb2b73 100644
  LIBS = [os.popen(PHPPATH + ' --libs').read().rstrip(), '-lphp' + php_version]
  
 diff --git a/plugins/python/uwsgiplugin.py b/plugins/python/uwsgiplugin.py
-index eb6755f..b75fa29 100644
+index 843876f..69ae68f 100644
 --- a/plugins/python/uwsgiplugin.py
 +++ b/plugins/python/uwsgiplugin.py
 @@ -58,8 +58,6 @@ if not 'UWSGI_PYTHON_NOLIB' in os.environ:
          LDFLAGS.append("-L%s" % libdir)
-         LDFLAGS.append("-Wl,-rpath=%s" % libdir)
+         LDFLAGS.append("-Wl,-rpath,%s" % libdir)
  
 -        os.environ['LD_RUN_PATH'] = "%s" % libdir
 -
