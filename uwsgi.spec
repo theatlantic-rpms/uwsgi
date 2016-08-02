@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -133,6 +133,7 @@ Patch2:         uwsgi_ruby20_compatibility.patch
 Patch3:         uwsgi_fix_lua.patch
 # https://github.com/unbit/uwsgi/issues/882
 Patch5:         uwsgi_fix_mongodb.patch
+Patch6:         uwsgi_v8-314_compatibility.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
 %if %{with python3}
@@ -169,7 +170,11 @@ BuildRequires:  systemd-devel, systemd-units
 BuildRequires:  mono-devel, mono-web
 %endif
 %if %{with v8}
+%if 0%{?fedora} >= 25
+BuildRequires:  v8-314-devel
+%else
 BuildRequires:  v8-devel
+%endif
 %endif
 %if %{with mongodblibs}
 BuildRequires:  libmongodb-devel
@@ -828,7 +833,7 @@ This package contains the uGreen plugin for uWSGI
 %package -n %{name}-plugin-v8
 Summary:  uWSGI - Plugin for v8 support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, v8
+Requires: %{name}-plugin-common
 
 %description -n %{name}-plugin-v8
 This package contains the v8 plugin for uWSGI
@@ -1087,6 +1092,9 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %patch3 -p1
 %if 0%{?fedora} >= 22
 %patch5 -p1
+%endif
+%if %{with v8} && 0%{?fedora} >= 25
+%patch6 -p1
 %endif
 
 #disable plug-ins
@@ -1650,6 +1658,9 @@ fi
 
 
 %changelog
+* Mon Aug 01 2016 Carl George <carl.george@rackspace.com> - 2.0.13.1-2
+- Build against v8-314 on F25+ rhbz#1339293
+
 * Thu Jul 28 2016 Jorge A Gallegos <kad@blegh.net> - 2.0.13.1-1
 - Bumped to latest stable
 
