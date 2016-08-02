@@ -1300,7 +1300,7 @@ fi
 
 %files -n %{name}-devel
 %{_includedir}/%{name}
-%{_usrsrc}/%{name}/%{version}
+%{_usrsrc}/%{name}
 
 %files -n python-uwsgidecorators
 %defattr(-,root,root,-)
@@ -1660,6 +1660,7 @@ fi
 %changelog
 * Mon Aug 01 2016 Carl George <carl.george@rackspace.com> - 2.0.13.1-2
 - Build against v8-314 on F25+ rhbz#1339293
+- Own /usr/src/uwsgi rhbz#1351796
 
 * Thu Jul 28 2016 Jorge A Gallegos <kad@blegh.net> - 2.0.13.1-1
 - Bumped to latest stable
