@@ -576,7 +576,7 @@ This package contains the geoip plugin for uWSGI
 %package -n %{name}-plugin-gevent
 Summary:  uWSGI - Plugin for GEvent support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common, libevent
+Requires: %{name}-plugin-common, %{name}-plugin-python, libevent
 
 %description -n %{name}-plugin-gevent
 This package contains the gevent plugin for uWSGI
@@ -595,7 +595,7 @@ This package contains the glusterfs plugin for uWSGI
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
 Group:    System Environment/Daemons
-Requires: python-greenlet, %{name}-plugin-common
+Requires: python-greenlet, %{name}-plugin-python, %{name}-plugin-common
 
 %description -n %{name}-plugin-greenlet
 This package contains the python greenlet plugin for uWSGI
