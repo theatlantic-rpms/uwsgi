@@ -1286,7 +1286,7 @@ fi
 
 %files
 %{_sbindir}/%{name}
-%config %{_sysconfdir}/%{name}.ini
+%config(noreplace) %{_sysconfdir}/%{name}.ini
 %if %{with systemd}
 %config %{_unitdir}/%{name}.service
 %else
