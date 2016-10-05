@@ -1,10 +1,10 @@
 # Version
 %global majornumber 2
 %global minornumber 0
-%global releasenumber 13.1
+%global releasenumber 14
 
 # Documentation sources:
-%global commit 032608205f7dc73c651de6166bd874be859cd7fd
+%global commit f6eacc586fda4aedf83ed29aea38087dff8f50f2
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global docrepo uwsgi-docs
 %{!?_httpd_apxs: %{expand: %%global _httpd_apxs %%{_sbindir}/apxs}}
@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        2%{?dist}
+Release:        0%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
