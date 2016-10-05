@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1658,6 +1658,13 @@ fi
 
 
 %changelog
+* Wed Oct 05 2016 Jorge A Gallegos <kad@blegh.net> - 2.0.14-1
+- Updated to latest upstream stable (Jorge Gallegos)
+- Make subpackage interdependencies versioned for bz #1368488 (Jorge Gallegos)
+- chmod uwsgi sock file for bz #1338038 (Jorge Gallegos)
+- greenlet and gevent depend on python bz #1325524 (Jorge Gallegos)
+- config(noreplace) for uwsgi.ini bz #1339558 (Jorge Gallegos)
+
 * Mon Aug 01 2016 Carl George <carl.george@rackspace.com> - 2.0.13.1-2
 - Build against v8-314 on F25+ rhbz#1339293
 - Own /usr/src/uwsgi rhbz#1351796
