@@ -146,7 +146,12 @@ BuildRequires:  python-greenlet-devel
 BuildRequires:  glusterfs-devel, glusterfs-api-devel
 %endif
 BuildRequires:  lua-devel, ruby, pcre-devel
-BuildRequires:  php-devel, php-embedded, libedit-devel, openssl-devel
+BuildRequires:  php-devel, php-embedded, libedit-devel
+%if 0%{?fedora} >= 26
+BuildRequires:  compat-openssl10-devel
+%else
+BuildRequires:  openssl-devel
+%endif
 BuildRequires:  bzip2-devel, gmp-devel, pam-devel
 BuildRequires:  java-devel, sqlite-devel, libcap-devel
 BuildRequires:  httpd-devel, tcp_wrappers-devel, libcurl-devel
