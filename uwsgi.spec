@@ -115,7 +115,7 @@
 
 Name:           uwsgi
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -1663,6 +1663,10 @@ fi
 
 
 %changelog
+* Wed Nov 30 2016 Carl George <carl.george@rackspace.com> - 2.0.14-2
+- uwsgi is not yet OpenSSL 1.1 compatible, build against compat-openssl10 on F26+ (Carl George)
+- php plugin requires krb5 headers to build (Carl George)
+
 * Wed Oct 05 2016 Jorge A Gallegos <kad@blegh.net> - 2.0.14-1
 - Updated to latest upstream stable (Jorge Gallegos)
 - Make subpackage interdependencies versioned for bz #1368488 (Jorge Gallegos)
