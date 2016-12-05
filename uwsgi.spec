@@ -92,9 +92,9 @@
 # ...but no python3-tornado yet
 %bcond_with tornado3
 # el7 doesn't have zeromq
-%bcond_with zeromq
+%bcond_without zeromq
 # el7 doesn't have greenlet
-%bcond_with greenlet
+%bcond_without greenlet
 # el7 doesn't have perl-Coro
 %bcond_with perl
 # el7 can now build glusterfs but only on x86_64
@@ -495,6 +495,14 @@ Requires: %{name}-plugin-common = %{version}-%{release}, libcurl
 
 %description -n %{name}-plugin-airbrake
 This package contains the airbrake plugin for uWSGI
+
+%package -n %{name}-plugin-cheaper-busyness
+Summary:  uWSGI - Plugin for cheaper-busyness support
+Group:    System Environment/Daemons
+Requires: %{name}-plugin-common
+
+%description -n %{name}-plugin-cheaper-busyness
+This package contains the cheaper-busyness plugin for uWSGI
 
 %package -n %{name}-plugin-cache
 Summary:  uWSGI - Plugin for cache support
@@ -1291,7 +1299,7 @@ fi
 
 %files
 %{_sbindir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}.ini
+%config %{_sysconfdir}/%{name}.ini
 %if %{with systemd}
 %config %{_unitdir}/%{name}.service
 %else
@@ -1426,6 +1434,9 @@ fi
 
 %files -n %{name}-plugin-carbon
 %{_libdir}/%{name}/carbon_plugin.so
+
+%files -n %{name}-plugin-cheaper-busyness
+%{_libdir}/%{name}/cheaper_busyness_plugin.so
 
 %if %{with perl}
 %files -n %{name}-plugin-coroae
