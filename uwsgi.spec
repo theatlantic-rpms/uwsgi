@@ -3,6 +3,8 @@
 %global minornumber 0
 %global releasenumber 14
 
+%define  stats_pusher_mongo_version  1.0.3
+
 # Documentation sources:
 %global commit f6eacc586fda4aedf83ed29aea38087dff8f50f2
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
@@ -93,7 +95,7 @@
 %bcond_with tornado3
 # el7 doesn't have zeromq
 %bcond_without zeromq
-# el7 doesn't have greenlet
+# we have greenlet
 %bcond_without greenlet
 # el7 doesn't have perl-Coro
 %bcond_with perl
@@ -114,8 +116,9 @@
 %endif
 
 Name:           uwsgi
+Epoch:          2
 Version:        %{majornumber}.%{minornumber}.%{releasenumber}
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Fast, self-healing, application container server
 Group:          System Environment/Daemons
 License:        GPLv2 with exceptions
@@ -127,12 +130,12 @@ Source3:        emperor.ini
 Source4:        https://github.com/unbit/%{docrepo}/archive/%{commit}/%{docrepo}-%{shortcommit}.tar.gz
 Source5:        README.Fedora
 Source6:        uwsgi.init
+Source100:      https://github.com/fdintino/uwsgi-plugin-stats-pusher-mongo/archive/v%{stats_pusher_mongo_version}.tar.gz#/uwsgi-plugin-stats-pusher-mongo-%{stats_pusher_mongo_version}.tar.gz
 Patch0:         uwsgi_trick_chroot_rpmbuild.patch
 Patch1:         uwsgi_fix_rpath.patch
 Patch2:         uwsgi_ruby20_compatibility.patch
 Patch3:         uwsgi_fix_lua.patch
 # https://github.com/unbit/uwsgi/issues/882
-Patch5:         uwsgi_fix_mongodb.patch
 Patch6:         uwsgi_v8-314_compatibility.patch
 BuildRequires:  curl,  python2-devel, libxml2-devel, libuuid-devel, jansson-devel
 BuildRequires:  libyaml-devel, perl-devel, ruby-devel, perl-ExtUtils-Embed
@@ -181,9 +184,7 @@ BuildRequires:  v8-314-devel
 BuildRequires:  v8-devel
 %endif
 %endif
-%if %{with mongodblibs}
-BuildRequires:  libmongodb-devel
-%endif
+BuildRequires:  mongo-c-driver-devel
 
 Obsoletes:      %{name}-loggers <= 1.9.8-1
 Obsoletes:      %{name}-routers <= 2.0.6
@@ -222,7 +223,7 @@ core.
 %package -n %{name}-devel
 Summary:    uWSGI - Development header files and libraries
 Group:      Development/Libraries
-Requires:   %{name} = %{version}-%{release}
+Requires:   %{name} = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-devel
 This package contains the development header files and libraries
@@ -231,8 +232,8 @@ for uWSGI extensions
 %package -n python-uwsgidecorators
 Summary:        Python decorators providing access to the uwsgi API
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
-Requires:       %{name}-plugin-python = %{version}-%{release}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-plugin-python = %{epoch}:%{version}-%{release}
 
 %description -n python-uwsgidecorators
 The uwsgidecorators Python module provides higher-level access to the uWSGI API.
@@ -240,8 +241,8 @@ The uwsgidecorators Python module provides higher-level access to the uWSGI API.
 %package -n python3-uwsgidecorators
 Summary:        Python 3 decorators providing access to the uwsgi API
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
-Requires:       %{name}-plugin-python3 = %{version}-%{release}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-plugin-python3 = %{epoch}:%{version}-%{release}
 
 %description -n python3-uwsgidecorators
 The uwsgidecorators Python 3 module provides higher-level access to the uWSGI API.
@@ -257,7 +258,7 @@ This package contains the documentation files for uWSGI
 %package -n %{name}-plugin-common
 Summary:  uWSGI - Common plugins for uWSGI
 Group:    System Environment/Daemons
-Requires: %{name} = %{version}-%{release}
+Requires: %{name} = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-common
 This package contains the most common plugins used with uWSGI. The
@@ -267,37 +268,35 @@ plugins included in this package are: cache, CGI, RPC, uGreen
 
 %package -n %{name}-stats-pusher-file
 Summary:    uWSGI - File Stats Pusher for uWSGI
-Requires:   %{name}-plugin-common = %{version}-%{release}
+Requires:   %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-stats-pusher-file
 This package contains the stats_pusher_file plugin for uWSGI
 
-%if %{with mongodblibs}
 %package -n %{name}-stats-pusher-mongodb
 Summary:    uWSGI - MongoDB Stats Pusher for uWSGI
-Requires:   %{name}-plugin-common = %{version}-%{release}
+Requires:   %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-stats-pusher-mongodb
 This package contains the stats_pusher_mongodb plugin for uWSGI
-%endif
 
 %package -n %{name}-stats-pusher-socket
 Summary:    uWSGI - Socket Stats Pusher for uWSGI
-Requires:   %{name}-plugin-common = %{version}-%{release}
+Requires:   %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-stats-pusher-socket
 This package contains the stats_pusher_socket plugin for uWSGI
 
 %package -n %{name}-stats-pusher-statsd
 Summary:    uWSGI - StatsD Stats Pusher for uWSGI
-Requires:   %{name}-plugin-common = %{version}-%{release}
+Requires:   %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-stats-pusher-statsd
 This package contains the stats_pusher_statsd plugin for uWSGI
 
 %package -n %{name}-stats-pusher-zabbix
 Summary:    uWSGI - Zabbix Stats Pusher for uWSGI
-Requires:   %{name}-plugin-common = %{version}-%{release}
+Requires:   %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-stats-pusher-zabbix
 This package contains the zabbix plugin for uWSGI
@@ -307,7 +306,7 @@ This package contains the zabbix plugin for uWSGI
 %package -n %{name}-alarm-curl
 Summary:  uWSGI - Curl alarm plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libcurl
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libcurl
 
 %description -n %{name}-alarm-curl
 This package contains the alarm_curl alarm plugin for uWSGI
@@ -315,7 +314,7 @@ This package contains the alarm_curl alarm plugin for uWSGI
 %package -n %{name}-alarm-xmpp
 Summary:  uWSGI - Curl alarm plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, gloox
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, gloox
 
 %description -n %{name}-alarm-xmpp
 This package contains the alarm_xmpp alarm plugin for uWSGI
@@ -325,7 +324,7 @@ This package contains the alarm_xmpp alarm plugin for uWSGI
 %package -n %{name}-transformation-chunked
 Summary:  uWSGI - Chunked Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-router-uwsgi = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-router-uwsgi = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-transformation-chunked
 This package contains the transformation_chunked plugin for uWSGI
@@ -333,7 +332,7 @@ This package contains the transformation_chunked plugin for uWSGI
 %package -n %{name}-transformation-gzip
 Summary:  uWSGI - GZip Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-router-uwsgi = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-router-uwsgi = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-transformation-gzip
 This package contains the transformation_gzip plugin for uWSGI
@@ -341,7 +340,7 @@ This package contains the transformation_gzip plugin for uWSGI
 %package -n %{name}-transformation-offload
 Summary:  uWSGI - Off-Load Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-router-uwsgi = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-router-uwsgi = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-transformation-offload
 This package contains the transformation_offload plugin for uWSGI
@@ -349,7 +348,7 @@ This package contains the transformation_offload plugin for uWSGI
 %package -n %{name}-transformation-template
 Summary:  uWSGI - Template Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-router-uwsgi = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-router-uwsgi = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-transformation-template
 This package contains the transformation_template plugin for uWSGI
@@ -357,7 +356,7 @@ This package contains the transformation_template plugin for uWSGI
 %package -n %{name}-transformation-tofile
 Summary:  uWSGI - ToFile Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-router-uwsgi = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-router-uwsgi = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-transformation-tofile
 This package contains the transformation_tofile plugin for uWSGI
@@ -365,7 +364,7 @@ This package contains the transformation_tofile plugin for uWSGI
 %package -n %{name}-transformation-toupper
 Summary:  uWSGI - ToUpper Transformation plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-transformation-toupper
 This package contains the transformation_toupper plugin for uWSGI
@@ -375,7 +374,7 @@ This package contains the transformation_toupper plugin for uWSGI
 %package -n %{name}-log-encoder-msgpack
 Summary:  uWSGI - msgpack log encoder plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-log-encoder-msgpack
 This package contains the msgpack log encoder plugin for uWSGI
@@ -383,45 +382,34 @@ This package contains the msgpack log encoder plugin for uWSGI
 %package -n %{name}-logger-crypto
 Summary:  uWSGI - logcrypto logger plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-logger-crypto
 This package contains the logcrypto logger plugin for uWSGI
 
-%package -n %{name}-logger-file
-Summary:   uWSGI - logfile logger plugin
-Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Obsoletes: %{name}-loggers <= 1.9.8-1
-Provides:  %{name}-loggers = %{version}-%{release}
-
-%description -n %{name}-logger-file
-This package contains the logfile logger plugin for uWSGI
 
 %package -n %{name}-logger-graylog2
 Summary:   uWSGI - Graylog2 logger plugin
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}, zlib
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}, zlib
 
 %description -n %{name}-logger-graylog2
 This package contains the graylog2 logger plugin for uWSGI
 
-%if %{with mongodblibs}
 %package -n %{name}-logger-mongodb
 Summary:   uWSGI - mongodblog logger plugin
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-loggers <= 1.9.8-1
-Provides:  %{name}-loggers = %{version}-%{release}
+Provides:  %{name}-loggers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-logger-mongodb
 This package contains the mongodblog logger plugin for uWSGI
-%endif
 
 %package -n %{name}-logger-pipe
 Summary:  uWSGI - logpipe logger plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-logger-pipe
 This package contains the logcrypto logger plugin for uWSGI
@@ -429,9 +417,9 @@ This package contains the logcrypto logger plugin for uWSGI
 %package -n %{name}-logger-redis
 Summary:   uWSGI - redislog logger plugin
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-loggers <= 1.9.8-1
-Provides:  %{name}-loggers = %{version}-%{release}
+Provides:  %{name}-loggers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-logger-redis
 This package contains the redislog logger plugin for uWSGI
@@ -439,9 +427,9 @@ This package contains the redislog logger plugin for uWSGI
 %package -n %{name}-logger-rsyslog
 Summary:   uWSGI - rsyslog logger plugin
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-plugin-rsyslog <= 1.9.8-1
-Provides:  %{name}-plugin-rsyslog = %{version}-%{release}
+Provides:  %{name}-plugin-rsyslog = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-logger-rsyslog
 This package contains the rsyslog logger plugin for uWSGI
@@ -449,9 +437,9 @@ This package contains the rsyslog logger plugin for uWSGI
 %package -n %{name}-logger-socket
 Summary:   uWSGI - logsocket logger plugin
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-loggers <= 1.9.8-1
-Provides:  %{name}-loggers = %{version}-%{release}
+Provides:  %{name}-loggers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-logger-socket
 This package contains the logsocket logger plugin for uWSGI
@@ -459,9 +447,9 @@ This package contains the logsocket logger plugin for uWSGI
 %package -n %{name}-logger-syslog
 Summary:   uWSGI - syslog logger plugin
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-plugin-syslog <= 1.9.8-1
-Provides:  %{name}-plugin-syslog = %{version}-%{release}
+Provides:  %{name}-plugin-syslog = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-logger-syslog
 This package contains the syslog logger plugin for uWSGI
@@ -470,7 +458,7 @@ This package contains the syslog logger plugin for uWSGI
 %package -n %{name}-logger-systemd
 Summary:  uWSGI - systemd journal logger plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-logger-systemd
 This package contains the systemd journal logger plugin for uWSGI
@@ -480,7 +468,7 @@ This package contains the systemd journal logger plugin for uWSGI
 %package -n %{name}-logger-zeromq
 Summary:  uWSGI - ZeroMQ logger plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, zeromq
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, zeromq
 
 %description -n %{name}-logger-zeromq
 This package contains the ZeroMQ logger plugin for uWSGI
@@ -491,23 +479,16 @@ This package contains the ZeroMQ logger plugin for uWSGI
 %package -n %{name}-plugin-airbrake
 Summary:  uWSGI - Plugin for AirBrake support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libcurl
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libcurl
 
 %description -n %{name}-plugin-airbrake
 This package contains the airbrake plugin for uWSGI
 
-%package -n %{name}-plugin-cheaper-busyness
-Summary:  uWSGI - Plugin for cheaper-busyness support
-Group:    System Environment/Daemons
-Requires: %{name}-plugin-common
-
-%description -n %{name}-plugin-cheaper-busyness
-This package contains the cheaper-busyness plugin for uWSGI
 
 %package -n %{name}-plugin-cache
 Summary:  uWSGI - Plugin for cache support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-cache
 This package contains the cache plugin for uWSGI
@@ -515,7 +496,7 @@ This package contains the cache plugin for uWSGI
 %package -n %{name}-plugin-carbon
 Summary:  uWSGI - Plugin for Carbon/Graphite support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-carbon
 This package contains the Carbon plugin for uWSGI (to use in graphite)
@@ -524,7 +505,7 @@ This package contains the Carbon plugin for uWSGI (to use in graphite)
 %package -n %{name}-plugin-coroae
 Summary:  uWSGI - Plugin for PERL Coro support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-plugin-psgi = %{version}-%{release}, perl-Coro
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-plugin-psgi = %{epoch}:%{version}-%{release}, perl-Coro
 
 %description -n %{name}-plugin-coroae
 This package contains the coroae plugin for uWSGI
@@ -533,7 +514,7 @@ This package contains the coroae plugin for uWSGI
 %package -n %{name}-plugin-cplusplus
 Summary:  uWSGI - Plugin for C++ support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libstdc++
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libstdc++
 
 %description -n %{name}-plugin-cplusplus
 This package contains the cplusplus plugin for uWSGI
@@ -541,7 +522,7 @@ This package contains the cplusplus plugin for uWSGI
 %package -n %{name}-plugin-curl-cron
 Summary:  uWSGI - Plugin for CURL Cron support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libcurl
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libcurl
 
 %description -n %{name}-plugin-curl-cron
 This package contains the curl_cron plugin for uWSGI
@@ -549,7 +530,7 @@ This package contains the curl_cron plugin for uWSGI
 %package -n %{name}-plugin-dumbloop
 Summary:  uWSGI - Plugin for Dumb Loop support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-dumbloop
 This package contains the dumbloop plugin for uWSGI
@@ -557,7 +538,7 @@ This package contains the dumbloop plugin for uWSGI
 %package -n %{name}-plugin-dummy
 Summary:  uWSGI - Plugin for Dummy support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-dummy
 This package contains the dummy plugin for uWSGI
@@ -565,7 +546,7 @@ This package contains the dummy plugin for uWSGI
 %package -n %{name}-plugin-fiber
 Summary:  uWSGI - Plugin for Ruby Fiber support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-plugin-rack = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-plugin-rack = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-fiber
 This package contains the fiber plugin for uWSGI
@@ -573,7 +554,7 @@ This package contains the fiber plugin for uWSGI
 %package -n %{name}-plugin-gccgo
 Summary:  uWSGI - Plugin for GoLang support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libgo
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libgo
 
 %description -n %{name}-plugin-gccgo
 This package contains the gccgo plugin for uWSGI
@@ -581,7 +562,7 @@ This package contains the gccgo plugin for uWSGI
 %package -n %{name}-plugin-geoip
 Summary:  uWSGI - Plugin for GeoIP support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, GeoIP
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, GeoIP
 
 %description -n %{name}-plugin-geoip
 This package contains the geoip plugin for uWSGI
@@ -589,7 +570,7 @@ This package contains the geoip plugin for uWSGI
 %package -n %{name}-plugin-gevent
 Summary:  uWSGI - Plugin for GEvent support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-python = %{version}-%{release}, libevent
+Requires: %{name}-plugin-python = %{epoch}:%{version}-%{release}, libevent
 
 %description -n %{name}-plugin-gevent
 This package contains the gevent plugin for uWSGI
@@ -598,7 +579,7 @@ This package contains the gevent plugin for uWSGI
 %package -n %{name}-plugin-glusterfs
 Summary:  uWSGI - Plugin for GlusterFS support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, glusterfs-api
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, glusterfs-api
 
 %description -n %{name}-plugin-glusterfs
 This package contains the glusterfs plugin for uWSGI
@@ -608,7 +589,7 @@ This package contains the glusterfs plugin for uWSGI
 %package -n %{name}-plugin-greenlet
 Summary:  uWSGI - Plugin for Python Greenlet support
 Group:    System Environment/Daemons
-Requires: python-greenlet, %{name}-plugin-python = %{version}-%{release}
+Requires: python-greenlet, %{name}-plugin-python = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-greenlet
 This package contains the python greenlet plugin for uWSGI
@@ -618,17 +599,17 @@ This package contains the python greenlet plugin for uWSGI
 %package -n %{name}-plugin-gridfs
 Summary:  uWSGI - Plugin for GridFS support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libmongodb
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libmongodb
 
-%description -n %{name}-plugin-gridfs
-This package contains the gridfs plugin for uWSGI
+cription -n %{name}-plugin-gridfs
+ package contains the gridfs plugin for uWSGI
 %endif
 
 %if %{with java}
 %package -n %{name}-plugin-jvm
 Summary:  uWSGI - Plugin for JVM support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, java-headless, jpackage-utils
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, java-headless, jpackage-utils
 
 %description -n %{name}-plugin-jvm
 This package contains the JVM plugin for uWSGI
@@ -636,7 +617,7 @@ This package contains the JVM plugin for uWSGI
 %package -n %{name}-plugin-jwsgi
 Summary:  uWSGI - Plugin for JWSGI support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-plugin-jvm = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-plugin-jvm = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-jwsgi
 This package contains the jwsgi plugin for uWSGI
@@ -645,7 +626,7 @@ This package contains the jwsgi plugin for uWSGI
 %package -n %{name}-plugin-ldap
 Summary:  uWSGI - Plugin for LDAP support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, openldap
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, openldap
 
 %description -n %{name}-plugin-ldap
 This package contains the ldap plugin for uWSGI
@@ -653,7 +634,7 @@ This package contains the ldap plugin for uWSGI
 %package -n %{name}-plugin-lua
 Summary:  uWSGI - Plugin for LUA support
 Group:    System Environment/Daemons
-Requires: lua, %{name}-plugin-common = %{version}-%{release}
+Requires: lua, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-lua
 This package contains the lua plugin for uWSGI
@@ -662,7 +643,7 @@ This package contains the lua plugin for uWSGI
 %package -n %{name}-plugin-mongrel2
 Summary:  uWSGI - Plugin for Mongrel2 support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, zeromq
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, zeromq
 
 %description -n %{name}-plugin-mongrel2
 This package contains the mongrel2 plugin for uWSGI
@@ -672,7 +653,7 @@ This package contains the mongrel2 plugin for uWSGI
 %package -n %{name}-plugin-mono
 Summary:  uWSGI - Plugin for Mono / .NET support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, mono-web
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, mono-web
 
 %description -n %{name}-plugin-mono
 This package contains the mono plugin for uWSGI
@@ -681,7 +662,7 @@ This package contains the mono plugin for uWSGI
 %package -n %{name}-plugin-nagios
 Summary:  uWSGI - Plugin for Nagios support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-nagios
 This package contains the nagios plugin for uWSGI
@@ -689,7 +670,7 @@ This package contains the nagios plugin for uWSGI
 %package -n %{name}-plugin-notfound
 Summary:  uWSGI - Plugin for notfound support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-notfound
 This package contains the notfound plugin for uWSGI
@@ -697,7 +678,7 @@ This package contains the notfound plugin for uWSGI
 %package -n %{name}-plugin-pam
 Summary:  uWSGI - Plugin for PAM support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, pam
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, pam
 
 %description -n %{name}-plugin-pam
 This package contains the PAM plugin for uWSGI
@@ -705,7 +686,7 @@ This package contains the PAM plugin for uWSGI
 %package -n %{name}-plugin-php
 Summary:  uWSGI - Plugin for PHP support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-php
 This package contains the PHP plugin for uWSGI
@@ -714,7 +695,7 @@ This package contains the PHP plugin for uWSGI
 %package -n %{name}-plugin-psgi
 Summary:  uWSGI - Plugin for PSGI support
 Group:    System Environment/Daemons
-Requires: perl-PSGI, %{name}-plugin-common = %{version}-%{release}
+Requires: perl-PSGI, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-psgi
 This package contains the PSGI plugin for uWSGI
@@ -723,7 +704,7 @@ This package contains the PSGI plugin for uWSGI
 %package -n %{name}-plugin-pty
 Summary:  uWSGI - Plugin for PTY support
 Group:    System Environment/Daemons
-Requires: python, %{name}-plugin-common = %{version}-%{release}
+Requires: python, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-pty
 This package contains the pty plugin for uWSGI
@@ -731,7 +712,7 @@ This package contains the pty plugin for uWSGI
 %package -n %{name}-plugin-python
 Summary:  uWSGI - Plugin for Python support
 Group:    System Environment/Daemons
-Requires: python, %{name}-plugin-common = %{version}-%{release}
+Requires: python, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-python
 This package contains the python plugin for uWSGI
@@ -739,7 +720,7 @@ This package contains the python plugin for uWSGI
 %package -n %{name}-plugin-python3
 Summary:  uWSGI - Plugin for Python 3 support
 Group:    System Environment/Daemons
-Requires: python%{python3_pkgversion}, %{name}-plugin-common = %{version}-%{release}
+Requires: python%{python3_pkgversion}, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-python3
 This package contains the Python 3 plugin for uWSGI
@@ -747,7 +728,7 @@ This package contains the Python 3 plugin for uWSGI
 %package -n %{name}-plugin-rack
 Summary:  uWSGI - Ruby rack plugin
 Group:    System Environment/Daemons
-Requires: rubygem-rack, %{name}-plugin-common = %{version}-%{release}
+Requires: rubygem-rack, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-rack
 This package contains the rack plugin for uWSGI
@@ -755,7 +736,7 @@ This package contains the rack plugin for uWSGI
 %package -n %{name}-plugin-rbthreads
 Summary:  uWSGI - Ruby native threads support plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, ruby
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, ruby
 
 %description -n %{name}-plugin-rbthreads
 This package contains the rbthreads plugin for uWSGI
@@ -764,7 +745,7 @@ This package contains the rbthreads plugin for uWSGI
 %package -n %{name}-plugin-ring
 Summary:  uWSGI - Clojure/Ring request handler support plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, %{name}-plugin-jvm = %{version}-%{release}, clojure
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, %{name}-plugin-jvm = %{epoch}:%{version}-%{release}, clojure
 
 %description -n %{name}-plugin-ring
 This package contains the ring plugin for uWSGI
@@ -773,7 +754,7 @@ This package contains the ring plugin for uWSGI
 %package -n %{name}-plugin-rpc
 Summary:  uWSGI - Plugin for RPC support
 Group:    System Environment/Daemons
-Requires: rrdtool, %{name}-plugin-common = %{version}-%{release}
+Requires: rrdtool, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-rpc
 This package contains the RPC plugin for uWSGI
@@ -781,7 +762,7 @@ This package contains the RPC plugin for uWSGI
 %package -n %{name}-plugin-rrdtool
 Summary:  uWSGI - Plugin for RRDTool support
 Group:    System Environment/Daemons
-Requires: rrdtool, %{name}-plugin-common = %{version}-%{release}
+Requires: rrdtool, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-rrdtool
 This package contains the RRD Tool plugin for uWSGI
@@ -789,7 +770,7 @@ This package contains the RRD Tool plugin for uWSGI
 %package -n %{name}-plugin-ruby
 Summary:  uWSGI - Plugin for Ruby support
 Group:    System Environment/Daemons
-Requires: ruby, %{name}-plugin-common = %{version}-%{release}
+Requires: ruby, %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-ruby
 This package contains the ruby19 plugin for uWSGI
@@ -797,7 +778,7 @@ This package contains the ruby19 plugin for uWSGI
 %package -n %{name}-plugin-spooler
 Summary:  uWSGI - Plugin for Remote Spooling support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-spooler
 This package contains the spooler plugin for uWSGI
@@ -805,7 +786,7 @@ This package contains the spooler plugin for uWSGI
 %package -n %{name}-plugin-sqlite3
 Summary:  uWSGI - SQLite3 plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, sqlite
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, sqlite
 
 %description -n %{name}-plugin-sqlite3
 This package contains the sqlite3 plugin for uWSGI
@@ -813,7 +794,7 @@ This package contains the sqlite3 plugin for uWSGI
 %package -n %{name}-plugin-ssi
 Summary:  uWSGI - Server Side Includes plugin
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-ssi
 This package contains the ssi plugin for uWSGI
@@ -821,7 +802,7 @@ This package contains the ssi plugin for uWSGI
 %package -n %{name}-plugin-tornado
 Summary:  uWSGI - Plugin for Tornado support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, python-tornado
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, python-tornado
 
 %description -n %{name}-plugin-tornado
 This package contains the tornado plugin for uWSGI
@@ -829,7 +810,7 @@ This package contains the tornado plugin for uWSGI
 %package -n %{name}-plugin-tornado3
 Summary:  uWSGI - Plugin for Tornado/Python3 support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, python3-tornado
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, python3-tornado
 
 %description -n %{name}-plugin-tornado3
 This package contains the tornado (python v3) plugin for uWSGI
@@ -837,7 +818,7 @@ This package contains the tornado (python v3) plugin for uWSGI
 %package -n %{name}-plugin-ugreen
 Summary:  uWSGI - Plugin for uGreen support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-ugreen
 This package contains the uGreen plugin for uWSGI
@@ -846,7 +827,7 @@ This package contains the uGreen plugin for uWSGI
 %package -n %{name}-plugin-v8
 Summary:  uWSGI - Plugin for v8 support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-v8
 This package contains the v8 plugin for uWSGI
@@ -855,7 +836,7 @@ This package contains the v8 plugin for uWSGI
 %package -n %{name}-plugin-webdav
 Summary:  uWSGI - Plugin for WebDAV support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libattr
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libattr
 
 %description -n %{name}-plugin-webdav
 This package contains the webdav plugin for uWSGI
@@ -863,7 +844,7 @@ This package contains the webdav plugin for uWSGI
 %package -n %{name}-plugin-xattr
 Summary:  uWSGI - Plugin for Extra Attributes support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libattr
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libattr
 
 %description -n %{name}-plugin-xattr
 This package contains the xattr plugin for uWSGI
@@ -871,7 +852,7 @@ This package contains the xattr plugin for uWSGI
 %package -n %{name}-plugin-xslt
 Summary:  uWSGI - Plugin for XSLT transformation support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}, libxslt
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}, libxslt
 
 %description -n %{name}-plugin-xslt
 This package contains the xslt plugin for uWSGI
@@ -879,7 +860,7 @@ This package contains the xslt plugin for uWSGI
 %package -n %{name}-plugin-zergpool
 Summary:  uWSGI - Plugin for zergpool support
 Group:    System Environment/Daemons
-Requires: %{name}-plugin-common = %{version}-%{release}
+Requires: %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-plugin-zergpool
 This package contains the zergpool plugin for uWSGI
@@ -889,8 +870,8 @@ This package contains the zergpool plugin for uWSGI
 %package -n %{name}-router-access
 Summary:   uWSGI - Plugin for router_access router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-access
 This package contains the router_access plugin for uWSGI
@@ -898,8 +879,8 @@ This package contains the router_access plugin for uWSGI
 %package -n %{name}-router-basicauth
 Summary:   uWSGI - Plugin for Basic Auth router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-basicauth
 This package contains the basicauth plugin for uWSGI
@@ -907,8 +888,8 @@ This package contains the basicauth plugin for uWSGI
 %package -n %{name}-router-cache
 Summary:   uWSGI - Plugin for Cache router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-cache
 This package contains the cache router plugin for uWSGI
@@ -916,8 +897,8 @@ This package contains the cache router plugin for uWSGI
 %package -n %{name}-router-expires
 Summary:   uWSGI - Plugin for Expires router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-expires
 This package contains the expires router plugin for uWSGI
@@ -925,10 +906,10 @@ This package contains the expires router plugin for uWSGI
 %package -n %{name}-router-fast
 Summary:   uWSGI - Plugin for FastRouter support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-plugin-fastrouter <= 2.0.6
-Provides:  %{name}-plugin-fastrouter = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Provides:  %{name}-plugin-fastrouter = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-fast
 This package contains the fastrouter (proxy) plugin for uWSGI
@@ -936,7 +917,7 @@ This package contains the fastrouter (proxy) plugin for uWSGI
 %package -n %{name}-router-forkpty
 Summary:   uWSGI - Plugin for ForkPTY router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-forkpty
 This package contains the ForkPTY router plugin for uWSGI
@@ -944,8 +925,8 @@ This package contains the ForkPTY router plugin for uWSGI
 %package -n %{name}-router-hash
 Summary:   uWSGI - Plugin for Hash router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-hash
 This package contains the hash router plugin for uWSGI
@@ -953,8 +934,8 @@ This package contains the hash router plugin for uWSGI
 %package -n %{name}-router-http
 Summary:   uWSGI - Plugin for HTTP router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-http
 This package contains the http router plugin for uWSGI
@@ -962,8 +943,8 @@ This package contains the http router plugin for uWSGI
 %package -n %{name}-router-memcached
 Summary:   uWSGI - Plugin for Memcached router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-memcached
 This package contains the memcached router plugin for uWSGI
@@ -971,7 +952,7 @@ This package contains the memcached router plugin for uWSGI
 %package -n %{name}-router-metrics
 Summary:   uWSGI - Plugin for Metrics router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-metrics
 This package contains the metrics router plugin for uWSGI
@@ -979,7 +960,7 @@ This package contains the metrics router plugin for uWSGI
 %package -n %{name}-router-radius
 Summary:   uWSGI - Plugin for Radius router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-radius
 This package contains the metrics router plugin for uWSGI
@@ -987,10 +968,10 @@ This package contains the metrics router plugin for uWSGI
 %package -n %{name}-router-raw
 Summary:   uWSGI - Plugin for Raw Router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-plugin-rawrouter <= 2.0.6
-Provides:  %{name}-plugin-rawrouter = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Provides:  %{name}-plugin-rawrouter = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-raw
 This package contains the Raw router plugin for uWSGI
@@ -998,8 +979,8 @@ This package contains the Raw router plugin for uWSGI
 %package -n %{name}-router-redirect
 Summary:   uWSGI - Plugin for Redirect router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-redirect
 This package contains the redirect router plugin for uWSGI
@@ -1007,8 +988,8 @@ This package contains the redirect router plugin for uWSGI
 %package -n %{name}-router-redis
 Summary:   uWSGI - Plugin for Redis router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-redis
 This package contains the redis router plugin for uWSGI
@@ -1016,8 +997,8 @@ This package contains the redis router plugin for uWSGI
 %package -n %{name}-router-rewrite
 Summary:   uWSGI - Plugin for Rewrite router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-rewrite
 This package contains the rewrite router plugin for uWSGI
@@ -1025,7 +1006,7 @@ This package contains the rewrite router plugin for uWSGI
 %package -n %{name}-router-spnego
 Summary:   uWSGI - Plugin for SPNEgo router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-spnego
 This package contains the spnego router plugin for uWSGI
@@ -1033,10 +1014,10 @@ This package contains the spnego router plugin for uWSGI
 %package -n %{name}-router-ssl
 Summary:   uWSGI - Plugin for SSL router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 Obsoletes: %{name}-plugin-sslrouter <= 2.0.6
-Provides:  %{name}-plugin-sslrouter = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Provides:  %{name}-plugin-sslrouter = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-ssl
 This package contains the SSL router plugin for uWSGI
@@ -1044,8 +1025,8 @@ This package contains the SSL router plugin for uWSGI
 %package -n %{name}-router-static
 Summary:   uWSGI - Plugin for Static router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-static
 This package contains the Static router plugin for uWSGI
@@ -1053,7 +1034,7 @@ This package contains the Static router plugin for uWSGI
 %package -n %{name}-router-tuntap
 Summary:   uWSGI - Plugin for TUN/TAP router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-tuntap
 This package contains the tuntap router plugin for uWSGI
@@ -1061,8 +1042,8 @@ This package contains the tuntap router plugin for uWSGI
 %package -n %{name}-router-uwsgi
 Summary:   uWSGI - Plugin for uWSGI router support
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-uwsgi
 This package contains the uwsgi router plugin for uWSGI
@@ -1070,8 +1051,8 @@ This package contains the uwsgi router plugin for uWSGI
 %package -n %{name}-router-xmldir
 Summary:   uWSGI - Plugin for XMLDir router rupport
 Group:     System Environment/Daemons
-Requires:  %{name}-plugin-common = %{version}-%{release}
-Provides:  %{name}-routers = %{version}-%{release}
+Requires:  %{name}-plugin-common = %{epoch}:%{version}-%{release}
+Provides:  %{name}-routers = %{epoch}:%{version}-%{release}
 
 %description -n %{name}-router-xmldir
 This package contains the xmldir router plugin for uWSGI
@@ -1081,7 +1062,7 @@ This package contains the xmldir router plugin for uWSGI
 %package -n mod_proxy_%{name}
 Summary:  uWSGI - Apache2 proxy module
 Group:    System Environment/Daemons
-Requires: %{name} = %{version}-%{release}, httpd
+Requires: %{name} = %{epoch}:%{version}-%{release}, httpd
 
 %description -n mod_proxy_%{name}
 Fully Apache API compliant proxy module
@@ -1089,6 +1070,11 @@ Fully Apache API compliant proxy module
 
 %prep
 %setup -q
+%setup -q -D -T -a 100
+
+rm -rf plugins/stats_pusher_mongodb
+mv uwsgi-plugin-stats-pusher-mongo-%{stats_pusher_mongo_version} plugins/stats_pusher_mongodb
+
 cp -p %{SOURCE1} buildconf/
 %if %{with systemd}
 cp -p %{SOURCE2} %{name}.service
@@ -1111,10 +1097,6 @@ echo "plugin_dir = %{_libdir}/%{name}" >> buildconf/$(basename %{SOURCE1})
 %endif
 
 #disable plug-ins
-%if %{without mongodblibs}
-sed -in "s/mongodblog, //" buildconf/fedora.ini
-sed -in "s/stats_pusher_mongodb, //" buildconf/fedora.ini
-%endif
 %if %{without v8}
 sed -in "s/v8, //" buildconf/fedora.ini
 %endif
@@ -1134,10 +1116,8 @@ CFLAGS="%{optflags} -Wno-unused-but-set-variable" %{__python3} uwsgiconfig.py --
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" %{__python3} uwsgiconfig.py --plugin plugins/tornado fedora tornado3
 %endif
 %endif
-%if %{with mongodblibs}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mongodblog fedora
 CFLAGS="%{optflags} -Wno-unused-but-set-variable -std=gnu++11 -Wno-error" python uwsgiconfig.py --plugin plugins/stats_pusher_mongodb fedora
-%endif
 %if %{with mono}
 CFLAGS="%{optflags} -Wno-unused-but-set-variable" python uwsgiconfig.py --plugin plugins/mono fedora
 %endif
@@ -1338,10 +1318,8 @@ fi
 %files -n %{name}-stats-pusher-file
 %{_libdir}/%{name}/stats_pusher_file_plugin.so
 
-%if %{with mongodblibs}
 %files -n %{name}-stats-pusher-mongodb
 %{_libdir}/%{name}/stats_pusher_mongodb_plugin.so
-%endif
 
 %files -n %{name}-stats-pusher-socket
 %{_libdir}/%{name}/stats_pusher_socket_plugin.so
@@ -1388,16 +1366,12 @@ fi
 %files -n %{name}-logger-crypto
 %{_libdir}/%{name}/logcrypto_plugin.so
 
-%files -n %{name}-logger-file
-%{_libdir}/%{name}/logfile_plugin.so
 
 %files -n %{name}-logger-graylog2
 %{_libdir}/%{name}/graylog2_plugin.so
 
-%if %{with mongodblibs}
 %files -n %{name}-logger-mongodb
 %{_libdir}/%{name}/mongodblog_plugin.so
-%endif
 
 %files -n %{name}-logger-pipe
 %{_libdir}/%{name}/logpipe_plugin.so
@@ -1435,8 +1409,6 @@ fi
 %files -n %{name}-plugin-carbon
 %{_libdir}/%{name}/carbon_plugin.so
 
-%files -n %{name}-plugin-cheaper-busyness
-%{_libdir}/%{name}/cheaper_busyness_plugin.so
 
 %if %{with perl}
 %files -n %{name}-plugin-coroae
@@ -1674,6 +1646,10 @@ fi
 
 
 %changelog
+* Wed Jan 02 2019 Frankie Dintino <fdintino@theatlantic.com> - 2.0.14-3
+- Make logfile and cheaper_busyness embedded plugins
+- Fix (rewrite, really) mongodb-stats-pusher plugin
+
 * Wed Nov 30 2016 Carl George <carl.george@rackspace.com> - 2.0.14-2
 - uwsgi is not yet OpenSSL 1.1 compatible, build against compat-openssl10 on F26+ (Carl George)
 - php plugin requires krb5 headers to build (Carl George)
